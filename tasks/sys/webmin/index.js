@@ -57,6 +57,15 @@
       exec('service webmin restart');
     },
 
+    /** @override */
+    uninstall: function (options) {
+      fs.unlinkSync(path.resolve(options.sys.webminXtuplePath, 'editions.menu'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.cmd'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.cmd'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.html'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.html'));
+    },
+
     writeConfiguration: function (options) {
       fs.appendFileSync(options.sys.webminConfigFile, [
         'webprefix=/_manage',
@@ -77,10 +86,6 @@
     },
 
     installCustomCommands: function (options) {
-      fs.unlinkSync(path.resolve(options.sys.webminXtuplePath, 'editions.menu'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.cmd'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.cmd'));
-
       fs.writeFileSync(
         path.resolve(options.sys.webminXtuplePath, 'editions.menu'),
         fs.readFileSync(path.resolve(__dirname, 'editions.menu'))
