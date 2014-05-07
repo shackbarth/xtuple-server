@@ -10,6 +10,7 @@
     format = require('string-format'),
     _ = require('lodash'),
     path = require('path'),
+    mkdirp = require('mkdirp'),
     exec = require('execSync').exec,
     fs = require('fs');
 
@@ -19,13 +20,22 @@
     beforeInstall: function (options) {
       options.sys.webminConfigPath = path.resolve('/etc/webmin');
       options.sys.webminCustomPath = path.resolve(options.sys.webminConfigPath, 'custom');
+      options.sys.webminXtuplePath = path.resolve(options.sys.webminConfigPath, 'xtuple');
+    },
+
+    /** @override */
+    beforeTask: function (options) {
+      mkdirp(options.nginx.webminXtuplePath);
     },
 
     /** @override */
     doTask: function (options) {
+      var debFile = 'webmin_1.680_all.deb';
       // TODO if debian
-      exec('wget https://s3.amazonaws.com/com.xtuple.deploy-assets/webmin_1.680_all.deb');
-      exec('dpkg --install webmin_1.680_all.deb');
+      if (!fs.existsSync(path.resolve(debFile))) {
+        exec('wget https://s3.amazonaws.com/com.xtuple.deploy-assets/'+ debFile);
+      }
+      exec('dpkg --install '+ debFile);
 
       webmin.installCustomCommands(options);
       webmin.installNginxSite(options);
@@ -38,16 +48,21 @@
 
     installCustomCommands: function (options) {
       fs.writeFileSync(
-        options.sys.webminCustomPath,
-        fs.readFileSync(path.resolve(__dirname, '1399142566.cmd'))
+        path.resolve(options.sys.webminXtuplePath, 'editions.menu'),
+        fs.readFileSync(path.resolve(__dirname, 'editions.menu'))
       );
       fs.writeFileSync(
-        options.sys.webminCustomPath,
-        fs.readFileSync(path.resolve(__dirname, '1399145736.cmd'))
+        path.resolve(options.sys.webminCustomPath, '1001.cmd'),
+        fs.readFileSync(path.resolve(__dirname, 'server-install-file.cmd'))
+      );
+      fs.writeFileSync(
+        path.resolve(options.sys.webminCustomPath, '1002.cmd'),
+        fs.readFileSync(path.resolve(__dirname, 'server-install-upload.cmd'))
       );
     },
 
     installNginxSite: function (options) {
+      options.nginx || (options.nginx = { });
       options.nginx.outkey = path.resolve('/srv/ssl/xtremote.key');
       options.nginx.outcrt = path.resolve('/srv/ssl/xtremote.crt');
 
