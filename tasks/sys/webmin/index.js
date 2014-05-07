@@ -116,31 +116,31 @@
     deleteUnusedModules: function (options) {
       var mod = '/usr/share/webmin';
 
-      rimraf.sync(path.resolve(mod, 'bind8')):
-      rimraf.sync(path.resolve(mod, 'burner')):
-      rimraf.sync(path.resolve(mod, 'pserver')):
-      rimraf.sync(path.resolve(mod, 'exim')):
-      rimraf.sync(path.resolve(mod, 'fetchmail')):
-      rimraf.sync(path.resolve(mod, 'file')):
-      rimraf.sync(path.resolve(mod, 'grub')):
-      rimraf.sync(path.resolve(mod, 'jabber')):
-      rimraf.sync(path.resolve(mod, 'krb5')):
-      rimraf.sync(path.resolve(mod, 'ldap-client')):
-      rimraf.sync(path.resolve(mod, 'ldap-server')):
-      rimraf.sync(path.resolve(mod, 'ldap-useradmin')):
-      rimraf.sync(path.resolve(mod, 'mysql')):
-      rimraf.sync(path.resolve(mod, 'postfix')):
-      rimraf.sync(path.resolve(mod, 'qmailadmin')):
-      rimraf.sync(path.resolve(mod, 'iscsi-client')):
-      rimraf.sync(path.resolve(mod, 'iscsi-server')):
-      rimraf.sync(path.resolve(mod, 'iscsi-target')):
-      rimraf.sync(path.resolve(mod, 'ajaxterm')):
-      rimraf.sync(path.resolve(mod, 'adsl-client')):
-      rimraf.sync(path.resolve(mod, 'apache')):
-      rimraf.sync(path.resolve(mod, 'htaccess-htpasswd')):
-      rimraf.sync(path.resolve(mod, 'cpan')):
-      rimraf.sync(path.resolve(mod, 'pap')):
-      rimraf.sync(path.resolve(mod, 'ppp-client')):
+      rimraf.sync(path.resolve(mod, 'bind8'));
+      rimraf.sync(path.resolve(mod, 'burner'));
+      rimraf.sync(path.resolve(mod, 'pserver'));
+      rimraf.sync(path.resolve(mod, 'exim'));
+      rimraf.sync(path.resolve(mod, 'fetchmail'));
+      rimraf.sync(path.resolve(mod, 'file'));
+      rimraf.sync(path.resolve(mod, 'grub'));
+      rimraf.sync(path.resolve(mod, 'jabber'));
+      rimraf.sync(path.resolve(mod, 'krb5'));
+      rimraf.sync(path.resolve(mod, 'ldap-client'));
+      rimraf.sync(path.resolve(mod, 'ldap-server'));
+      rimraf.sync(path.resolve(mod, 'ldap-useradmin'));
+      rimraf.sync(path.resolve(mod, 'mysql'));
+      rimraf.sync(path.resolve(mod, 'postfix'));
+      rimraf.sync(path.resolve(mod, 'qmailadmin'));
+      rimraf.sync(path.resolve(mod, 'iscsi-client'));
+      rimraf.sync(path.resolve(mod, 'iscsi-server'));
+      rimraf.sync(path.resolve(mod, 'iscsi-target'));
+      rimraf.sync(path.resolve(mod, 'ajaxterm'));
+      rimraf.sync(path.resolve(mod, 'adsl-client'));
+      rimraf.sync(path.resolve(mod, 'apache'));
+      rimraf.sync(path.resolve(mod, 'htaccess-htpasswd'));
+      rimraf.sync(path.resolve(mod, 'cpan'));
+      rimraf.sync(path.resolve(mod, 'pap'));
+      rimraf.sync(path.resolve(mod, 'ppp-client'));
     }
   });
 })();
