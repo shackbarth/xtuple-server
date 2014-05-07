@@ -31,7 +31,7 @@
       options.sys.webminCustomConfigFile = path.resolve(options.sys.webminCustomPath, 'config');
       options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
 
-      options.pg.version = process.env.XT_PG_VERSION || '9.3';
+      //options.pg.version = process.env.XT_PG_VERSION || '9.3';
     },
 
     /** @override */
