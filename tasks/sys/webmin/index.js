@@ -10,8 +10,8 @@
     format = require('string-format'),
     _ = require('lodash'),
     path = require('path'),
-    mkdirp = require('mkdirp').sync,
-    rimraf = require('rimraf').sync,
+    mkdirp = require('mkdirp'),
+    rimraf = require('rimraf'),
     exec = require('execSync').exec,
     fs = require('fs');
 
@@ -19,7 +19,7 @@
 
     /** @override */
     beforeInstall: function (options) {
-      mkdirp('/srv/ssl');
+      mkdirp.sync('/srv/ssl');
 
       options.nginx.outkey = path.resolve('/srv/ssl/xtremote.key');
       options.nginx.outcrt = path.resolve('/srv/ssl/xtremote.crt');
@@ -34,7 +34,7 @@
 
     /** @override */
     beforeTask: function (options) {
-      mkdirp(options.sys.webminXtuplePath);
+      mkdirp.sync(options.sys.webminXtuplePath);
     },
 
     /** @override */
@@ -116,33 +116,32 @@
     deleteUnusedModules: function (options) {
       var mod = '/usr/share/webmin';
 
-      rimraf(path.resolve(mod, 'bind8')):
-      rimraf(path.resolve(mod, 'burner')):
-      rimraf(path.resolve(mod, 'pserver')):
-      rimraf(path.resolve(mod, 'exim')):
-      rimraf(path.resolve(mod, 'fetchmail')):
-      rimraf(path.resolve(mod, 'file')):
-      rimraf(path.resolve(mod, 'grub')):
-      rimraf(path.resolve(mod, 'jabber')):
-      rimraf(path.resolve(mod, 'krb5')):
-      rimraf(path.resolve(mod, 'ldap-client')):
-      rimraf(path.resolve(mod, 'ldap-server')):
-      rimraf(path.resolve(mod, 'ldap-useradmin')):
-      rimraf(path.resolve(mod, 'mysql')):
-      rimraf(path.resolve(mod, 'postfix')):
-      rimraf(path.resolve(mod, 'qmailadmin')):
-      rimraf(path.resolve(mod, 'iscsi-client')):
-      rimraf(path.resolve(mod, 'iscsi-server')):
-      rimraf(path.resolve(mod, 'iscsi-target')):
-      rimraf(path.resolve(mod, 'ajaxterm')):
-      rimraf(path.resolve(mod, 'adsl-client')):
-      rimraf(path.resolve(mod, 'apache')):
-      rimraf(path.resolve(mod, 'htaccess-htpasswd')):
-      rimraf(path.resolve(mod, 'cpan')):
-      rimraf(path.resolve(mod, 'pap')):
-      rimraf(path.resolve(mod, 'ppp-client')):
+      rimraf.sync(path.resolve(mod, 'bind8')):
+      rimraf.sync(path.resolve(mod, 'burner')):
+      rimraf.sync(path.resolve(mod, 'pserver')):
+      rimraf.sync(path.resolve(mod, 'exim')):
+      rimraf.sync(path.resolve(mod, 'fetchmail')):
+      rimraf.sync(path.resolve(mod, 'file')):
+      rimraf.sync(path.resolve(mod, 'grub')):
+      rimraf.sync(path.resolve(mod, 'jabber')):
+      rimraf.sync(path.resolve(mod, 'krb5')):
+      rimraf.sync(path.resolve(mod, 'ldap-client')):
+      rimraf.sync(path.resolve(mod, 'ldap-server')):
+      rimraf.sync(path.resolve(mod, 'ldap-useradmin')):
+      rimraf.sync(path.resolve(mod, 'mysql')):
+      rimraf.sync(path.resolve(mod, 'postfix')):
+      rimraf.sync(path.resolve(mod, 'qmailadmin')):
+      rimraf.sync(path.resolve(mod, 'iscsi-client')):
+      rimraf.sync(path.resolve(mod, 'iscsi-server')):
+      rimraf.sync(path.resolve(mod, 'iscsi-target')):
+      rimraf.sync(path.resolve(mod, 'ajaxterm')):
+      rimraf.sync(path.resolve(mod, 'adsl-client')):
+      rimraf.sync(path.resolve(mod, 'apache')):
+      rimraf.sync(path.resolve(mod, 'htaccess-htpasswd')):
+      rimraf.sync(path.resolve(mod, 'cpan')):
+      rimraf.sync(path.resolve(mod, 'pap')):
+      rimraf.sync(path.resolve(mod, 'ppp-client')):
     }
   });
-
 })();
 
