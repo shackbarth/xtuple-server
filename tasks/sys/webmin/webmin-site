@@ -27,6 +27,8 @@ server {
   ssl_session_cache shared:SSL:60m;
   ssl_session_timeout 60m;
 
+  client_max_body_size 16G;
+
   location /_manage/ {
     proxy_pass https://webmin/;
     proxy_redirect https://webmin/ /_manage/;

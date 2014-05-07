@@ -20,7 +20,6 @@
     beforeInstall: function (options) {
       mkdirp('/srv/ssl');
 
-      options.nginx || (options.nginx = { });
       options.nginx.outkey = path.resolve('/srv/ssl/xtremote.key');
       options.nginx.outcrt = path.resolve('/srv/ssl/xtremote.crt');
       options.nginx.domain = 'localhost';
@@ -61,9 +60,7 @@
     uninstall: function (options) {
       fs.unlinkSync(path.resolve(options.sys.webminXtuplePath, 'editions.menu'));
       fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.cmd'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.cmd'));
       fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.html'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.html'));
     },
 
     writeConfiguration: function (options) {
@@ -86,25 +83,19 @@
     },
 
     installCustomCommands: function (options) {
+      options.xt.version = require('../../../package').version;
+
       fs.writeFileSync(
         path.resolve(options.sys.webminXtuplePath, 'editions.menu'),
         fs.readFileSync(path.resolve(__dirname, 'editions.menu'))
       );
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1001.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install-file.cmd').toString().format(options))
-      );
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1002.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install-upload.cmd').toString().format(options))
+        fs.readFileSync(path.resolve(__dirname, 'server-install-file.cmd')).toString().format(options)
       );
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1001.html'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install-file.html').toString().format(options))
-      );
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1002.html'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install-upload.html').toString().format(options))
+        fs.readFileSync(path.resolve(__dirname, 'server-install-file.html')).toString().format(options)
       );
     },
 
