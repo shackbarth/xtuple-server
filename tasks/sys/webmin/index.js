@@ -104,20 +104,20 @@
 
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1002.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'server-restart.cmd')).toString().format(options)
+        fs.readFileSync(path.resolve(__dirname, 'service-restart.cmd')).toString().format(options)
       );
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1002.html'),
-        fs.readFileSync(path.resolve(__dirname, 'server-restart.html')).toString().format(options)
+        fs.readFileSync(path.resolve(__dirname, 'service-restart.html')).toString().format(options)
       );
 
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1003.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'server-status.cmd')).toString().format(options)
+        fs.readFileSync(path.resolve(__dirname, 'service-status.cmd')).toString().format(options)
       );
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1003.html'),
-        fs.readFileSync(path.resolve(__dirname, 'server-status.html')).toString().format(options)
+        fs.readFileSync(path.resolve(__dirname, 'service-status.html')).toString().format(options)
       );
     },
 
