@@ -45,6 +45,7 @@
         exec('wget https://s3.amazonaws.com/com.xtuple.deploy-assets/'+ debFile);
       }
       exec('dpkg --install '+ debFile);
+      exec('npm install ansi2html -g');
 
       webmin.deleteUnusedModules(options);
       webmin.writeConfiguration(options);
@@ -91,13 +92,32 @@
         path.resolve(options.sys.webminXtuplePath, 'editions.menu'),
         fs.readFileSync(path.resolve(__dirname, 'editions.menu'))
       );
+
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1001.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install-file.cmd')).toString().format(options)
+        fs.readFileSync(path.resolve(__dirname, 'server-install.cmd')).toString().format(options)
       );
       fs.writeFileSync(
         path.resolve(options.sys.webminCustomPath, '1001.html'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install-file.html')).toString().format(options)
+        fs.readFileSync(path.resolve(__dirname, 'server-install.html')).toString().format(options)
+      );
+
+      fs.writeFileSync(
+        path.resolve(options.sys.webminCustomPath, '1002.cmd'),
+        fs.readFileSync(path.resolve(__dirname, 'server-restart.cmd')).toString().format(options)
+      );
+      fs.writeFileSync(
+        path.resolve(options.sys.webminCustomPath, '1002.html'),
+        fs.readFileSync(path.resolve(__dirname, 'server-restart.html')).toString().format(options)
+      );
+
+      fs.writeFileSync(
+        path.resolve(options.sys.webminCustomPath, '1003.cmd'),
+        fs.readFileSync(path.resolve(__dirname, 'server-status.cmd')).toString().format(options)
+      );
+      fs.writeFileSync(
+        path.resolve(options.sys.webminCustomPath, '1003.html'),
+        fs.readFileSync(path.resolve(__dirname, 'server-status.html')).toString().format(options)
       );
     },
 

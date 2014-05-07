@@ -1,6 +1,6 @@
 xtuple-server install --xt-name $xtName --xt-version $xtVersion --xt-edition $xtEdition $xtDemo $xtQuickstart --xt-maindb $xtMaindb $xtPilot --xt-adminpw $xtAdminpw --nginx-domain $nginxDomain --nginx-inkey $nginxInkey --nginx-incrt $nginxIncrt --nginx-inzip $nginxInzip --pg-slots $pgSlots --pg-capacity $pgCapacity
 New xTuple Deployment (xtuple-server install)
-root 0 0 0 0 1 1800 0 -
+root 0 0 0 1 1 1800 0 text/plain
 xtName:0::0,1:Account Name
 xtVersion:0:{xt.version}:0,1:xTuple App Version
 xtEdition:9:/etc/webmin/xtuple/editions.menu:0,1:xTuple Edition
