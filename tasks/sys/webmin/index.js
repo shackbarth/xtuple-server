@@ -11,6 +11,7 @@
     _ = require('lodash'),
     path = require('path'),
     mkdirp = require('mkdirp').sync,
+    rimraf = require('rimraf').sync,
     exec = require('execSync').exec,
     fs = require('fs');
 
@@ -43,8 +44,9 @@
       if (!fs.existsSync(path.resolve(debFile))) {
         exec('wget https://s3.amazonaws.com/com.xtuple.deploy-assets/'+ debFile);
       }
-      //exec('dpkg --install '+ debFile);
+      exec('dpkg --install '+ debFile);
 
+      webmin.deleteUnusedModules(options);
       webmin.writeConfiguration(options);
       webmin.installCustomCommands(options);
       webmin.installNginxSite(options);
@@ -109,6 +111,36 @@
       options.nginx.enabledSite = path.resolve('/etc/nginx/sites-enabled/webmin-site');
       options.nginx.siteTemplateFile = path.resolve(__dirname, 'webmin-site');
       require('../../nginx').site.writeSiteConfig(options);
+    },
+
+    deleteUnusedModules: function (options) {
+      var mod = '/usr/share/webmin';
+
+      rimraf(path.resolve(mod, 'bind8')):
+      rimraf(path.resolve(mod, 'burner')):
+      rimraf(path.resolve(mod, 'pserver')):
+      rimraf(path.resolve(mod, 'exim')):
+      rimraf(path.resolve(mod, 'fetchmail')):
+      rimraf(path.resolve(mod, 'file')):
+      rimraf(path.resolve(mod, 'grub')):
+      rimraf(path.resolve(mod, 'jabber')):
+      rimraf(path.resolve(mod, 'krb5')):
+      rimraf(path.resolve(mod, 'ldap-client')):
+      rimraf(path.resolve(mod, 'ldap-server')):
+      rimraf(path.resolve(mod, 'ldap-useradmin')):
+      rimraf(path.resolve(mod, 'mysql')):
+      rimraf(path.resolve(mod, 'postfix')):
+      rimraf(path.resolve(mod, 'qmailadmin')):
+      rimraf(path.resolve(mod, 'iscsi-client')):
+      rimraf(path.resolve(mod, 'iscsi-server')):
+      rimraf(path.resolve(mod, 'iscsi-target')):
+      rimraf(path.resolve(mod, 'ajaxterm')):
+      rimraf(path.resolve(mod, 'adsl-client')):
+      rimraf(path.resolve(mod, 'apache')):
+      rimraf(path.resolve(mod, 'htaccess-htpasswd')):
+      rimraf(path.resolve(mod, 'cpan')):
+      rimraf(path.resolve(mod, 'pap')):
+      rimraf(path.resolve(mod, 'ppp-client')):
     }
   });
 
