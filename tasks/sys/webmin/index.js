@@ -21,8 +21,8 @@
     beforeInstall: function (options) {
       mkdirp.sync('/srv/ssl');
 
-      options.nginx.outkey = path.resolve('/srv/ssl/xtremote.key');
-      options.nginx.outcrt = path.resolve('/srv/ssl/xtremote.crt');
+      options.nginx.outkey = path.resolve('/srv/ssl/webmin.key');
+      options.nginx.outcrt = path.resolve('/srv/ssl/webmin.crt');
       options.nginx.domain = 'localhost';
 
       options.sys.etcWebmin = path.resolve('/etc/webmin');
