@@ -21,8 +21,8 @@
     beforeInstall: function (options) {
       mkdirp.sync('/srv/ssl');
 
-      options.nginx.outkey = path.resolve('/srv/ssl/xtremote.key');
-      options.nginx.outcrt = path.resolve('/srv/ssl/xtremote.crt');
+      options.nginx.outkey = path.resolve('/srv/ssl/webmin.key');
+      options.nginx.outcrt = path.resolve('/srv/ssl/webmin.crt');
       options.nginx.domain = 'localhost';
 
       options.sys.etcWebmin = path.resolve('/etc/webmin');
@@ -68,8 +68,6 @@
 
     writeConfiguration: function (options) {
       fs.appendFileSync(options.sys.webminConfigFile, [
-        'webprefix=/_manage',
-        'webprefixnoredir=1',
         'referer=1'
       ].join('\n').trim());
 
