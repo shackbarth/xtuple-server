@@ -17,6 +17,13 @@
 
   _.extend(webmin, lib.task, /** @exports webmin */ {
 
+    options: {
+      webminurl: {
+        optional: '[url path]',
+        description: 'Webmin url path'
+      }
+    },
+
     /** @override */
     beforeInstall: function (options) {
       mkdirp.sync('/srv/ssl');
@@ -55,8 +62,8 @@
 
     /** @override */
     afterTask: function (options) {
-      exec('service nginx reload');
       exec('service webmin restart');
+      exec('service nginx reload');
     },
 
     /** @override */
@@ -64,6 +71,14 @@
       fs.unlinkSync(path.resolve(options.sys.webminXtuplePath, 'editions.menu'));
       fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.cmd'));
       fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.html'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.cmd'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.html'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1003.cmd'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1003.html'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1004.cmd'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1004.html'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1005.cmd'));
+      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1005.html'));
     },
 
     writeConfiguration: function (options) {

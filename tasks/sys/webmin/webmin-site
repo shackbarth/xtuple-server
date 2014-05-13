@@ -15,7 +15,7 @@ server {
   ssl_certificate /srv/ssl/webmin.crt;
   ssl_certificate_key /srv/ssl/webmin.key;
 
-  server_name manage.*;
+  server_name {nginx.domain};
 
   index index.html index.htm;
 
@@ -27,9 +27,9 @@ server {
   ssl_session_cache shared:SSL:60m;
   ssl_session_timeout 60m;
 
-  client_max_body_size 16G;
+  client_max_body_size 32G;
 
-  location / {
+  location /{sys.webminurl} {
     proxy_pass https://webmin/;
     proxy_redirect off;
     proxy_read_timeout 3600s;
