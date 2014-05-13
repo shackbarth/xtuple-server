@@ -9,7 +9,7 @@ it('should write valid sudoers files', function () {
 });
 
 it('should write htpasswd file if not yet created', function () {
-  assert(fs.existsSync('/etc/nginx/.htpasswd-xtuple'));
+  assert(fs.existsSync(options.sys.htpasswdfile), 'htpasswd file was not written');
 });
 
 it('should create user account', function () {
