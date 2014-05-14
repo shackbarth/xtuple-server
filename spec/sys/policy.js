@@ -9,16 +9,10 @@ it('should write valid sudoers files', function () {
 });
 
 it('should write htpasswd file if not yet created', function () {
-  assert(fs.existsSync('/etc/nginx/.htpasswd-xtuple'));
+  assert(fs.existsSync(options.sys.htpasswdfile), 'htpasswd file was not written');
 });
 
 it('should create user account', function () {
   assert.equal(exec('id '+ options.xt.name).code, 0);
 });
 
-it('should write ssh config', function () {
-  var sshd_config = fs.readFileSync('/etc/ssh/sshd_config').toString();
-
-  assert.match(sshd_config, /PermitRootLogin no/);
-  //assert.match(sshd_config, /xtuser/);
-});

@@ -12,30 +12,29 @@ server {
 server {
   listen 443 ssl;
   ssl on;
-  ssl_certificate /srv/ssl/xtremote.crt;
-  ssl_certificate_key /srv/ssl/xtremote.key;
+  ssl_certificate /srv/ssl/webmin.crt;
+  ssl_certificate_key /srv/ssl/webmin.key;
 
-  server_name xtremote.*;
+  server_name {nginx.domain};
 
   index index.html index.htm;
 
-  access_log /var/log/nginx/xtremote.access.log;
-  error_log /var/log/nginx/xtremote.error.log;
+  access_log /var/log/nginx/webmin.access.log;
+  error_log /var/log/nginx/webmin.error.log;
 
   ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers RC4:HIGH:!aNULL:!MD5;
   ssl_session_cache shared:SSL:60m;
   ssl_session_timeout 60m;
 
-  client_max_body_size 16G;
+  client_max_body_size 32G;
 
-  location /_manage/ {
+  location /{sys.webminurl} {
     proxy_pass https://webmin/;
-    proxy_redirect https://webmin/ /_manage/;
+    proxy_redirect off;
     proxy_read_timeout 3600s;
     proxy_set_header X-NginX-Proxy true;
     proxy_set_header Host $host;
-    proxy_set_header X-Frame-Options SAMEORIGIN;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
