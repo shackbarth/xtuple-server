@@ -5,7 +5,7 @@ var assert = require('chai').assert,
   options = global.options;
 
 it('should install pm2 binaries', function () {
-  assert.equal(exec('which pm2').code, 0, 'pm2 binary not properly installed');
+  assert.equal(exec('which xtupled').code, 0, 'pm2 binary not properly installed');
 });
 
 it.skip('all pm2 services accounted for (server, healthfeed, snapshotmgr)', function () {
