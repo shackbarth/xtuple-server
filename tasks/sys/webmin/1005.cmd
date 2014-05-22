@@ -1,5 +1,5 @@
 xtuple-server restore-database --xt-name $xtName --xt-version $xtVersion --pg-infile $pgInfile --pg-dbname $pgDbname $pgPilot
-Backup Database
+Restore Database
 root 0 0 0 1 1 3600 0 text/plain
 xtName:0::0,1:Account Name
 xtVersion:0:4.4.1:0,1:xTuple App Version
