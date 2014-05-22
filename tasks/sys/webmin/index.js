@@ -70,16 +70,8 @@
     /** @override */
     uninstall: function (options) {
       fs.unlinkSync(path.resolve(options.sys.webminXtuplePath, 'editions.menu'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.cmd'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1001.html'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.cmd'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1002.html'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1003.cmd'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1003.html'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1004.cmd'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1004.html'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1005.cmd'));
-      fs.unlinkSync(path.resolve(options.sys.webminCustomPath, '1005.html'));
+      rimraf.sync(options.sys.webminCustomPath);
+      mkdirp.sync(options.sys.webminCustomPath);
     },
 
     writeConfiguration: function (options) {
@@ -109,48 +101,8 @@
     },
 
     installCustomCommands: function (options) {
-      options.xt.version = require('../../../package').version;
-
-      fs.writeFileSync(
-        path.resolve(options.sys.webminXtuplePath, 'editions.menu'),
-        fs.readFileSync(path.resolve(__dirname, 'editions.menu'))
-      );
-
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1001.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install.cmd')).toString().format(options)
-      );
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1001.html'),
-        fs.readFileSync(path.resolve(__dirname, 'server-install.html')).toString().format(options)
-      );
-
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1002.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'service-restart.cmd')).toString().format(options)
-      );
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1002.html'),
-        fs.readFileSync(path.resolve(__dirname, 'service-restart.html')).toString().format(options)
-      );
-
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1003.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'service-status.cmd')).toString().format(options)
-      );
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1003.html'),
-        fs.readFileSync(path.resolve(__dirname, 'service-status.html')).toString().format(options)
-      );
-
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1004.cmd'),
-        fs.readFileSync(path.resolve(__dirname, 'server-uninstall.cmd')).toString().format(options)
-      );
-      fs.writeFileSync(
-        path.resolve(options.sys.webminCustomPath, '1004.html'),
-        fs.readFileSync(path.resolve(__dirname, 'server-uninstall.html')).toString().format(options)
-      );
+      exec('cp ' + path.resolve(__dirname) + '/*.cmd ' + options.sys.webminCustomPath);
+      exec('cp ' + path.resolve(__dirname) + '/*.html ' + options.sys.webminCustomPath);
     },
 
     installNginxSite: function (options) {
