@@ -2,7 +2,7 @@ xtuple-server install --xt-name $xtName --xt-version $xtVersion --xt-edition $xt
 New xTuple Deployment (xtuple-server install)
 root 0 0 0 1 1 3600 0 text/plain
 xtName:0::0,1:Account Name
-xtVersion:0:{xt.version}:0,1:xTuple App Version
+xtVersion:0:4.4.1:0,1:xTuple App Version
 xtEdition:9:/etc/webmin/xtuple/editions.menu:0,1:xTuple Edition
 xtDemo:7:--xt-demo:0,0:Install Demo?
 xtQuickstart:7:--xt-quickstart:0,0:Install Quickstart?
