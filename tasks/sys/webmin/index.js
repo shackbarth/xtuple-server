@@ -104,6 +104,7 @@
     installCustomCommands: function (options) {
       exec('cp ' + path.resolve(__dirname) + '/*.cmd ' + options.sys.webminCustomPath);
       exec('cp ' + path.resolve(__dirname) + '/*.html ' + options.sys.webminCustomPath);
+      exec('cp ' + path.resolve(__dirname, 'editions.menu') + ' ' + options.sys.webminXtuplePath + '/editions.menu');
     },
 
     installNginxSite: function (options) {
