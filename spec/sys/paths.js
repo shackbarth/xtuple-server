@@ -8,7 +8,7 @@ it('should create configdir', function () {
   assert.isTrue(fs.existsSync(options.xt.configdir));
 });
 
-it('should create homedir', function () {
+it('should create user homedir', function () {
   assert.isTrue(fs.existsSync('/usr/local/xtmocha'));
 });
 
