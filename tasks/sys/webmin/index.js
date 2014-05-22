@@ -78,7 +78,7 @@
     writeConfiguration: function (options) {
       fs.appendFileSync(options.sys.webminConfigFile, [
         'referer=1',
-        'webprefix=/' + options.sys.webminurl,
+        'webprefix=' + (options.sys.webminurl || ''),
         'webprefixnoredir=1'
       ].join('\n').trim());
 
