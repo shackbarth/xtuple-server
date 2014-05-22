@@ -69,6 +69,7 @@
 
     /** @override */
     uninstall: function (options) {
+      exec('service webmin stop');
       fs.unlinkSync(path.resolve(options.sys.webminXtuplePath, 'editions.menu'));
       rimraf.sync(options.sys.webminCustomPath);
       mkdirp.sync(options.sys.webminCustomPath);
