@@ -34,6 +34,7 @@
 
       options.sys.etcWebmin = path.resolve('/etc/webmin');
       options.sys.webminConfigFile = path.resolve(options.sys.etcWebmin, 'config');
+      options.sys.webminMiniservConfigFile = path.resolve(options.sys.etcWebmin, 'miniserv.conf');
       options.sys.webminCustomPath = path.resolve(options.sys.etcWebmin, 'custom');
       options.sys.webminCustomConfigFile = path.resolve(options.sys.webminCustomPath, 'config');
       options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
@@ -83,7 +84,16 @@
 
     writeConfiguration: function (options) {
       fs.appendFileSync(options.sys.webminConfigFile, [
-        'referer=1'
+        'referer=1',
+        'webprefix=/' + options.sys.webminurl,
+        'webprefixnoredir=1'
+      ].join('\n').trim());
+
+      fs.appendFileSync(options.sys.webminMiniservConfigFile, [
+        'bind=127.0.0.1',
+        'sockets=127.0.0.1:10000',
+        'ssl=0',
+        'ssl_redirect=0'
       ].join('\n').trim());
 
       fs.writeFileSync(options.sys.webminCustomConfigFile, [

@@ -4,13 +4,13 @@ upstream webmin {
 
 # auto redirect http -> https
 server {
-  listen 80;
+  listen 80 default_server;
   return 301 https://$host$request_uri;
 }
 
-# proxy SSL requests to the upstream node server
+# proxy SSL requests to the upstream webmin server
 server {
-  listen 443 ssl;
+  listen 443 default_server ssl;
   ssl on;
   ssl_certificate /srv/ssl/webmin.crt;
   ssl_certificate_key /srv/ssl/webmin.key;
