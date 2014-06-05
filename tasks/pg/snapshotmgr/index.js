@@ -1,4 +1,4 @@
-var lib = require('../../lib'),
+var lib = require('xtuple-server-lib'),
   fs = require('fs'),
   os = require('os'),
   cron = require('cron-parser'),
@@ -9,7 +9,7 @@ var lib = require('../../lib'),
 /**
  * Schedule backups of a postgres cluster.
  */
-_.extend(exports, lib.task, /** @exports snapshotmgr */ {
+_.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
 
   options: {
     enablesnap: {
