@@ -12,6 +12,14 @@ _.extend(exports, devPaths, /** @exports xtuple-server-sys-paths */ {
 
   prefix: '/',
 
+  etcXtuple: path.resolve(prefix, 'etc/xtuple'),
+  usrLocal: path.resolve(prefix, 'usr/local'),
+  usrLocalXtuple: path.resolve(prefix, 'usr/local/xtuple'),
+  usrSbin: path.resolve(prefix, 'usr/sbin'),
+  varLog: path.resolve(prefix, 'var/log'),
+  varLibXtuple: path.resolve(prefix, 'var/lib/xtuple'),
+  varRun: path.resolve(prefix, 'var/run'),
+
   /** @override */
   beforeInstall: function (options) {
     var version = options.xt.version,
