@@ -10,13 +10,7 @@ var lib = require('xtuple-server-lib'),
  */
 _.extend(exports, devPaths, /** @exports xtuple-server-sys-paths */ {
 
-  etcXtuple: '/etc/xtuple',
-  usrLocal: '/usr/local',
-  usrLocalXtuple: '/usr/local/xtuple',
-  usrSbin: '/usr/sbin',
-  varLog: '/var/log',
-  varLibXtuple: '/var/lib/xtuple',
-  varRun: '/var/run/',
+  prefix: '/',
 
   /** @override */
   beforeInstall: function (options) {
