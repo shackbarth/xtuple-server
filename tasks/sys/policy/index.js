@@ -1,4 +1,5 @@
 var lib = require('xtuple-server-lib'),
+  devPolicy = require('xutple-server-dev-policy'),
   exec = require('execSync').exec,
   _ = require('lodash'),
   path = require('path'),
@@ -10,48 +11,18 @@ var lib = require('xtuple-server-lib'),
 /**
  * Setup machine access policies.
  */
-_.extend(exports, lib.task, /** @exports policy */ {
-
-  options: {
-    mode: {
-      optional: '[mode]',
-      description: 'System mode {dedicated|cloud|other}',
-      value: 'other'
-    }
-  },
-
-  /** @override */
-  beforeInstall: function (options) {
-    var userBlacklist = [
-      'xtuple',
-      'xtadmin',
-      'xtremote',
-      'root',
-      'admin',
-      'vagrant',
-      'postgres',
-      'node'
-    ];
-    if (_.contains(userBlacklist, options.xt.name)) {
-      throw new Error('Name of xTuple instance is reserved for system use: '+ options.xt.name +
-        '. Please provide a different name.');
-    }
-  },
+_.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   beforeTask: function (options) {
-    // if customer appears new, that is they've provided no main database,
-    // snapshot to restore from, or admin password, generate a admin password
-    if (!_.isEmpty(options.xt.name) && !options.xt.adminpw && !options.xt.maindb) {
-      options.xt.adminpw = exports.getPassword();
-    }
+    devPolicy.beforeTask(options);
 
     if (options.planName === 'setup') {
-      options.sys.policy.remotePassword = exports.getPassword();
+      options.sys.policy.remotePassword = lib.util.getPassword();
     }
 
     if (!_.isEmpty(options.xt.name) && exec('id -u {xt.name}'.format(options)).code !== 0) {
-      options.sys.policy.userPassword = exports.getPassword();
+      options.sys.policy.userPassword = lib.util.getPassword();
     }
   },
 
@@ -86,18 +57,6 @@ _.extend(exports, lib.task, /** @exports policy */ {
     }
 
     exec('service ssh reload');
-  },
-
-  getPassword: function () {
-    exec('sleep 1');
-    var pass = exec('openssl rand 6 | base64');
-      
-    if (pass.code === 0 && !_.isEmpty(pass.stdout)) {
-      return pass.stdout.trim().replace(/\W/g, '');
-    }
-    else {
-      throw new Error('Failed to generate password: '+ JSON.stringify(pass));
-    }
   },
 
   /** @private */
