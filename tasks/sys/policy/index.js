@@ -1,9 +1,8 @@
-var lib = require('../../lib'),
-  fs = require('fs'),
-  rimraf = require('rimraf'),
+var lib = require('xtuple-server-lib'),
   exec = require('execSync').exec,
-  path = require('path'),
   _ = require('lodash'),
+  path = require('path'),
+  fs = require('fs'),
   global_policy_filename = 'XT00-xtuple-global-policy',
   user_policy_filename = 'XT10-xtuple-user-policy',
   sudoers_d = path.resolve('/etc/sudoers.d');
@@ -30,7 +29,8 @@ _.extend(exports, lib.task, /** @exports policy */ {
       'root',
       'admin',
       'vagrant',
-      'postgres'
+      'postgres',
+      'node'
     ];
     if (_.contains(userBlacklist, options.xt.name)) {
       throw new Error('Name of xTuple instance is reserved for system use: '+ options.xt.name +

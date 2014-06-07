@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "xtuple-server-sys-cups",
+  "name": "xtuple-server-sys-policy",
   "version": "0.9.0",
-  "description": "xTuple Server Task [sys.cups]: printing support",
+  "description": "xTuple Server Task [sys.policy]: setup system policy",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha spec/ -R spec"
@@ -28,10 +28,11 @@
   },
   "homepage": "https://github.com/xtuple/xtuple-server",
   "dependencies": {
-    "xtuple-server-lib": "^0.9.0",
     "execSync": "^1.0.1-pre",
     "lodash": "^2.4.1",
-    "string-format": "^0.2.1"
+    "rimraf": "^2.2.8",
+    "string-format": "^0.2.1",
+    "xtuple-server-lib": "^0.9.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",
