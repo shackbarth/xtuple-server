@@ -3,8 +3,8 @@ var assert = require('chai').assert,
   exec = require('execSync').exec,
   fs = require('fs'),
   path = require('path'),
-  lib = require('../../lib'),
-  snap = require('../../tasks/pg/snapshotmgr'),
+  lib = require('xtuple-server-lib'),
+  snap = require('xtuple-server-pg-snapshotmgr'),
   options = global.options;
 
 describe('cron', function () {
