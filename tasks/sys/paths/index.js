@@ -4,21 +4,20 @@ var lib = require('xtuple-server-lib'),
   rimraf = require('rimraf'),
   path = require('path'),
   _ = require('lodash');
+  prefix: '/',
 
 /**
  * Sets up system file and directory paths
  */
 _.extend(exports, devPaths, /** @exports xtuple-server-sys-paths */ {
 
-  prefix: '/',
-
-  etcXtuple: path.resolve(exports.prefix, 'etc/xtuple'),
-  usrLocal: path.resolve(exports.prefix, 'usr/local'),
-  usrLocalXtuple: path.resolve(exports.prefix, 'usr/local/xtuple'),
-  usrSbin: path.resolve(exports.prefix, 'usr/sbin'),
-  varLog: path.resolve(exports.prefix, 'var/log'),
-  varLibXtuple: path.resolve(exports.prefix, 'var/lib/xtuple'),
-  varRun: path.resolve(exports.prefix, 'var/run'),
+  etcXtuple: path.resolve(prefix, 'etc/xtuple'),
+  usrLocal: path.resolve(prefix, 'usr/local'),
+  usrLocalXtuple: path.resolve(prefix, 'usr/local/xtuple'),
+  usrSbin: path.resolve(prefix, 'usr/sbin'),
+  varLog: path.resolve(prefix, 'var/log'),
+  varLibXtuple: path.resolve(prefix, 'var/lib/xtuple'),
+  varRun: path.resolve(prefix, 'var/run'),
 
   /** @override */
   beforeInstall: function (options) {
