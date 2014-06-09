@@ -1,4 +1,4 @@
-var lib = require('../../lib'),
+var lib = require('xtuple-server-lib'),
   format = require('string-format'),
   _ = require('lodash'),
   exec = require('execSync').exec,

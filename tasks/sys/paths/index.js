@@ -3,8 +3,8 @@ var lib = require('xtuple-server-lib'),
   exec = require('execSync').exec,
   rimraf = require('rimraf'),
   path = require('path'),
-  _ = require('lodash');
-  prefix: '/',
+  _ = require('lodash'),
+  prefix = '/';
 
 /**
  * Sets up system file and directory paths
@@ -46,7 +46,7 @@ _.extend(exports, devPaths, /** @exports xtuple-server-sys-paths */ {
     options.xt.socketdir = path.resolve(exports.varRun, 'postgresql');
     options.xt.rundir = path.resolve(exports.varRun, 'xtuple', version, name);
     options.xt.statedir = path.resolve(exports.varLibXtuple, version, name);
-    options.sys.sbindir = path.resolve(usrSbin, 'xtuple/', version, name);
+    options.sys.sbindir = path.resolve(exports.usrSbin, 'xtuple/', version, name);
     options.sys.htpasswdfile = path.resolve('/etc/nginx/.htpasswd-xtuple');
 
     // repositories

@@ -1,7 +1,8 @@
 {
-  "name": "xtuple-server-lib",
-  "version": "0.9.8",
-  "description": "xTuple Server common lib",
+  "private": true,
+  "name": "xtuple-server-sys-ssh",
+  "version": "0.9.0",
+  "description": "xTuple Server Task [sys.ssh]: configure ssh access",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha spec/ -R spec"
@@ -18,7 +19,6 @@
     "software",
     "postgres",
     "postgresql",
-    "config",
     "tuple"
   ],
   "author": "xTuple",
@@ -28,16 +28,13 @@
   },
   "homepage": "https://github.com/xtuple/xtuple-server",
   "dependencies": {
+    "xtuple-server-lib": "^0.9.0",
     "execSync": "^1.0.1-pre",
     "lodash": "^2.4.1",
-    "moment": "^2.6.0",
-    "q": "^1.0.1",
-    "requireindex": "^1.1.0",
-    "semver": "^2.3.0",
     "string-format": "^0.2.1"
   },
   "devDependencies": {
     "chai": "^1.9.1",
-    "mocha": "^1.20.1"
+    "mocha": "^1.20.0"
   }
 }

@@ -1,5 +1,5 @@
 var lib = require('xtuple-server-lib'),
-  devPolicy = require('xutple-server-dev-policy'),
+  devPolicy = require('xtuple-server-dev-policy'),
   exec = require('execSync').exec,
   _ = require('lodash'),
   path = require('path'),
