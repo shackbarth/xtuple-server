@@ -13,7 +13,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-cups */ {
 
   /** @override */
   executeTask: function (options) {
-    var cups_conf = fs.readFileSync(cups.conf_path).toString(),
+    var cups_conf = fs.readFileSync(exports.conf_path).toString(),
       new_conf = cups_conf.replace(/^Browsing Off/g, 'Browsing On');
 
     // write backup
