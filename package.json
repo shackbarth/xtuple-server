@@ -4,12 +4,11 @@
   "version": "0.9.0",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
-    "forever-monitor": "^1.2.3",
-    "nde": "^0.1.15",
+    "forever": "^0.11.1",
     "xtuple-server-sys-paths": "^0.9.0",
     "xtuple-server-sys-policy": "^0.9.0",
     "xtuple-server-sys-webmin": "^0.9.0",
-    "xtuple-server-sys-ssl": "^0.9.0",
+    "xtuple-server-sys-ssh": "^0.9.0",
     "xtuple-server-sys-service": "^0.9.0",
     "xtuple-server-sys-cups": "^0.9.0",
     "xtuple-server-pg-tuner": "^0.9.0",
@@ -17,6 +16,10 @@
   },
   "peerDependencies": {
     "xtuple-server": "^0.9.0"
+  },
+  "devDependencies": {
+    "nde": "^0.1.15",
+    "xtuple-server-lib": "^0.9.0"
   },
   "files": [
     "plans/",
@@ -58,7 +61,6 @@
     "url": "git://github.com/xtuple/xtuple-server-commercial.git"
   },
   "author": "Travis Webb <travis@xtuple.com>",
-  "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/xtuple/xtuple-server-commercial/issues"
   }
