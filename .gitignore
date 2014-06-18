@@ -1,0 +1,11 @@
+*.sw*
+node_modules
+*.log
+*.key*
+*.crt*
+*.backup
+*.zip*
+.pm2
+*.tar.gz*
+*.deb
+*.exec

@@ -4,9 +4,8 @@
   "version": "0.9.0",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
-    "forever": "^0.11.1"
-  }
-  "optionalDependencies": {
+    "forever-monitor": "^1.2.3",
+    "nde": "^0.1.15",
     "xtuple-server-sys-paths": "^0.9.0",
     "xtuple-server-sys-policy": "^0.9.0",
     "xtuple-server-sys-webmin": "^0.9.0",
@@ -48,8 +47,12 @@
   "engines": {
     "node": ">=0.10.26 <0.11"
   },
-  "cpu": [ "!ia32" ],
-  "os": [ "linux" ],
+  "cpu": [
+    "!ia32"
+  ],
+  "os": [
+    "linux"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/xtuple/xtuple-server-commercial.git"
