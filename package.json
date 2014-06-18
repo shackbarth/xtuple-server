@@ -1,0 +1,62 @@
+{
+  "private": true,
+  "name": "xtuple-server-commercial",
+  "version": "0.9.0",
+  "description": "xTuple Server Commercial Package",
+  "dependencies": {
+    "forever": "^0.11.1"
+  }
+  "optionalDependencies": {
+    "xtuple-server-sys-paths": "^0.9.0",
+    "xtuple-server-sys-policy": "^0.9.0",
+    "xtuple-server-sys-webmin": "^0.9.0",
+    "xtuple-server-sys-ssl": "^0.9.0",
+    "xtuple-server-sys-service": "^0.9.0",
+    "xtuple-server-sys-cups": "^0.9.0",
+    "xtuple-server-pg-tuner": "^0.9.0",
+    "xtuple-server-pg-snapshotmgr": "^0.9.0"
+  },
+  "peerDependencies": {
+    "xtuple-server": "^0.9.0"
+  },
+  "files": [
+    "plans/",
+    "spec/"
+  ],
+  "keywords": [
+    "xtuple",
+    "server",
+    "erp",
+    "business",
+    "database",
+    "platform",
+    "database",
+    "api",
+    "crm",
+    "inventory",
+    "distribution",
+    "manufacturing",
+    "enterprise"
+  ],
+  "scripts": {
+    "test": "./node_modules/.bin/mocha spec -R spec -b"
+  },
+  "bin": {
+    "xtupled": "node_modules/.bin/forever"
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=0.10.26 <0.11"
+  },
+  "cpu": [ "!ia32" ],
+  "os": [ "linux" ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xtuple/xtuple-server-commercial.git"
+  },
+  "author": "Travis Webb <travis@xtuple.com>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/xtuple/xtuple-server-commercial/issues"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Install xTuple Live Instance",
+  "plan": [
+    {
+      "name": "sys",
+      "tasks": [ "paths", "policy" ]
+    },
+    {
+      "name": "pg",
+      "tasks": [ "cluster" ]
+    },
+    {
+      "name": "nginx",
+      "tasks": [ "ssl", "site", "hosts" ]
+    },
+    {
+      "name": "pg",
+      "tasks": [ "hba", "tuner", "config", "snapshotmgr" ]
+    },
+    {
+      "name": "xt",
+      "tasks": [ "install", "test", "config", "database" ]
+    },
+    {
+      "name": "sys",
+      "tasks": [ "cups", "ssh", "service", "report" ]
+    }
+  ]
+}

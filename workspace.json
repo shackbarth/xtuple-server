@@ -1,0 +1,12 @@
+{
+  "links": {
+    "xtuple-server-sys-cups": "tasks/sys/cups",
+    "xtuple-server-sys-paths": "tasks/sys/paths",
+    "xtuple-server-sys-policy": "tasks/sys/policy",
+    "xtuple-server-sys-service": "tasks/sys/service",
+    "xtuple-server-sys-ssh": "tasks/sys/ssh",
+    "xtuple-server-sys-webmin": "tasks/sys/webmin",
+    "xtuple-server-pg-tuner": "tasks/pg/tuner",
+    "xtuple-server-pg-snapshotmgr": "tasks/pg/snapshotmgr"
+  }
+}
