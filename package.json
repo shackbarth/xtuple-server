@@ -20,6 +20,7 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "execSync": "^1.0.1-pre",
+    "latest-version": "^0.2.0",
     "lodash": "^2.4.1",
     "mocha": "^1.20.1",
     "nde": "^0.1.15",
@@ -49,7 +50,7 @@
     "enterprise"
   ],
   "scripts": {
-    "test": "mocha -R spec spec/",
+    "test": "mocha -R spec spec/ -b",
     "postupdate": "node link-core.js"
   },
   "bin": {

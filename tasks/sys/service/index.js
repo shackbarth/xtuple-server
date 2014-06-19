@@ -105,6 +105,7 @@ _.extend(exports, lib.task, /** @exports service */ {
       errFile: path.resolve(options.xt.logdir, 'web-server-error.log'),
       outFile: path.resolve(options.xt.logdir, 'web-server-access.log'),
     });
+  }
     /*
     // link the executable
     fs.symlinkSync(

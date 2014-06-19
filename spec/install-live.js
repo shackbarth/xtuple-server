@@ -1,14 +1,15 @@
 var _ = require('lodash'),
   path = require('path'),
-  planner = require('xtuple-server-spec').planner;
+  planner = require('xtuple-server/spec').planner;
 
 describe('install-live', function () {
+  this.planObject = require('../plans')['install-live'];
   this.options = {
     planName: 'install-live',
     requiresRoot: true,
     xt: {
       name: 'xtservtest',
-      version: require(path.resolve(process.cwd(), 'node_modules', 'xtuple', 'package')).version,
+      version: global.xtupleVersion,
       demo: true
     },
     pg: {
@@ -18,4 +19,3 @@ describe('install-live', function () {
   };
   planner.describe(this);
 });
-
