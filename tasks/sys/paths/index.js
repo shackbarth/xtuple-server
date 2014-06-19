@@ -54,7 +54,6 @@ _.extend(exports, devPaths, /** @exports xtuple-server-sys-paths */ {
     options.pg.snapshotdir = path.resolve(exports.varLibXtuple, options.xt.version, options.xt.name, 'snapshots');
 
     process.env.HOME = options.xt.homedir;
-    process.chdir(options.xt.homedir);
   },
 
   /** @override */
