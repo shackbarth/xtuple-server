@@ -1,15 +1,16 @@
 var _ = require('lodash'),
   path = require('path'),
-  planner = require('xtuple-server/spec').planner;
+  planner = require('xtuple-server/spec/planner');
 
 describe('uninstall-live', function () {
   this.planObject = require('../plans')['uninstall-live'];
   this.options = {
     planName: 'uninstall-live',
+    plan: this.planObject.plan,
     requiresRoot: true,
     xt: {
       name: 'xtservtest',
-      version: global.xtupleVersion,
+      version: process.env.XT_VERSION,
       demo: true
     },
     pg: {

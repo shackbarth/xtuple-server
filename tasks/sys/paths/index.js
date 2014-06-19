@@ -35,8 +35,6 @@ _.extend(exports, devPaths, /** @exports xtuple-server-sys-paths */ {
 
     // shared config (per account)
     options.xt.homedir = path.resolve(exports.usrLocalXtuple);
-    //options.xt.pm2dir = path.resolve(options.xt.homedir, '.pm2');
-    //options.xt.userPm2dir = path.resolve(options.xt.userhome, '.pm2');
 
     // other system paths
     options.xt.logdir = path.resolve(exports.varLog, 'xtuple', version, name);
@@ -62,8 +60,6 @@ _.extend(exports, devPaths, /** @exports xtuple-server-sys-paths */ {
   /** @override */
   executeTask: function (options) {
     exec('mkdir -p ' + options.xt.userhome);
-    //exec('mkdir -p ' + options.xt.pm2dir);
-    exec('mkdir -p ' + options.xt.userPm2dir);
     exec('mkdir -p ' + options.pg.snapshotdir);
 
     exec('mkdir -p ' + options.xt.configdir);
