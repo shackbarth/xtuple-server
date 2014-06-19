@@ -29,7 +29,8 @@
   "files": [
     "plans/",
     "spec/",
-    "index.js"
+    "index.js",
+    "link-core.js"
   ],
   "keywords": [
     "xtuple",
