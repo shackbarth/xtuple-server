@@ -18,7 +18,9 @@
     "xtuple-server": "^0.9.0"
   },
   "devDependencies": {
+    "lodash": "^2.4.1",
     "nde": "^0.1.15",
+    "npm": "^1.4.16",
     "xtuple-server-lib": "^0.9.0"
   },
   "files": [
@@ -41,7 +43,7 @@
     "enterprise"
   ],
   "scripts": {
-    "test": "mocha spec -R spec"
+    "test": "mocha tasks/**/spec/*.js -R spec"
   },
   "bin": {
     "xtupled": "node_modules/.bin/forever"

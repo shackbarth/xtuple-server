@@ -37,7 +37,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
     cron.parseExpressionSync(options.pg.snapschedule);
     mkdirp.sync(options.pg.snapshotdir);
     exec(('chown {xt.name}:{xt.name} '+ options.pg.snapshotdir).format(options));
-
   },
 
   /** @override */
