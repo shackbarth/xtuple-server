@@ -9,3 +9,4 @@ node_modules
 *.tar.gz*
 *.deb
 *.exec
+plans/*.json

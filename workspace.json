@@ -8,5 +8,9 @@
     "xtuple-server-sys-webmin": "tasks/sys/webmin",
     "xtuple-server-pg-tuner": "tasks/pg/tuner",
     "xtuple-server-pg-snapshotmgr": "tasks/pg/snapshotmgr"
+  },
+
+  "linkExports": {
+    "plans/*.json": "xtuple-server/plans"
   }
 }
