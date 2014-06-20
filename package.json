@@ -70,7 +70,7 @@
     "plan-install": "node link-core.js"
   },
   "bin": {
-    "xtupled": "tasks/sys/service/cli.js"
+    "xtupled": "node_modules/xtuple-server-sys-service/cli.js"
   },
   "preferGlobal": true,
   "engines": {
