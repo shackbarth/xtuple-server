@@ -66,7 +66,7 @@
   "scripts": {
     "pretest": "XT_VERSION=4.5.0 mocha -R spec spec/uninstall-live.js -b",
     "test": "XT_VERSION=4.5.0 mocha -R spec spec/ -b",
-    "plan-install": "link-core.js"
+    "plan-install": "node link-core.js"
   },
   "preferGlobal": true,
   "engines": {
