@@ -25,3 +25,5 @@ after_failure:
   - id xtservtest
   - id postgres
   - pg_lsclusters
+  - ls -l plans
+  - ls -l /usr/local/lib/node_modules/xtuple-server/plans
