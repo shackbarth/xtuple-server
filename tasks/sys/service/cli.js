@@ -99,5 +99,7 @@ program
     });
   });
 
-forever.load(require('/usr/local/xtuple/.forever/config'));
-program.parse(process.argv);
+if (require.main === module) {
+  forever.load(require('/usr/local/xtuple/.forever/config'));
+  program.parse(process.argv);
+}
