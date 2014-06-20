@@ -12,7 +12,8 @@
     },
     {
       "name": "nginx",
-      "tasks": [ "ssl", "site", "hosts" ]
+      "tasks": [ "site", "ssl" ],
+      "options": { "execute": false }
     },
     {
       "name": "sys",
