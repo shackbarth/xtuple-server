@@ -55,8 +55,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
     if (visudo_cmd.code !== 0) {
       throw new Error(JSON.stringify(visudo_cmd, null, 2));
     }
-
-    exec('service ssh reload');
   },
 
   /** @private */
@@ -133,7 +131,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
         'chmod -R u=rwx,g=wx {pg.logdir}'.format(options),
         'chmod -R u=rwx,g-rwx {xt.statedir}'.format(options),
         'chmod -R g=rx,u=wrx,o-rwx {xt.ssldir}'.format(options),
-
         'chmod -R g=rwx,u=wrx,o-rw {xt.configdir}'.format(options)
       ];
 

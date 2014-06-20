@@ -5,8 +5,6 @@ node_modules
 *.crt*
 *.backup
 *.zip*
-.pm2
 *.tar.gz*
 *.deb
 *.exec
-plans/*
