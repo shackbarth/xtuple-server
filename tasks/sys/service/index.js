@@ -30,6 +30,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   afterInstall: function (options) {
     var server = 'node-datasource/main.js';
     forever.startDaemon(server, require(path.resolve(options.xt.processdir, 'web-server')));
+    console.dir(require(path.resolve(options.xt.processdir, 'web-server')));
   },
 
   /** @override */

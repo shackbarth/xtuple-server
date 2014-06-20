@@ -19,12 +19,8 @@ after_failure:
   - env
   - cat npm-debug.log
   - cat bootstrap.log
-  - cat install.log
-  - sudo stat /var/run/postgresql
-  - sudo ls -la /var/run/postgresql
   - id xtservtest
   - id postgres
   - pg_lsclusters
-  - ls -l plans
-  - ls -l /usr/local/lib/node_modules/xtuple-server/plans
-  - ls -la
+  - ls -l /etc/xtuple/4.5.0/xtservtest/processes
+  - cat /etc/xtuple/4.5.0/xtservtest/processes/web-server.json
