@@ -109,14 +109,14 @@
 
     installNginxSite: function (options) {
       if (!fs.existsSync(options.nginx.outcrt)) {
-        require('../../nginx').ssl.generate(options);
+        require('xtuple-server-nginx-ssl').generate(options);
       }
 
       // write site file
       options.nginx.availableSite = path.resolve('/etc/nginx/sites-available/webmin-site');
       options.nginx.enabledSite = path.resolve('/etc/nginx/sites-enabled/webmin-site');
       options.nginx.siteTemplateFile = path.resolve(__dirname, 'webmin-site');
-      require('../../nginx').site.writeSiteConfig(options);
+      require('xtuple-server-nginx-site').writeSiteConfig(options);
     },
 
     deleteUnusedModules: function (options) {
