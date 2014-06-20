@@ -1,19 +1,19 @@
 var lib = require('xtuple-server-lib'),
-  format = require('string-format'),
   _ = require('lodash'),
   exec = require('execSync').exec,
-  forever = require('forever-monitor'),
+  mkdirp = require('mkdirp'),
+  cp = require('cp'),
+  forever = require('forever'),
   fs = require('fs'),
   path = require('path');
 
-/**
- * Create a process manager service
- */
-_.extend(exports, lib.task, /** @exports service */ {
+_.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   beforeInstall: function (options) {
     options.sys.initd = path.resolve('/etc/init.d/xtuple');
+    options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
+    mkdirp.sync(options.xt.processdir);
   },
 
   /** @override */
@@ -33,13 +33,14 @@ _.extend(exports, lib.task, /** @exports service */ {
     }
   },
 
+  afterInstall: function (options) {
+    var server = 'node-datasource/main.js';
+    forever.startDaemon(server, path.resolve(options.xt.processdir, 'web-server.json'));
+  },
+
   /** @override */
   uninstall: function (options) {
-    fs.unlinkSync(path.resolve(options.sys.sbindir, 'main.js'));
-    /*
-    exec('sudo -Ei HOME={xt.userhome} xtupled delete {sys.pm2.configfile}'.format(options));
-    exec('sudo -Ei HOME={xt.userhome} xtupled dump'.format(options));
-    */
+    forever.cleanUp();
   },
 
   /**
@@ -49,18 +50,17 @@ _.extend(exports, lib.task, /** @exports service */ {
     if (fs.existsSync(options.sys.initd)) {
       exec('update-rc.d -f xtuple remove');
     }
-    /*
-    exec('chmod a+x {xt.userhome}'.format(options));
-    exec('chmod a+x {xt.userhome}/{xt.version}'.format(options));
-    exec('chmod a+x {xt.usersrc}'.format(options));
-    exec('chmod a+x {xt.usersrc}/node-datasource'.format(options));
 
+    mkdirp.sync(path.resolve(options.xt.homedir, '.forever'));
+    fs.writeFileSync(
+      path.resolve(options.xt.homedir, '.forever', 'config.json'),
+      JSON.stringify(exports.createForeverConfig(options), null, 2)
+    );
 
-    // create upstart service "xtuple"
-    exec('cp {sys.pm2.initscript} {sys.initd}'.format(options));
+    cp.sync(path.resolve(__dirname, 'service.sh'), options.sys.initd);
+
+    // create upstart service 'xtuple'
     exec('update-rc.d xtuple defaults');
-    exec('sudo -Ei HOME={xt.userhome} xtupled kill'.format(options));
-    */
   },
 
   /**
@@ -72,16 +72,20 @@ _.extend(exports, lib.task, /** @exports service */ {
       path.resolve(options.sys.sbindir, 'main.js')
     );
 
-    forever.start('main.js', {
+    fs.writeFileSync(path.resolve(options.xt.processdir, 'web-server.json'), JSON.stringify({
       uid: 'web-server-' + options.pg.cluster.name,
 
       // invocation attributes
+      command: 'sudo -u '+ options.xt.name + ' node',
+      script: 'node-datasource/main.js',
       options: [
         '-c', options.xt.configfile
       ],
-      sourceDir: options.sys.sbindir,
-      pidFile: path.resolve(options.xt.rundir, 'web-server.pid'),
+      root: options.xt.homedir,
+      pidPath: options.xt.statedir,
+      sourceDir: options.xt.usersrc,
       cwd: options.xt.usersrc,
+      pidFile: path.resolve(options.xt.rundir, 'web-server.pid'),
 
       // process env
       env: {
@@ -98,13 +102,29 @@ _.extend(exports, lib.task, /** @exports service */ {
       max: 100,
       watch: true,
       watchIgnoreDotFiles: true,
-      watchDirectory: options.xt.configfile,
+      watchDirectory: options.xt.configdir,
 
       // log files
       logFile: path.resolve(options.xt.logdir, 'web-server-forever.log'),
       errFile: path.resolve(options.xt.logdir, 'web-server-error.log'),
       outFile: path.resolve(options.xt.logdir, 'web-server-access.log'),
-    });
+    }, null, 2);
+  },
+
+  createForeverConfig: function (options) {
+    return {
+      root: options.xt.homedir,
+      pidPath: options.xt.statedir,
+      sockPath: options.xt.statedir,
+      loglength: 100,
+      logstream: false,
+      columns: [
+        'uid',
+        'command',
+        'pid',
+        'uptime'
+      ]
+    };
   }
     /*
     // link the executable
