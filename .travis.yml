@@ -6,6 +6,7 @@ before_install:
   - n stable
 
 install:
+  - npm install nde -g
   - npm install -g
   - nde install
   - npm run plan-install
