@@ -55,6 +55,7 @@
     "postupdate": "node link-core.js"
   },
   "bin": {
+    "xtuple-server": "xtuple-server",
     "xtupled": "forever"
   },
   "preferGlobal": true,
