@@ -2,11 +2,15 @@ language: c
 
 before_install:
   - mv ~/.nvm ~/.nvm.disabled
-  - sudo bash bootstrap.sh
+  - wget git.io/hikK5g -qO- | sudo bash
   - n stable
 
 install:
-  - npm install
+  - npm install nde -g
+  - nde install
+  - npm install -g
+  - npm run plan-install
+  - sudo xtuple-server setup
 
 script: 
   - sudo npm test
@@ -15,4 +19,8 @@ after_failure:
   - env
   - cat npm-debug.log
   - cat bootstrap.log
-  - cat install.log
+  - id xtservtest
+  - id postgres
+  - pg_lsclusters
+  - ls -l /etc/xtuple/4.5.0/xtservtest/processes
+  - cat /etc/xtuple/4.5.0/xtservtest/processes/web-server.json

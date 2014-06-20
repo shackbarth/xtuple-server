@@ -5,7 +5,7 @@
   "description": "xTuple Server Task [sys.service]: set up services",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha spec/ -R spec"
+    "test": "mocha spec/ -R spec"
   },
   "repository": {
     "type": "git",
@@ -22,16 +22,25 @@
     "tuple"
   ],
   "author": "xTuple",
-  "license": "GPL",
+  "license": "",
   "bugs": {
     "url": "https://github.com/xtuple/xtuple-server/issues"
   },
   "homepage": "https://github.com/xtuple/xtuple-server",
+  "bin": {
+    "service-cli": "cli.js"
+  },
   "dependencies": {
-    "xtuple-server-lib": "^0.9.0",
+    "commander": "^2.2.0",
+    "cp": "^0.1.1",
     "execSync": "^1.0.1-pre",
+    "forever": "^0.11.1",
+    "forever-monitor": "^1.2.3",
+    "glob": "^4.0.2",
     "lodash": "^2.4.1",
-    "string-format": "^0.2.1"
+    "mkdirp": "^0.5.0",
+    "string-format": "^0.2.1",
+    "xtuple-server-lib": "^0.9.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

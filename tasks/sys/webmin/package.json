@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "xtuple-server-pg-snapshotmgr",
+  "name": "xtuple-server-sys-webmin",
   "version": "0.9.0",
-  "description": "xTuple Server Task [pg.snapshotmgr]: manages scheduled database backups",
+  "description": "xTuple Server Task [sys.webmin]: set up webmin and integrate it with the xTuple Server",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha spec/ -R spec"
@@ -11,33 +11,20 @@
     "type": "git",
     "url": "https://github.com/xtuple/xtuple-server-commercial"
   },
-  "keywords": [
-    "xtuple",
-    "server",
-    "erp",
-    "business",
-    "software",
-    "database",
-    "postgres",
-    "postgresql",
-    "tuple"
-  ],
   "author": "xTuple",
-  "license": "",
   "bugs": {
     "url": "https://github.com/xtuple/xtuple-server-commercial/issues"
   },
   "homepage": "https://github.com/xtuple/xtuple-server",
   "dependencies": {
-    "cron-parser": "^0.3.6",
-    "crontab": "^1.0.0",
     "execSync": "^1.0.1-pre",
-    "forever": "^0.11.1",
-    "forever-monitor": "^1.2.3",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
-    "node-crontab": "0.0.8",
-    "xtuple-server-lib": "^0.9.0"
+    "rimraf": "^2.2.8",
+    "string-format": "^0.2.1",
+    "xtuple-server-lib": "^0.9.0",
+    "xtuple-server-nginx-site": "^0.9.4",
+    "xtuple-server-nginx-ssl": "^0.9.4"
   },
   "devDependencies": {
     "chai": "^1.9.1",

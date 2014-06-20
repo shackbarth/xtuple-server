@@ -1,0 +1,24 @@
+{
+  "description": "Setup System",
+  "plan": [
+    {
+      "name": "xt",
+      "tasks": [ "database" ],
+      "options": { "execute": false, "validate": false }
+    },
+    {
+      "name": "sys",
+      "tasks": [ "policy", "ssh" ]
+    },
+    {
+      "name": "nginx",
+      "tasks": [ "site", "ssl" ],
+      "options": { "execute": false }
+    },
+    {
+      "name": "sys",
+      "tasks": [ "cups", "webmin" ]
+    }
+  ]
+}
+

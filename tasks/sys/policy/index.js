@@ -21,7 +21,7 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
       options.sys.policy.remotePassword = lib.util.getPassword();
     }
 
-    if (!_.isEmpty(options.xt.name) && exec('id -u {xt.name}'.format(options)).code !== 0) {
+    if (options.xt && !_.isEmpty(options.xt.name) && exec('id -u {xt.name}'.format(options)).code !== 0) {
       options.sys.policy.userPassword = lib.util.getPassword();
     }
   },
@@ -55,8 +55,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
     if (visudo_cmd.code !== 0) {
       throw new Error(JSON.stringify(visudo_cmd, null, 2));
     }
-
-    exec('service ssh reload');
   },
 
   /** @private */
@@ -84,7 +82,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
         'chmod -R g=rx,u=rwx,o-wr /var/lib/xtuple',
         'chmod -R g=rx,u=rwx,o=rx /usr/sbin/xtuple',
         'chmod -R g=rx,u=rwx,o=rx /usr/local/xtuple',
-        'chmod -R g=rwx,u=rwx,o=rx /usr/local/xtuple/.pm2',
         'chmod -R g+wrx /var/run/postgresql'
       ],
       visudo_cmd;
@@ -93,10 +90,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
     if (options.sys.policy.remotePassword) {
       _.map(system_users, exec);
       _.map(_.flatten([ system_ownership, system_mode ]), exec);
-      var htpasswd = exec('htpasswd -cb {sys.htpasswdfile} xtremote {sys.policy.remotePassword}'.format(options));
-      if (htpasswd.code !== 0) {
-        throw new Error(htpasswd.stdout);
-      }
     }
 
     // write sudoers file
@@ -125,7 +118,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
         'chown -R {xt.name}:xtuser {xt.logdir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.configdir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.statedir}'.format(options),
-        'chown -R {xt.name}:xtuser {xt.userPm2dir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.rundir}'.format(options),
         'chown -R {xt.name}:xtuser {sys.sbindir}'.format(options),
         'chown -R {xt.name}:ssl-cert {xt.ssldir}'.format(options)
@@ -135,9 +127,7 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
         'chmod -R u=rwx,g=wx {pg.logdir}'.format(options),
         'chmod -R u=rwx,g-rwx {xt.statedir}'.format(options),
         'chmod -R g=rx,u=wrx,o-rwx {xt.ssldir}'.format(options),
-
-        'chmod -R g=rwx,u=wrx,o-rw {xt.configdir}'.format(options),
-        'chmod -R g-rwx,u=wrx,o-rwx {xt.userPm2dir}'.format(options)
+        'chmod -R g=rwx,u=wrx,o-rw {xt.configdir}'.format(options)
       ];
 
     // create *this* user, and set access rules

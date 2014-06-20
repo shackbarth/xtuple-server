@@ -1,27 +1,53 @@
 {
   "private": true,
   "name": "xtuple-server-commercial",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
-    "forever": "^0.11.1"
-  }
-  "optionalDependencies": {
+    "glob": "^4.0.2",
+    "xtuple-server-lib": "^0.9.0",
+    "xtuple-server-pg-snapshotmgr": "^0.9.0",
+    "xtuple-server-pg-tuner": "^0.9.0",
+    "xtuple-server-sys-cups": "^0.9.0",
     "xtuple-server-sys-paths": "^0.9.0",
     "xtuple-server-sys-policy": "^0.9.0",
-    "xtuple-server-sys-webmin": "^0.9.0",
-    "xtuple-server-sys-ssl": "^0.9.0",
     "xtuple-server-sys-service": "^0.9.0",
-    "xtuple-server-sys-cups": "^0.9.0",
-    "xtuple-server-pg-tuner": "^0.9.0",
-    "xtuple-server-pg-snapshotmgr": "^0.9.0"
+    "xtuple-server-sys-ssh": "^0.9.0",
+    "xtuple-server-sys-webmin": "^0.9.0"
   },
-  "peerDependencies": {
+  "bundledDependencies": [
+    "xtuple-server-pg-snapshotmgr",
+    "xtuple-server-pg-tuner",
+    "xtuple-server-sys-cups",
+    "xtuple-server-sys-service",
+    "xtuple-server-sys-policy",
+    "xtuple-server-sys-paths",
+    "xtuple-server-sys-ssh",
+    "xtuple-server-sys-webmin"
+  ],
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "execSync": "^1.0.1-pre",
+    "latest-version": "^0.2.0",
+    "lodash": "^2.4.1",
+    "mocha": "^1.20.1",
+    "npm": "^1.4.16",
+    "requireindex": "^1.1.0",
     "xtuple-server": "^0.9.0"
   },
+  "peerDependencies": {
+    "xtuple-server": "^0.9.0",
+    "forever": "^0.11.0",
+    "nde": "^0.1.0"
+  },
   "files": [
+    "tasks/",
     "plans/",
-    "spec/"
+    "plans/setup.json",
+    "spec/",
+    "index.js",
+    "link-core.js",
+    "workspace.json"
   ],
   "keywords": [
     "xtuple",
@@ -39,23 +65,28 @@
     "enterprise"
   ],
   "scripts": {
-    "test": "mocha spec -R spec"
+    "pretest": "XT_VERSION=4.5.0 mocha -R spec spec/uninstall-live.js -b",
+    "test": "XT_VERSION=4.5.0 mocha -R spec spec/ -b",
+    "plan-install": "node link-core.js"
   },
   "bin": {
-    "xtupled": "node_modules/.bin/forever"
+    "xtupled": "node_modules/xtuple-server-sys-service/cli.js"
   },
   "preferGlobal": true,
   "engines": {
     "node": ">=0.10.26 <0.11"
   },
-  "cpu": [ "!ia32" ],
-  "os": [ "linux" ],
+  "cpu": [
+    "!ia32"
+  ],
+  "os": [
+    "linux"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/xtuple/xtuple-server-commercial.git"
   },
   "author": "Travis Webb <travis@xtuple.com>",
-  "license": "MPL-2.0",
   "bugs": {
     "url": "https://github.com/xtuple/xtuple-server-commercial/issues"
   }

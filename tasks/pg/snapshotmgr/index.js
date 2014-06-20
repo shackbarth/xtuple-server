@@ -2,6 +2,9 @@ var lib = require('xtuple-server-lib'),
   fs = require('fs'),
   os = require('os'),
   cron = require('cron-parser'),
+  crontab = require('crontab'),
+  mkdirp = require('mkdirp'),
+  forever = require('forever-monitor'),
   exec = require('execSync').exec,
   path = require('path'),
   _ = require('lodash');
@@ -12,7 +15,7 @@ var lib = require('xtuple-server-lib'),
 _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
 
   options: {
-    enablesnap: {
+    enablesnapshots: {
       optional: '[boolean]',
       description: 'Enable the snapshot manager',
       value: false
@@ -31,30 +34,15 @@ _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
 
   /** @override */
   beforeInstall: function (options) {
-    options.pg.pm2 = {
-      template: fs.readFileSync(path.resolve(__dirname, 'pm2-backup-service.json')).toString()
-    };
     cron.parseExpressionSync(options.pg.snapschedule);
-  },
-
-  /** @override */
-  beforeTask: function (options) {
-    // XXX
-    return;
-    exec(('chown {xt.name}:xtuser '+ options.pg.snapshotdir).format(options));
-    fs.writeFileSync(options.pg.pm2.configfile, options.pg.pm2.template.format(options));
+    mkdirp.sync(options.pg.snapshotdir);
+    exec(('chown {xt.name}:{xt.name} '+ options.pg.snapshotdir).format(options));
   },
 
   /** @override */
   executeTask: function (options) {
-    return;
-    if (!options.pg.enablesnap) { return; }
+    if (!options.pg.enablesnapshots) { return; }
 
-    var start = exec('xtupled start {pg.pm2.configfile}'.format(options));
-
-    if (start.code !== 0) {
-      throw new Error(JSON.stringify(start));
-    }
   },
 
   /** @override */

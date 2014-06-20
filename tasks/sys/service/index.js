@@ -1,30 +1,21 @@
 var lib = require('xtuple-server-lib'),
-  format = require('string-format'),
   _ = require('lodash'),
   exec = require('execSync').exec,
+  mkdirp = require('mkdirp'),
+  cp = require('cp'),
+  forever = require('forever'),
   fs = require('fs'),
+  xtupled = require('./cli'),
   path = require('path');
 
-/**
- * Create a process manager service
- */
-_.extend(exports, lib.task, /** @exports service */ {
+_.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   beforeInstall: function (options) {
-    options.sys.initd = '/etc/init.d/xtuple';
-    options.sys.pm2 = {
-      template: fs.readFileSync(path.resolve(__dirname, 'pm2-core-services.json')).toString(),
-      configfile: path.resolve(options.xt.configdir, 'services.json'),
-      initscript: path.resolve(__dirname, 'pm2-init.sh')
-    };
-  },
-
-  /** @override */
-  beforeTask: function (options) {
-    if (fs.existsSync(path.resolve(options.sys.sbindir, 'main.js'))) {
-      fs.unlinkSync(path.resolve(options.sys.sbindir, 'main.js'));
-    }
+    options.sys.initd = path.resolve('/etc/init.d/xtuple');
+    options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
+    exec('chown {xt.name}:{xt.name} {xt.processdir}'.format(options));
+    mkdirp.sync(options.xt.processdir);
   },
 
   /** @override */
@@ -38,39 +29,101 @@ _.extend(exports, lib.task, /** @exports service */ {
   },
 
   /** @override */
-  uninstall: function (options) {
-    exec('sudo -Ei HOME={xt.userhome} xtupled delete {sys.pm2.configfile}'.format(options));
-    exec('sudo -Ei HOME={xt.userhome} xtupled dump'.format(options));
+  afterInstall: function (options) {
+    xtupled.restart(xtupled.getInstanceProcesses(options.xt.version, options.xt.name));
   },
 
   /** @override */
-  afterInstall: function (options) {
-    console.log(exec('service xtuple status'));
+  uninstall: function (options) {
+    forever.cleanUp();
   },
 
   /**
    * Perform initial setup of the service management system.
    */
   setupServiceManager: function (options) {
-    exec('chmod a+x {xt.userhome}'.format(options));
-    exec('chmod a+x {xt.userhome}/{xt.version}'.format(options));
-    exec('chmod a+x {xt.usersrc}'.format(options));
-    exec('chmod a+x {xt.usersrc}/node-datasource'.format(options));
-
     if (fs.existsSync(options.sys.initd)) {
       exec('update-rc.d -f xtuple remove');
     }
 
-    // create upstart service "xtuple"
-    exec('cp {sys.pm2.initscript} {sys.initd}'.format(options));
+    mkdirp.sync(path.resolve(options.xt.homedir, '.forever'));
+    fs.writeFileSync(
+      path.resolve(options.xt.homedir, '.forever', 'config.json'),
+      JSON.stringify(exports.createForeverConfig(options), null, 2)
+    );
+
+    cp.sync(path.resolve(__dirname, 'service.sh'), options.sys.initd);
+
+    // create upstart service 'xtuple'
     exec('update-rc.d xtuple defaults');
-    exec('sudo -Ei HOME={xt.userhome} xtupled kill'.format(options));
   },
 
   /**
    * Install a particular account into the service manager
    */
   installService: function (options) {
+    /*
+    fs.symlinkSync(
+      path.resolve(options.xt.usersrc, 'node-datasource/main.js'),
+      path.resolve(options.sys.sbindir, 'main.js')
+    );
+    */
+
+    fs.writeFileSync(path.resolve(options.xt.processdir, 'web-server.json'), JSON.stringify({
+      uid: 'web-server-' + options.pg.cluster.name,
+
+      // invocation attributes
+      command: 'sudo -u '+ options.xt.name + ' node',
+      script: 'node-datasource/main.js',
+      options: [
+        '-c', options.xt.configfile
+      ],
+      root: options.xt.homedir,
+      pidPath: options.xt.statedir,
+      sourceDir: options.xt.usersrc,
+      cwd: options.xt.usersrc,
+      pidFile: path.resolve(options.xt.rundir, 'web-server.pid'),
+
+      // process env
+      env: {
+        SUDO_USER: options.xt.name,
+        USER: options.xt.name,
+        NODE_ENV: 'production',
+        HOME: options.xt.userhome
+      },
+
+      // process mgmt options
+      minUptime: 10000,
+      spinSleepTime: 10000,
+      killTree: true,
+      max: 100,
+      watch: true,
+      watchIgnoreDotFiles: true,
+      watchDirectory: options.xt.configdir,
+
+      // log files
+      logFile: path.resolve(options.xt.logdir, 'web-server-forever.log'),
+      errFile: path.resolve(options.xt.logdir, 'web-server-error.log'),
+      outFile: path.resolve(options.xt.logdir, 'web-server-access.log'),
+    }, null, 2));
+  },
+
+  createForeverConfig: function (options) {
+    return {
+      root: options.xt.homedir,
+      pidPath: options.xt.statedir,
+      sockPath: options.xt.statedir,
+      loglength: 100,
+      logstream: false,
+      columns: [
+        'uid',
+        'command',
+        'pid',
+        'uptime'
+      ]
+    };
+  }
+    /*
     // link the executable
     fs.symlinkSync(
       path.resolve(options.xt.usersrc, 'node-datasource/main.js'),
@@ -89,4 +142,5 @@ _.extend(exports, lib.task, /** @exports service */ {
     exec('sudo -Ei HOME={xt.userhome} xtupled dump'.format(options));
     exec('service xtuple {xt.version} {xt.name} restart'.format(options));
   }
+  */
 });
