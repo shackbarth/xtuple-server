@@ -36,10 +36,10 @@ _.each(workspace.linkExports, function (_target, _source) {
   _.each(files, function (file) {
     var targetfile = path.resolve(target, path.basename(file));
 
-    if (!fs.lstatSync(file).isSymbolicLink() && !fs.existsSync(targetfile)) {
+    if (/*!fs.lstatSync(file).isSymbolicLink() && */!fs.existsSync(targetfile)) {
       console.log(targetfile);
       fs.symlinkSync(file, targetfile);
     }
   });
-  console.log('linkExports: done');
 });
+console.log('linkExports: done');
