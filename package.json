@@ -69,6 +69,9 @@
     "test": "XT_VERSION=4.5.0 mocha -R spec spec/ -b",
     "plan-install": "node link-core.js"
   },
+  "bin": {
+    "xtupled": "tasks/sys/service/cli.js"
+  },
   "preferGlobal": true,
   "engines": {
     "node": ">=0.10.26 <0.11"

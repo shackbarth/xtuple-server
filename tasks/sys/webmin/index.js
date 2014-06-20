@@ -6,7 +6,7 @@
    */
   var webmin = exports;
 
-  var lib = require('../../../lib'),
+  var lib = require('xtuple-server-lib'),
     format = require('string-format'),
     _ = require('lodash'),
     path = require('path'),
