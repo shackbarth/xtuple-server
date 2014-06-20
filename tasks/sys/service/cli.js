@@ -7,77 +7,80 @@ var exec = require('execSync').exec,
   glob = require('glob'),
   fs = require('fs');
 
-function getInstanceProcesses (version, name) {
-  return _.map(glob.sync('/etc/xtuple' + version + '/' + name + '/processes/*'), function (file) {
-    return require(file);
-  });
-}
+var xtupled = module.exports = {
 
-function getAccountProcesses (name) {
-  return _.map(glob.sync('/etc/xtuple/*/' + name + '/processes/*'), function (file) {
-    return require(file);
-  });
-}
+  start: function (descriptors) {
+    _.each(descriptors, function (descriptor) {
+      forever.startDaemon(descriptor.script, descriptor);
+    });
+  },
 
-function getAllProcesses () {
-  return _.map(glob.sync('/etc/xtuple/*/*/processes/*'), function (file) {
-    return require(file);
-  });
-}
+  stop: function (descriptors) {
+    _.each(descriptors, function (descriptor) {
+      forever.stop(descriptor.uid);
+    });
+  },
 
-function start (descriptors) {
-  _.each(descriptors, function (descriptor) {
-    forever.startDaemon(descriptor.script, descriptor);
-  });
-}
+  restart: function (descriptors) {
+    _.each(descriptors, function (descriptor) {
+      forever.stop(descriptor.uid);
+      forever.startDaemon(descriptor.script, descriptor);
+    });
+  },
 
-function stop (descriptors) {
-  _.each(getAllProcesses(), function (descriptor) {
-    forever.stop(descriptor.uid);
-  });
-}
+  getInstanceProcesses: function (version, name) {
+    return _.map(glob.sync('/etc/xtuple' + version + '/' + name + '/processes/*'), function (file) {
+      return require(file);
+    });
+  },
 
-function restart (descriptors) {
-  _.each(descriptors, function (descriptor) {
-    forever.stop(descriptor.uid);
-    forever.startDaemon(descriptor.script, descriptor);
-  });
-}
+  getAccountProcesses: function (name) {
+    return _.map(glob.sync('/etc/xtuple/*/' + name + '/processes/*'), function (file) {
+      return require(file);
+    });
+  },
+
+  getAllProcesses: function () {
+    return _.map(glob.sync('/etc/xtuple/*/*/processes/*'), function (file) {
+      return require(file);
+    });
+  }
+};
 
 program
   .command('start [version] <name>')
   .action(function (version, name) {
-    start(getInstanceProcesses(version, name));
+    xtupled.start(xtupled.getInstanceProcesses(version, name));
   });
 
 program
   .command('startall')
   .action(function () {
-    start(getAllProcesses());
+    xtupled.start(xtupled.getAllProcesses());
   });
 
 program
   .command('stop [version] <name>')
   .action(function (version, name) {
-    stop(getInstanceProcesses(version, name));
+    xtupled.stop(xtupled.getInstanceProcesses(version, name));
   });
 
 program
   .command('stopall')
   .action(function () {
-    stop(getAllProcesses());
+    xtupled.stop(xtupled.getAllProcesses());
   });
 
 program
   .command('restart [version] <name>')
   .action(function (version, name) {
-    restart(getInstanceProcesses(version, name));
+    xtupled.restart(xtupled.getInstanceProcesses(version, name));
   });
 
 program
   .command('restartall')
   .action(function () {
-    restart(getAllProcesses());
+    xtupled.restart(xtupled.getAllProcesses());
   });
 
 program

@@ -5,6 +5,7 @@ var lib = require('xtuple-server-lib'),
   cp = require('cp'),
   forever = require('forever'),
   fs = require('fs'),
+  xtupled = require('./cli'),
   path = require('path');
 
 _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
@@ -13,6 +14,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   beforeInstall: function (options) {
     options.sys.initd = path.resolve('/etc/init.d/xtuple');
     options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
+    exec('chown {xt.name}:{xt.name} {xt.processdir}'.format(options));
     mkdirp.sync(options.xt.processdir);
   },
 
@@ -28,9 +30,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   afterInstall: function (options) {
-    var server = 'node-datasource/main.js';
-    forever.startDaemon(server, require(path.resolve(options.xt.processdir, 'web-server')));
-    console.dir(require(path.resolve(options.xt.processdir, 'web-server')));
+    xtupled.restart(xtupled.getInstanceProcesses(version, name));
   },
 
   /** @override */
