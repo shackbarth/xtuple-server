@@ -90,10 +90,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
     if (options.sys.policy.remotePassword) {
       _.map(system_users, exec);
       _.map(_.flatten([ system_ownership, system_mode ]), exec);
-      var htpasswd = exec('htpasswd -cb {sys.htpasswdfile} xtremote {sys.policy.remotePassword}'.format(options));
-      if (htpasswd.code !== 0) {
-        throw new Error(htpasswd.stdout);
-      }
     }
 
     // write sudoers file

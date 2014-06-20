@@ -22,7 +22,7 @@
     "tuple"
   ],
   "author": "xTuple",
-  "license": "GPL",
+  "license": "",
   "bugs": {
     "url": "https://github.com/xtuple/xtuple-server/issues"
   },
@@ -32,8 +32,8 @@
     "lodash": "^2.4.1",
     "rimraf": "^2.2.8",
     "string-format": "^0.2.1",
-    "xtuple-server-dev-paths": "^0.9.0",
-    "xtuple-server-lib": "^0.9.0"
+    "xtuple-server-lib": "^0.9.0",
+    "xtuple-server-local-paths": "^0.9.16"
   },
   "devDependencies": {
     "chai": "^1.9.1",
