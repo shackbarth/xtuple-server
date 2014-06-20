@@ -4,7 +4,6 @@
   "version": "0.9.1",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
-    "forever": "^0.11.1",
     "glob": "^4.0.2",
     "xtuple-server-lib": "^0.9.0",
     "xtuple-server-pg-snapshotmgr": "^0.9.0",
@@ -14,18 +13,31 @@
     "xtuple-server-sys-policy": "^0.9.0",
     "xtuple-server-sys-service": "^0.9.0",
     "xtuple-server-sys-ssh": "^0.9.0",
-    "xtuple-server-sys-webmin": "^0.9.0",
-    "xtuple-server": "^0.9.0"
+    "xtuple-server-sys-webmin": "^0.9.0"
   },
+  "bundledDependencies": [
+    "xtuple-server-pg-snapshotmgr",
+    "xtuple-server-pg-tuner",
+    "xtuple-server-sys-cups",
+    "xtuple-server-sys-service",
+    "xtuple-server-sys-policy",
+    "xtuple-server-sys-paths",
+    "xtuple-server-sys-ssh",
+    "xtuple-server-sys-webmin"
+  ],
   "devDependencies": {
     "chai": "^1.9.1",
     "execSync": "^1.0.1-pre",
     "latest-version": "^0.2.0",
     "lodash": "^2.4.1",
     "mocha": "^1.20.1",
-    "nde": "^0.1.15",
     "npm": "^1.4.16",
     "requireindex": "^1.1.0"
+  },
+  "peerDependencies": {
+    "xtuple-server": "^0.9.0",
+    "forever": "^0.11.0",
+    "nde": "^0.1.0"
   },
   "files": [
     "tasks/",
@@ -53,10 +65,6 @@
     "pretest": "XT_VERSION=4.5.0 mocha -R spec spec/uninstall-live.js -b",
     "test": "XT_VERSION=4.5.0 mocha -R spec spec/ -b",
     "postupdate": "node link-core.js"
-  },
-  "bin": {
-    "xtuple-server": "xtuple-server",
-    "xtupled": "forever"
   },
   "preferGlobal": true,
   "engines": {
