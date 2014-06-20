@@ -1,0 +1,18 @@
+{
+  "description": "Setup System",
+  "plan": [
+    {
+      "name": "sys",
+      "tasks": [ "paths", "policy", "ssh" ]
+    },
+    {
+      "name": "nginx",
+      "tasks": [ "ssl", "site", "hosts" ]
+    },
+    {
+      "name": "sys",
+      "tasks": [ "cups", "webmin" ]
+    }
+  ]
+}
+

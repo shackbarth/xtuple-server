@@ -9,6 +9,7 @@ before_install:
 install:
   - nde install
   - npm install
+  - xtuple-server setup
 
 script: 
   - sudo npm test
