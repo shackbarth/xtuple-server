@@ -11,6 +11,6 @@
   },
 
   "linkExports": {
-    "plans/*.json": "xtuple-server/plans"
+    "plans/*": "xtuple-server/plans"
   }
 }
