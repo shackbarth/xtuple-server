@@ -3,7 +3,7 @@
   "plan": [
     {
       "name": "sys",
-      "tasks": [ "paths", "policy", "ssh" ]
+      "tasks": [ "policy", "ssh" ]
     },
     {
       "name": "nginx",
