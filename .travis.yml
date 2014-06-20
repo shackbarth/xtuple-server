@@ -18,3 +18,5 @@ after_failure:
   - cat npm-debug.log
   - cat bootstrap.log
   - cat install.log
+  - sudo stat /var/run/postgresql
+  - sudo ls -la /var/run/postgresql
