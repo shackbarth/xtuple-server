@@ -21,3 +21,6 @@ after_failure:
   - cat install.log
   - sudo stat /var/run/postgresql
   - sudo ls -la /var/run/postgresql
+  - id xtservtest
+  - id postgres
+  - pg_lsclusters
