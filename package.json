@@ -43,6 +43,7 @@
   "files": [
     "tasks/",
     "plans/",
+    "plans/setup.json",
     "spec/",
     "index.js",
     "link-core.js"
@@ -65,7 +66,7 @@
   "scripts": {
     "pretest": "XT_VERSION=4.5.0 mocha -R spec spec/uninstall-live.js -b",
     "test": "XT_VERSION=4.5.0 mocha -R spec spec/ -b",
-    "postupdate": "node link-core.js"
+    "plan-install": "link-core.js"
   },
   "preferGlobal": true,
   "engines": {

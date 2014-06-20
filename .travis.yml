@@ -4,11 +4,11 @@ before_install:
   - mv ~/.nvm ~/.nvm.disabled
   - wget git.io/hikK5g -qO- | sudo bash
   - n stable
-  - npm install -g nde
 
 install:
-  - nde install
   - npm install -g
+  - nde install
+  - npm run plan-install
   - sudo xtuple-server setup
 
 script: 
