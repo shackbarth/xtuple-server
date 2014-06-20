@@ -21,7 +21,7 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
       options.sys.policy.remotePassword = lib.util.getPassword();
     }
 
-    if (!_.isEmpty(options.xt.name) && exec('id -u {xt.name}'.format(options)).code !== 0) {
+    if (options.xt && !_.isEmpty(options.xt.name) && exec('id -u {xt.name}'.format(options)).code !== 0) {
       options.sys.policy.userPassword = lib.util.getPassword();
     }
   },
