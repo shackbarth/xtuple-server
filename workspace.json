@@ -11,6 +11,6 @@
   },
 
   "linkExports": {
-    "plans/*": "xtuple-server/plans"
+    "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/"
   }
 }

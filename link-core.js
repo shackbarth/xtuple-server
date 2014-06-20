@@ -27,8 +27,9 @@ _.each(workspace.linkImports, function (_target, _source) {
 
 // source = me
 _.each(workspace.linkExports, function (_target, _source) {
-  var split = _target.split(path.sep);
-  var target = path.resolve(path.dirname(require.resolve(split[0])), split.slice(1).join(path.sep));
+  //var split = _target.split(path.sep);
+  //var target = path.resolve(path.dirname(require.resolve(split[0])), split.slice(1).join(path.sep));
+  var target = path.resolve(_target);
   var files = glob.sync(path.resolve(_source));
   console.log('target dir: '+ target);
 
