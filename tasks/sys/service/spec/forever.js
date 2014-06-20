@@ -2,7 +2,7 @@ var _ = require('lodash'),
   forever = require('forever'),
   path = require('path');
 
-describe('forever', function () {
+describe.skip('forever', function () {
     process.env.HOME = '/home/tjwebb/';
     process.chdir(process.env.HOME);
 
@@ -85,8 +85,3 @@ describe('forever', function () {
   });
 
 });
-
-describe('upstart', function () {
-
-});
-
