@@ -30,7 +30,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   afterInstall: function (options) {
-    xtupled.restart(xtupled.getInstanceProcesses(version, name));
+    xtupled.restart(xtupled.getInstanceProcesses(options.xt.version, options.xt.name));
   },
 
   /** @override */
