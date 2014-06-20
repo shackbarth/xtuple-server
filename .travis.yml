@@ -7,8 +7,8 @@ before_install:
 
 install:
   - npm install nde -g
-  - npm install -g
   - nde install
+  - npm install -g
   - npm run plan-install
   - sudo xtuple-server setup
 
