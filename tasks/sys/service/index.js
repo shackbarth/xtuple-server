@@ -108,7 +108,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       logFile: path.resolve(options.xt.logdir, 'web-server-forever.log'),
       errFile: path.resolve(options.xt.logdir, 'web-server-error.log'),
       outFile: path.resolve(options.xt.logdir, 'web-server-access.log'),
-    }, null, 2);
+    }, null, 2));
   },
 
   createForeverConfig: function (options) {

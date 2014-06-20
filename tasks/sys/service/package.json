@@ -27,6 +27,9 @@
     "url": "https://github.com/xtuple/xtuple-server/issues"
   },
   "homepage": "https://github.com/xtuple/xtuple-server",
+  "bin": {
+    "service-cli": "cli.js"
+  },
   "dependencies": {
     "commander": "^2.2.0",
     "cp": "^0.1.1",

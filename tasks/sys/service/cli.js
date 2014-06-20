@@ -4,7 +4,6 @@ var exec = require('execSync').exec,
   _ = require('lodash'),
   program = require('commander'),
   forever = require('forever');
-  path = require('path'),
   glob = require('glob'),
   fs = require('fs');
 
