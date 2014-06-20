@@ -27,3 +27,4 @@ after_failure:
   - pg_lsclusters
   - ls -l plans
   - ls -l /usr/local/lib/node_modules/xtuple-server/plans
+  - ls -la

@@ -46,7 +46,8 @@
     "plans/setup.json",
     "spec/",
     "index.js",
-    "link-core.js"
+    "link-core.js",
+    "workspace.json"
   ],
   "keywords": [
     "xtuple",

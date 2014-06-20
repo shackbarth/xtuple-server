@@ -30,11 +30,13 @@ _.each(workspace.linkExports, function (_target, _source) {
   var split = _target.split(path.sep);
   var target = path.resolve(path.dirname(require.resolve(split[0])), split.slice(1).join(path.sep));
   var files = glob.sync(path.resolve(_source));
+  console.log('target dir: '+ target);
 
   _.each(files, function (file) {
     var targetfile = path.resolve(target, path.basename(file));
 
     if (!fs.lstatSync(file).isSymbolicLink() && !fs.existsSync(targetfile)) {
+      console.log(targetfile);
       fs.symlinkSync(file, targetfile);
     }
   });
