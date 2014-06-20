@@ -17,13 +17,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   },
 
   /** @override */
-  beforeTask: function (options) {
-    if (fs.existsSync(path.resolve(options.sys.sbindir, 'main.js'))) {
-      fs.unlinkSync(path.resolve(options.sys.sbindir, 'main.js'));
-    }
-  },
-
-  /** @override */
   executeTask: function (options) {
     if (options.planName === 'setup') {
       exports.setupServiceManager(options);
@@ -33,9 +26,10 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
     }
   },
 
+  /** @override */
   afterInstall: function (options) {
     var server = 'node-datasource/main.js';
-    forever.startDaemon(server, path.resolve(options.xt.processdir, 'web-server.json'));
+    forever.startDaemon(server, require(path.resolve(options.xt.processdir, 'web-server')));
   },
 
   /** @override */
@@ -67,10 +61,12 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
    * Install a particular account into the service manager
    */
   installService: function (options) {
+    /*
     fs.symlinkSync(
       path.resolve(options.xt.usersrc, 'node-datasource/main.js'),
       path.resolve(options.sys.sbindir, 'main.js')
     );
+    */
 
     fs.writeFileSync(path.resolve(options.xt.processdir, 'web-server.json'), JSON.stringify({
       uid: 'web-server-' + options.pg.cluster.name,
