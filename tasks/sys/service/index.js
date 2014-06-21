@@ -12,6 +12,15 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   beforeInstall: function (options) {
+    mkdirp.sync(path.resolve('/usr/local/xtuple/.forever'));
+    fs.writeFileSync(
+      path.resolve('/usr/local/xtuple/.forever/config.json'),
+      JSON.stringify(exports.createForeverConfig(options), null, 2)
+    );
+  },
+
+  /** @override */
+  beforeTask: function (options) {
     options.sys.initd = path.resolve('/etc/init.d/xtuple');
     options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
     exec('chown {xt.name}:{xt.name} {xt.processdir}'.format(options));
@@ -46,12 +55,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       exec('update-rc.d -f xtuple remove');
     }
 
-    mkdirp.sync(path.resolve(options.xt.homedir, '.forever'));
-    fs.writeFileSync(
-      path.resolve(options.xt.homedir, '.forever', 'config.json'),
-      JSON.stringify(exports.createForeverConfig(options), null, 2)
-    );
-
     cp.sync(path.resolve(__dirname, 'service.sh'), options.sys.initd);
 
     // create upstart service 'xtuple'
@@ -62,13 +65,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
    * Install a particular account into the service manager
    */
   installService: function (options) {
-    /*
-    fs.symlinkSync(
-      path.resolve(options.xt.usersrc, 'node-datasource/main.js'),
-      path.resolve(options.sys.sbindir, 'main.js')
-    );
-    */
-
     fs.writeFileSync(path.resolve(options.xt.processdir, 'web-server.json'), JSON.stringify({
       uid: 'web-server-' + options.pg.cluster.name,
 
@@ -104,7 +100,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       // log files
       logFile: path.resolve(options.xt.logdir, 'web-server-forever.log'),
       errFile: path.resolve(options.xt.logdir, 'web-server-error.log'),
-      outFile: path.resolve(options.xt.logdir, 'web-server-access.log'),
+      outFile: path.resolve(options.xt.logdir, 'web-server-access.log')
     }, null, 2));
   },
 

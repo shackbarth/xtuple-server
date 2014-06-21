@@ -43,11 +43,53 @@ _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
   executeTask: function (options) {
     if (!options.pg.enablesnapshots) { return; }
 
+    exports.installService(options);
+
   },
 
   /** @override */
   afterTask: function (options) {
     exec('service xtuple {xt.version} {xt.name} restart'.format(options));
+  },
+
+  installService: function (options) {
+    fs.writeFileSync(path.resolve(options.xt.processdir, 'auto-backup.json'), JSON.stringify({
+      uid: 'auto-backup-' + options.pg.cluster.name,
+
+      // invocation attributes
+      command: 'sudo -u '+ options.xt.name + ' node',
+      script: 'node-datasource/main.js',
+      options: [
+        '-c', options.xt.configfile
+      ],  
+      root: options.xt.homedir,
+      pidPath: options.xt.statedir,
+      sourceDir: options.xt.usersrc,
+      cwd: options.xt.usersrc,
+      pidFile: path.resolve(options.xt.rundir, 'auto-snapshot.pid'),
+
+      // process env
+      env: {
+        SUDO_USER: options.xt.name,
+        USER: options.xt.name,
+        NODE_ENV: 'production',
+        HOME: options.xt.userhome
+      },  
+
+      // process mgmt options
+      minUptime: 10000,
+      spinSleepTime: 10000,
+      killTree: true,
+      max: 100,
+      watch: true,
+      watchIgnoreDotFiles: true,
+      watchDirectory: options.xt.configdir,
+
+      // log files
+      logFile: path.resolve(options.xt.logdir, 'web-server-forever.log'),
+      errFile: path.resolve(options.xt.logdir, 'web-server-error.log'),
+      outFile: path.resolve(options.xt.logdir, 'web-server-access.log')
+    }, null, 2));
   },
 
   /**
