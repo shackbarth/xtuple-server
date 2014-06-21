@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
-var exec = require('execSync').exec,
-  _ = require('lodash'),
+var _ = require('lodash'),
   program = require('commander'),
   forever = require('forever');
   glob = require('glob'),
@@ -11,7 +10,10 @@ var xtupled = module.exports = {
 
   start: function (descriptors) {
     _.each(descriptors, function (descriptor) {
+      //console.log('starting: '+ descriptor.script);
+      //console.log('starting: '+ descriptor.command);
       forever.startDaemon(descriptor.script, descriptor);
+      //console.dir(descriptor);
     });
   },
 
@@ -42,6 +44,7 @@ var xtupled = module.exports = {
 
   getAllProcesses: function () {
     return _.map(glob.sync('/etc/xtuple/*/*/processes/*'), function (file) {
+      console.log(file);
       return require(file);
     });
   }
@@ -100,6 +103,7 @@ program
   });
 
 if (require.main === module) {
+  console.log('loading config');
   forever.load(require('/usr/local/xtuple/.forever/config'));
   program.parse(process.argv);
 }

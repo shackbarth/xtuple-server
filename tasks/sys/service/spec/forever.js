@@ -16,9 +16,7 @@ describe.skip('forever', function () {
   });
 
   it('should start main.js', function () {
-
     var child = forever.startDaemon('node-datasource/main.js', {
-    //var child = forever.startDaemon({
       uid: 'web-server-test-mocha',
 
       // invocation attributes

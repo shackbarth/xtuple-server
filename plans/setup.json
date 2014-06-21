@@ -8,7 +8,13 @@
     },
     {
       "name": "sys",
-      "tasks": [ "policy", "ssh" ]
+      "tasks": [ "service" ],
+      "options": { "execute": false, "validate": false }
+    },
+    {
+      "name": "sys",
+      "tasks": [ "policy", "ssh" ],
+      "options": { "validate": false }
     },
     {
       "name": "nginx",
