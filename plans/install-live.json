@@ -1,5 +1,6 @@
 {
   "description": "Install xTuple Live Instance",
+  "types": [ "live" ],
   "plan": [
     {
       "name": "sys",

@@ -7,6 +7,7 @@ describe('install-live', function () {
   this.options = {
     planName: 'install-live',
     plan: this.planObject.plan,
+    type: 'live',
     requiresRoot: true,
     xt: {
       name: 'xtservtest',

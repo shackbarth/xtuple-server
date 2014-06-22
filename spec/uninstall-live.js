@@ -7,6 +7,7 @@ describe('uninstall-live', function () {
   this.options = {
     planName: 'uninstall-live',
     plan: this.planObject.plan,
+    type: 'live',
     requiresRoot: true,
     xt: {
       name: 'xtservtest',
