@@ -11,8 +11,7 @@ describe('uninstall-live', function () {
     requiresRoot: true,
     xt: {
       name: 'xtservtest',
-      version: process.env.XT_VERSION,
-      demo: true
+      version: process.env.XT_VERSION
     },
     pg: {
       version: process.env.XT_PG_VERSION,
