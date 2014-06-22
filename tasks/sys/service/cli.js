@@ -2,7 +2,7 @@
 
 var _ = require('lodash'),
   program = require('commander'),
-  forever = require('forever');
+  forever = require('forever'),
   glob = require('glob'),
   fs = require('fs');
 
@@ -10,10 +10,7 @@ var xtupled = module.exports = {
 
   start: function (descriptors) {
     _.each(descriptors, function (descriptor) {
-      //console.log('starting: '+ descriptor.script);
-      //console.log('starting: '+ descriptor.command);
       forever.startDaemon(descriptor.script, descriptor);
-      //console.dir(descriptor);
     });
   },
 
@@ -103,7 +100,6 @@ program
   });
 
 if (require.main === module) {
-  console.log('loading config');
   forever.load(require('/usr/local/xtuple/.forever/config'));
   program.parse(process.argv);
 }
