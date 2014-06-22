@@ -90,7 +90,7 @@ _.extend(exports, lib.task, /** @exports tuner */ {
 });
 
 function maintenance_work_mem (options) {
-  if (options.planName === 'install-pilot') {
+  if (options.type !== 'live') {
     return work_mem(options) * 4;
   }
   else {
