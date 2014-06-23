@@ -4,6 +4,8 @@ var _ = require('lodash'),
   program = require('commander'),
   forever = require('forever'),
   glob = require('glob'),
+  lib = require('xtuple-server-lib'),
+  path = require('path'),
   fs = require('fs');
 
 var xtupled = module.exports = {
@@ -16,31 +18,37 @@ var xtupled = module.exports = {
 
   stop: function (descriptors) {
     _.each(descriptors, function (descriptor) {
-      forever.stop(descriptor.uid);
+      try {
+        forever.stop(descriptor.uid);
+      }
+      catch (e) {
+        console.log(descriptor.uid + ' already stopped.');
+      }
     });
   },
 
   restart: function (descriptors) {
     _.each(descriptors, function (descriptor) {
-      forever.stop(descriptor.uid);
-      forever.startDaemon(descriptor.script, descriptor);
+      xtupled.stop([ descriptor ]);
+      xtupled.start([ descriptor ]);
     });
   },
 
   getInstanceProcesses: function (version, name) {
-    return _.map(glob.sync('/etc/xtuple' + version + '/' + name + '/processes/*'), function (file) {
+    var id = lib.util.$({ xt: { name: name, version: version }, type: '*' });
+    return _.map(glob.sync('/etc/xtuple/' + id + '/processes/*'), function (file) {
       return require(file);
     });
   },
 
   getAccountProcesses: function (name) {
-    return _.map(glob.sync('/etc/xtuple/*/' + name + '/processes/*'), function (file) {
+    return _.map(glob.sync('/etc/xtuple/' + name + '-*/processes/*'), function (file) {
       return require(file);
     });
   },
 
   getAllProcesses: function () {
-    return _.map(glob.sync('/etc/xtuple/*/*/processes/*'), function (file) {
+    return _.map(glob.sync('/etc/xtuple/*/processes/*'), function (file) {
       console.log(file);
       return require(file);
     });
@@ -100,6 +108,12 @@ program
   });
 
 if (require.main === module) {
-  forever.load(require('/usr/local/xtuple/.forever/config'));
+  var home = '/usr/local/xtuple';
+  process.env.HOME = home;
+  process.chdir(process.env.HOME);
+  forever.load({
+    root: path.resolve(home, '.forever'),
+    pidPath: path.resolve(home, '.forever', 'pids')
+  });
   program.parse(process.argv);
 }

@@ -77,7 +77,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       uid: 'web-server-' + options.pg.cluster.name,
 
       // invocation attributes
-      command: 'sudo -u '+ options.xt.name + ' node',
+      command: 'sudo -u '+ options.xt.name + ' ' + options.n.bin,
       script: 'node-datasource/main.js',
       options: [
         '-c', options.xt.configfile
@@ -86,13 +86,18 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       pidPath: options.xt.statedir,
       sourceDir: options.xt.usersrc,
       cwd: options.xt.usersrc,
-      pidFile: path.resolve(options.xt.rundir, 'web-server.pid'),
+      //pidFile: path.resolve(options.xt.rundir, 'web-server.pid'),
 
-      // process env
+      // NODE_ENV
       env: {
+        NODE_ENV: 'production',
+        NODE_VERSION: options.n.version
+      },
+
+      // process env vars
+      spawnWith: {
         SUDO_USER: options.xt.name,
         USER: options.xt.name,
-        NODE_ENV: 'production',
         HOME: options.xt.userhome
       },
 
