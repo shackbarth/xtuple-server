@@ -34,8 +34,9 @@ var xtupled = module.exports = {
     });
   },
 
-  getInstanceProcesses: function (version, name) {
-    var id = lib.util.$({ xt: { name: name, version: version }, type: '*' });
+  getInstanceProcesses: function (name, version) {
+    var id = name + '-' + version;
+    //var id = lib.util.$({ xt: { name: name, version: version }, type: '*' });
     return _.map(glob.sync('/etc/xtuple/' + id + '/processes/*'), function (file) {
       return require(file);
     });
@@ -56,53 +57,52 @@ var xtupled = module.exports = {
 };
 
 program
-  .command('start [version] <name>')
-  .action(function (version, name) {
-    xtupled.start(xtupled.getInstanceProcesses(version, name));
+  .command('start [name] [version]')
+  .action(function (name, version) {
+    if (_.isString(name) && _.isString(version)) {
+      xtupled.start(xtupled.getInstanceProcesses(name, version));
+    }
+    else if (_.isString(name)) {
+      xtupled.start(xtupled.getAccountProcesses(name));
+    }
+    else {
+      xtupled.start(xtupled.getAllProcesses());
+    }
   });
 
 program
-  .command('startall')
-  .action(function () {
-    xtupled.start(xtupled.getAllProcesses());
+  .command('stop [name] [version]')
+  .action(function (name, version) {
+    if (_.isString(name) && _.isString(version)) {
+      xtupled.stop(xtupled.getInstanceProcesses(name, version));
+    }
+    else if (_.isString(name)) {
+      xtupled.stop(xtupled.getAccountProcesses(name));
+    }
+    else {
+      xtupled.stop(xtupled.getAllProcesses());
+    }
   });
 
 program
-  .command('stop <version> <name>')
-  .action(function (id) {
-    xtupled.stop(xtupled.getInstanceProcesses(version, name));
+  .command('restart [name] [version]')
+  .action(function (name, version) {
+    if (_.isString(name) && _.isString(version)) {
+      xtupled.restart(xtupled.getInstanceProcesses(name, version));
+    }
+    else if (_.isString(name)) {
+      xtupled.restart(xtupled.getAccountProcesses(name));
+    }
+    else {
+      xtupled.restart(xtupled.getAllProcesses());
+    }
   });
 
 program
-  .command('stopall')
-  .action(function () {
-    xtupled.stop(xtupled.getAllProcesses());
-  });
-
-program
-  .command('restart <version> <name>')
-  .action(function (version, name) {
-    xtupled.restart(xtupled.getInstanceProcesses(version, name));
-  });
-
-program
-  .command('restartall')
-  .action(function () {
-    xtupled.restart(xtupled.getAllProcesses());
-  });
-
-program
-  .command('status [version] <name>')
-  .action(function (version, name) {
+  .command('status [name] [version]')
+  .action(function (name, version) {
     forever.list(false, function (err, data) {
-      console.dir(data);
-    });
-  });
-
-program
-  .command('statusall')
-  .action(function () {
-    forever.list(false, function (err, data) {
+      // TODO filter and prettify
       console.dir(data);
     });
   });

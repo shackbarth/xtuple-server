@@ -54,9 +54,11 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   uninstall: function (options) {
+    var backup = path.resolve(options.xt.userconfig, 'backup');
+    mkdirp.sync(backup);
     forever.cleanUp();
-    if (fs.existsSync(options.xt.configdir)) {
-      fs.renameSync(options.xt.configdir, path.resolve(options.xt.userconfig, '.uninstalled'));
+    if (fs.existsSync(options.xt.configdir) && !fs.existsSync(backup)) {
+      fs.renameSync(options.xt.configdir, path.resolve(backup, lib.util.$(options)));
     }
   },
 
@@ -103,6 +105,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       spawnWith: {
         SUDO_USER: options.xt.name,
         USER: options.xt.name,
+        USERNAME: options.xt.name,
         HOME: options.xt.userhome
       },
 

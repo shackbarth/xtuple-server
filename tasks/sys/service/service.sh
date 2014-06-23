@@ -20,7 +20,7 @@ help() {
 
   if [[ $EUID -eq 0 ]]; then
     echo -e 'Usage: service xtuple {stop|restart|reload|status|help}'
-    echo -e '       service xtuple <version> <name> {stop|restart|reload|status|help}'
+    echo -e '       service xtuple [version] [name]-[type] {stop|restart|reload|status|help}'
     echo -e ''
     echo -e 'Examples:'
     echo -e '   Restart all instances:        service xtuple restart'
@@ -28,13 +28,13 @@ help() {
     echo -e '   Display status:               service xtuple status'
     echo -e ''
   else
-    echo -e 'Usage: service xtuple <version>-<type> <name> {stop|restart|status|help}'
-    echo -e '   <version> is the xTuple version of the instance'
-    echo -e '   <type>    is either "pilot" or "live"'
+    echo -e 'Usage: service xtuple <name> [version]-[type] {stop|restart|status|help}'
     echo -e '   <name>    is the name of the account (--xt-name)'
+    echo -e '   [version] is the xTuple version of the instance (--xt-version)'
+    echo -e '   [type]    is probably either "pilot" or "live"'
     echo -e ''
-    echo -e 'xTuple Log Path: /var/log/xtuple/<version>/<name>'
-    echo -e 'xTuple Config Path: /etc/xtuple/<version>/<name>'
+    echo -e 'xTuple Log Path: /var/log/xtuple/'
+    echo -e 'xTuple Config Path: /etc/xtuple/'
     echo -e 'Postgres Log Path: /var/log/postgresql/'
     echo -e ''
   fi
@@ -87,7 +87,7 @@ start() {
   if [[ $EUID -eq 0 && -z $ACCOUNT ]]; then
     service nginx start &> /dev/null
     service postgresql start &> /dev/null
-    xtupled startall
+    xtupled start
   fi
   echo -e "Done."
 }
@@ -96,7 +96,7 @@ stop() {
   echo -e "Stopping xTuple services... "
 
   if [[ -z $ACCOUNT ]]; then
-    xtupled stopall
+    xtupled stop
     service postgresql stop &> /dev/null
   else
     xtupled stop $ACCOUNT $VERSION
@@ -111,7 +111,7 @@ restart() {
   if [[ -z $ACCOUNT ]]; then
     service postgresql restart &> /dev/null
     service nginx restart &> /dev/null
-    xtupled restartall
+    xtupled restart
   else
     pg_ctlcluster $PG_VERSION $ACCOUNT-$VERSION restart -m fast &> /dev/null
     xtupled restart $ACCOUNT $VERSION
@@ -126,7 +126,7 @@ reload() {
   if [[ -z $ACCOUNT ]]; then
     service postgresql reload &> /dev/null
     service nginx reload &> /dev/null
-    xtupled restartall
+    xtupled restart
   else
     pg_ctlcluster $PG_VERSION $ACCOUNT-$VERSION reload &> /dev/null
     xtupled restart $ACCOUNT $VERSION
@@ -137,7 +137,7 @@ reload() {
 
 status() {
   if [[ -z $ACCOUNT ]]; then
-    xtupled status $ACCOUNT
+    xtupled status $ACCOUNT $VERSION
   else 
     xtupled status
   fi
