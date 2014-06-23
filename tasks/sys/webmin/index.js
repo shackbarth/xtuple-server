@@ -80,13 +80,6 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     exec('service nginx reload');
   },
 
-  /** @override */
-  uninstall: function (options) {
-    exec('service webmin stop');
-    fs.unlinkSync(path.resolve(options.sys.webminXtuplePath, 'editions.menu'));
-    rimraf.sync(options.sys.webminCustomPath);
-  },
-
   writeConfiguration: function (options) {
     fs.appendFileSync(options.sys.webminConfigFile, [
       'referer=1',
