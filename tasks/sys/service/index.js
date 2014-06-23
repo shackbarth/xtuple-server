@@ -55,6 +55,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   /** @override */
   uninstall: function (options) {
     forever.cleanUp();
+    if (fs.existsSync(options.xt.configdir)) {
+      fs.renameSync(options.xt.configdir, path.resolve(options.xt.userconfig, '.uninstalled'));
+    }
   },
 
   /**
@@ -79,7 +82,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       uid: 'web-server-' + options.pg.cluster.name,
 
       // invocation attributes
-      command: 'sudo -u '+ options.xt.name + ' ' + options.n.bin,
+      command: 'sudo -u '+ options.xt.name + ' ' + options.n.use,
       script: 'node-datasource/main.js',
       options: [
         '-c', options.xt.configfile

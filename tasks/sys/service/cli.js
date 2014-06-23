@@ -68,8 +68,8 @@ program
   });
 
 program
-  .command('stop [version] <name>')
-  .action(function (version, name) {
+  .command('stop <version> <name>')
+  .action(function (id) {
     xtupled.stop(xtupled.getInstanceProcesses(version, name));
   });
 
@@ -80,7 +80,7 @@ program
   });
 
 program
-  .command('restart [version] <name>')
+  .command('restart <version> <name>')
   .action(function (version, name) {
     xtupled.restart(xtupled.getInstanceProcesses(version, name));
   });
