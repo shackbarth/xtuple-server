@@ -12,15 +12,18 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   beforeInstall: function (options) {
-    mkdirp.sync(path.resolve('/usr/local/xtuple/.forever'));
-    fs.writeFileSync(
-      path.resolve('/usr/local/xtuple/.forever/config.json'),
-      JSON.stringify(exports.createForeverConfig(options), null, 2)
-    );
-
-    options.sys.cronfile = path.resolve('/var/spool/cron/crontabs', options.xt.name);
-    if (!fs.existsSync(options.sys.cronfile)) {
-      fs.openSync(options.sys.cronfile, 'w');
+    if (options.planName === 'setup') {
+      mkdirp.sync(path.resolve('/usr/local/xtuple/.forever'));
+      fs.writeFileSync(
+        path.resolve('/usr/local/xtuple/.forever/config.json'),
+        JSON.stringify(exports.createForeverConfig(options), null, 2)
+      );
+    }
+    else {
+      options.sys.cronfile = path.resolve('/var/spool/cron/crontabs', options.xt.name);
+      if (!fs.existsSync(options.sys.cronfile)) {
+        fs.openSync(options.sys.cronfile, 'w');
+      }
     }
   },
 
