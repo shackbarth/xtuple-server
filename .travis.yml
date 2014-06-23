@@ -1,5 +1,9 @@
 language: c
 
+env:
+  - NODE_VERSION=0.8.26
+  - NODE_VERSION=0.10.29
+
 before_install:
   - mv ~/.nvm ~/.nvm.disabled
   - wget git.io/hikK5g -qO- | sudo bash
@@ -13,10 +17,8 @@ install:
   - sudo xtuple-server setup
 
 script: 
-  - sudo npm test
+  - sudo XT_VERSION=4.5.0 npm test
 
 after_failure:
-  - cat npm-debug.log
-  - cat /etc/xtuple/4.5.0/xtservtest/processes/web-server.json
   - cat /var/spool/cron/crontabs/travis
   - cat /var/spool/cron/crontabs/root
