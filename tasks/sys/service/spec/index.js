@@ -1,6 +1,6 @@
 var xtupled = require('../cli'),
   forever = require('forever'),
-  assert = require('require');
+  assert = require('chai');
 
 exports.afterExecute = function (options) {
 
