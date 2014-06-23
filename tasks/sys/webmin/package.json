@@ -17,14 +17,14 @@
   },
   "homepage": "https://github.com/xtuple/xtuple-server",
   "dependencies": {
+    "cp": "^0.1.1",
     "execSync": "^1.0.1-pre",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
     "rimraf": "^2.2.8",
-    "string-format": "^0.2.1",
     "xtuple-server-lib": "^0.9.0",
-    "xtuple-server-nginx-site": "^0.9.4",
-    "xtuple-server-nginx-ssl": "^0.9.4"
+    "xtuple-server-nginx-site": "^0.9.0",
+    "xtuple-server-nginx-ssl": "^0.9.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

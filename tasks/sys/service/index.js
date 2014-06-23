@@ -12,11 +12,19 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   beforeInstall: function (options) {
-    mkdirp.sync(path.resolve('/usr/local/xtuple/.forever'));
-    fs.writeFileSync(
-      path.resolve('/usr/local/xtuple/.forever/config.json'),
-      JSON.stringify(exports.createForeverConfig(options), null, 2)
-    );
+    if (options.planName === 'setup') {
+      mkdirp.sync(path.resolve('/usr/local/xtuple/.forever'));
+      fs.writeFileSync(
+        path.resolve('/usr/local/xtuple/.forever/config.json'),
+        JSON.stringify(exports.createForeverConfig(options), null, 2)
+      );
+    }
+    else {
+      options.sys.cronfile = path.resolve('/var/spool/cron/crontabs', options.xt.name);
+      if (!fs.existsSync(options.sys.cronfile)) {
+        fs.openSync(options.sys.cronfile, 'w');
+      }
+    }
   },
 
   /** @override */
@@ -119,24 +127,4 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       ]
     };
   }
-    /*
-    // link the executable
-    fs.symlinkSync(
-      path.resolve(options.xt.usersrc, 'node-datasource/main.js'),
-      path.resolve(options.sys.sbindir, 'main.js')
-    );
-
-    // write service config files
-    fs.writeFileSync(options.sys.pm2.configfile, options.sys.pm2.template.format(options));
-
-    var start = exec('sudo -Ei HOME={xt.userhome} xtupled start {sys.pm2.configfile}'.format(options));
-
-    if (start.code !== 0) {
-      throw new Error(JSON.stringify(start));
-    }
-
-    exec('sudo -Ei HOME={xt.userhome} xtupled dump'.format(options));
-    exec('service xtuple {xt.version} {xt.name} restart'.format(options));
-  }
-  */
 });

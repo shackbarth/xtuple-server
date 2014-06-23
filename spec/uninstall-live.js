@@ -1,12 +1,10 @@
-var _ = require('lodash'),
-  path = require('path'),
-  planner = require('xtuple-server/spec/planner');
+var planner = require('xtuple-server');
 
 describe('uninstall-live', function () {
-  this.planObject = require('../plans')['uninstall-live'];
-  this.options = {
+  var planObject = require('../plans')['uninstall-live'];
+  var options = {
     planName: 'uninstall-live',
-    plan: this.planObject.plan,
+    plan: planObject.plan,
     type: 'live',
     requiresRoot: true,
     xt: {
@@ -18,5 +16,10 @@ describe('uninstall-live', function () {
       capacity: 8
     }
   };
-  planner.describe(this);
+
+  it('should run uninstall', function () {
+    planner.compileOptions(options.plan, options);
+    planner.verifyOptions(options.plan, options);
+    planner.uninstall(options);
+  });
 });

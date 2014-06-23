@@ -16,11 +16,7 @@ script:
   - sudo npm test
 
 after_failure:
-  - env
   - cat npm-debug.log
-  - cat bootstrap.log
-  - id xtservtest
-  - id postgres
-  - pg_lsclusters
-  - ls -l /etc/xtuple/4.5.0/xtservtest/processes
   - cat /etc/xtuple/4.5.0/xtservtest/processes/web-server.json
+  - cat /var/spool/cron/crontabs/travis
+  - cat /var/spool/cron/crontabs/root
