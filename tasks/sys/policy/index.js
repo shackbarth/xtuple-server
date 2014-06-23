@@ -1,5 +1,5 @@
 var lib = require('xtuple-server-lib'),
-  devPolicy = require('xtuple-server-dev-policy'),
+  localPolicy = require('xtuple-server-local-policy'),
   exec = require('execSync').exec,
   _ = require('lodash'),
   path = require('path'),
@@ -11,11 +11,11 @@ var lib = require('xtuple-server-lib'),
 /**
  * Setup machine access policies.
  */
-_.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
+_.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   beforeTask: function (options) {
-    devPolicy.beforeTask(options);
+    localPolicy.beforeTask(options);
 
     if (options.planName === 'setup') {
       options.sys.policy.remotePassword = lib.util.getPassword();
@@ -119,7 +119,6 @@ _.extend(exports, devPolicy, /** @exports xtuple-server-sys-policy */ {
         'chown -R {xt.name}:xtuser {xt.configdir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.statedir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.rundir}'.format(options),
-        'chown -R {xt.name}:xtuser {sys.sbindir}'.format(options),
         'chown -R {xt.name}:ssl-cert {xt.ssldir}'.format(options)
       ],
       user_mode = [

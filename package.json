@@ -4,6 +4,7 @@
   "version": "0.9.1",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
+    "cron-tab": "^1.1.0",
     "glob": "^4.0.2",
     "xtuple-server-lib": "^0.9.0",
     "xtuple-server-pg-snapshotmgr": "^0.9.0",
@@ -65,7 +66,7 @@
     "enterprise"
   ],
   "scripts": {
-    "pretest": "XT_VERSION=0346ebbf mocha -R spec spec/uninstall-live.js -b",
+    "pretest": "XT_VERSION=0346ebbf mocha spec/uninstall-live.js -b",
     "test": "XT_VERSION=0346ebbf mocha -R spec spec/ -b",
     "plan-install": "node link-core.js"
   },
