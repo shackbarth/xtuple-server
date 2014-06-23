@@ -58,11 +58,12 @@ _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
   installService: function (options) {
     var dbs = require(options.xt.configfile).datasource.databases;
     _.each(dbs, function (db) {
-      lib.createJob('backup-database', options.pg.schedule, [
+      lib.createJob('backup-database', options.type, options.pg.snapschedule, [
         '--xt-name',    options.xt.name,
         '--xt-version', options.xt.version,
         '--pg-dbname',  db
       ], options);
+
     });
   },
 
