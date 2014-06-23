@@ -91,8 +91,8 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       ],
       root: options.xt.homedir,
       pidPath: options.xt.statedir,
-      sourceDir: options.xt.usersrc,
-      cwd: options.xt.usersrc,
+      sourceDir: options.xt.coredir,
+      cwd: options.xt.coredir,
       //pidFile: path.resolve(options.xt.rundir, 'web-server.pid'),
 
       // NODE_ENV
