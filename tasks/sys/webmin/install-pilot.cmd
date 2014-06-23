@@ -1,4 +1,4 @@
-xtuple-server install --xt-name $xtName --xt-version $xtVersion --xt-edition $xtEdition $xtDemo $xtQuickstart --xt-maindb $xtMaindb $pgPilot --xt-adminpw $xtAdminpw --nginx-domain $nginxDomain --nginx-inkey $nginxInkey --nginx-incrt $nginxIncrt --nginx-inzip $nginxInzip --pg-slots $pgSlots --pg-capacity $pgCapacity $pgEnableSnapshots
+xtuple-server install-pilot --xt-name $xtName --xt-version $xtVersion --xt-edition $xtEdition $xtDemo $xtQuickstart --xt-maindb $xtMaindb $pgPilot --xt-adminpw $xtAdminpw --nginx-domain $nginxDomain --nginx-inkey $nginxInkey --nginx-incrt $nginxIncrt --nginx-inzip $nginxInzip --pg-slots $pgSlots --pg-capacity $pgCapacity $pgEnableSnapshots
 New xTuple Deployment (xtuple-server install)
 root 0 0 0 0 1 3600 0 -
 xtName:0::1,1:Account Name

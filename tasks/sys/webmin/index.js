@@ -7,6 +7,7 @@ var lib = require('xtuple-server-lib'),
   _ = require('lodash'),
   path = require('path'),
   mkdirp = require('mkdirp'),
+  glob = require('glob'),
   rimraf = require('rimraf'),
   cp = require('cp'),
   ssl = require('xtuple-server-nginx-ssl'),
@@ -113,9 +114,10 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   },
 
   installCustomCommands: function (options) {
-    exec('cp ' + path.resolve(__dirname) + '/*.cmd ' + options.sys.webminCustomPath);
-    exec('cp ' + path.resolve(__dirname) + '/*.html ' + options.sys.webminCustomPath);
-    exec('cp ' + path.resolve(__dirname, 'editions.menu') + ' ' + options.sys.webminXtuplePath + '/editions.menu');
+    _.each(glob.sync(path.resolve(__dirname, '*.cmd')), function (file, i) {
+      fs.renameSync(file, path.resolve(options.sys.webminCustomPath, (i + 1000) + '.cmd'));
+    });
+    cp.sync(path.resolve(__dirname, '*.menu'), path.resolve(options.sys.webminXtuplePath));
   },
 
   installUsers: function (options) {
