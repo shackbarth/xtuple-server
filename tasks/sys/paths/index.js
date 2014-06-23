@@ -1,5 +1,4 @@
 var lib = require('xtuple-server-lib'),
-  localPaths = require('xtuple-server-local-paths'),
   exec = require('execSync').exec,
   rimraf = require('rimraf'),
   mkdirp = require('mkdirp'),
@@ -10,7 +9,7 @@ var lib = require('xtuple-server-lib'),
 /**
  * Sets up system file and directory paths
  */
-_.extend(exports, localPaths, /** @exports xtuple-server-sys-paths */ {
+_.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
 
   etcXtuple: path.resolve(prefix, 'etc/xtuple'),
   usrLocal: path.resolve(prefix, 'usr/local'),
