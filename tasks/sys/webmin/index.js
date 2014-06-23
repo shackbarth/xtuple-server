@@ -36,6 +36,8 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   beforeInstall: function (options) {
     mkdirp.sync('/srv/ssl');
 
+    options.nginx || (options.nginx = { });
+
     options.nginx.inkey = options.sys.webminkey;
     options.nginx.incrt = options.sys.webmincrt;
     options.nginx.outkey = path.resolve('/srv/ssl/webmin.key');
