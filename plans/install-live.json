@@ -16,11 +16,15 @@
     },
     {
       "name": "pg",
-      "tasks": [ "hba", "tuner", "config", "snapshotmgr" ]
+      "tasks": [ "hba", "tuner", "config" ]
     },
     {
       "name": "xt",
       "tasks": [ "install", "config", "database" ]
+    },
+    {
+      "name": "pg",
+      "tasks": [ "snapshotmgr" ]
     },
     {
       "name": "sys",
