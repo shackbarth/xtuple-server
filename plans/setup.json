@@ -17,11 +17,6 @@
       "options": { "validate": false }
     },
     {
-      "name": "nginx",
-      "tasks": [ "site", "ssl" ],
-      "options": { "execute": false }
-    },
-    {
       "name": "sys",
       "tasks": [ "cups", "webmin" ]
     }
