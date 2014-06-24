@@ -59,13 +59,15 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
   /** @override */
   executeTask: function (options) {
+    var installBin = path.resolve(__dirname, 'node_modules/.bin/install');
     exec([
       'sudo -E',
       'WEBMIN_USER=xtremote',
       'WEBMIN_PASSWORD=', options.sys.policy.remotePassword,
-      'node node_modules/.bin/install'
+      'node '+ installBin
     ].join(' '));
 
+    webmin.setupPermissions(options);
     webmin.writeConfiguration(options);
     webmin.installCustomCommands(options);
     webmin.installUsers(options);
@@ -78,6 +80,12 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     exec('service nginx reload');
   },
 
+  setupPermissions: function (options) {
+    fs.chmodSync(options.sys.etcWebmin, 'a+xr');
+    fs.chmodSync(options.sys.webminCustomPath, 'a+xr');
+    fs.chmodSync(options.sys.webminXtuplePath, 'a+xr');
+  },
+
   writeConfiguration: function (options) {
     fs.appendFileSync(options.sys.webminConfigFile, [
       'referer=1',
@@ -88,7 +96,6 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     fs.appendFileSync(options.sys.webminMiniservConfigFile, [
       'bind=127.0.0.1',
       'sockets=',
-      'ssl=0',
       'ssl_redirect=0'
     ].join('\n').trim());
 
@@ -105,10 +112,15 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   },
 
   installCustomCommands: function (options) {
+    // copy commands
     _.each(glob.sync(path.resolve(__dirname, '*.cmd')), function (file, i) {
-      fs.renameSync(file, path.resolve(options.sys.webminCustomPath, (i + 1000) + '.cmd'));
+      cp.sync(file, path.resolve(options.sys.webminCustomPath, (i + 1000) + '.cmd'));
     });
-    cp.sync(path.resolve(__dirname, '*.menu'), path.resolve(options.sys.webminXtuplePath));
+
+    // copy menus
+    _.each(glob.sync(path.resolve(__dirname, '*.menu')), function (file) {
+      cp.sync(file, options.sys.webminCustomPath);
+    });
   },
 
   installUsers: function (options) {
