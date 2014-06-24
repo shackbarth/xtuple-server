@@ -15,7 +15,7 @@ describe('install-live', function () {
       demo: true
     },
     pg: {
-      version: process.env.XT_PG_VERSION,
+      version: '9.3',
       capacity: 8
     }
   };
