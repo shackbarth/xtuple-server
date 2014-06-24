@@ -8,7 +8,6 @@ var lib = require('xtuple-server-lib'),
   path = require('path'),
   mkdirp = require('mkdirp'),
   glob = require('glob'),
-  rimraf = require('rimraf'),
   cp = require('cp'),
   ssl = require('xtuple-server-nginx-ssl'),
   site = require('xtuple-server-nginx-site'),
@@ -45,7 +44,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.nginx.outcrt = path.resolve('/srv/ssl/webmin.crt');
     options.nginx.domain = options.sys.webmindomain;
 
-    options.sys.etcWebmin = path.resolve('/etc/webmin');
+    options.sys.etcWebmin = path.resolve(__dirname, 'node_modules/webmin/etc');
     options.sys.webminConfigFile = path.resolve(options.sys.etcWebmin, 'config');
     options.sys.webminMiniservConfigFile = path.resolve(options.sys.etcWebmin, 'miniserv.conf');
     options.sys.webminCustomPath = path.resolve(options.sys.etcWebmin, 'custom');
@@ -60,14 +59,13 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
   /** @override */
   executeTask: function (options) {
-    var debFile = 'webmin_1.680_all.deb';
-    // TODO if debian
-    if (!fs.existsSync(path.resolve(debFile))) {
-      exec('wget https://s3.amazonaws.com/com.xtuple.deploy-assets/'+ debFile);
-    }
-    exec('dpkg --install '+ debFile);
+    exec([
+      'sudo -E',
+      'WEBMIN_USER=xtremote',
+      'WEBMIN_PASSWORD=', options.sys.policy.remotePassword,
+      'node node_modules/.bin/install'
+    ].join(' '));
 
-    webmin.deleteUnusedModules(options);
     webmin.writeConfiguration(options);
     webmin.installCustomCommands(options);
     webmin.installUsers(options);
@@ -127,35 +125,6 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.nginx.enabledSite = path.resolve('/etc/nginx/sites-enabled/webmin-site');
     options.nginx.siteTemplateFile = path.resolve(__dirname, 'webmin-site');
     site.writeSiteConfig(options);
-  },
-
-  deleteUnusedModules: function (options) {
-    var mod = '/usr/share/webmin';
-
-    rimraf.sync(path.resolve(mod, 'bind8'));
-    rimraf.sync(path.resolve(mod, 'burner'));
-    rimraf.sync(path.resolve(mod, 'pserver'));
-    rimraf.sync(path.resolve(mod, 'exim'));
-    rimraf.sync(path.resolve(mod, 'fetchmail'));
-    rimraf.sync(path.resolve(mod, 'file'));
-    rimraf.sync(path.resolve(mod, 'grub'));
-    rimraf.sync(path.resolve(mod, 'jabber'));
-    rimraf.sync(path.resolve(mod, 'krb5'));
-    rimraf.sync(path.resolve(mod, 'ldap-client'));
-    rimraf.sync(path.resolve(mod, 'ldap-server'));
-    rimraf.sync(path.resolve(mod, 'ldap-useradmin'));
-    rimraf.sync(path.resolve(mod, 'mysql'));
-    rimraf.sync(path.resolve(mod, 'postfix'));
-    rimraf.sync(path.resolve(mod, 'qmailadmin'));
-    rimraf.sync(path.resolve(mod, 'iscsi-client'));
-    rimraf.sync(path.resolve(mod, 'iscsi-server'));
-    rimraf.sync(path.resolve(mod, 'iscsi-target'));
-    rimraf.sync(path.resolve(mod, 'ajaxterm'));
-    rimraf.sync(path.resolve(mod, 'adsl-client'));
-    rimraf.sync(path.resolve(mod, 'apache'));
-    rimraf.sync(path.resolve(mod, 'htaccess-htpasswd'));
-    rimraf.sync(path.resolve(mod, 'cpan'));
-    rimraf.sync(path.resolve(mod, 'pap'));
-    rimraf.sync(path.resolve(mod, 'ppp-client'));
   }
+
 });
