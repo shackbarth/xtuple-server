@@ -4,6 +4,8 @@ var _ = require('lodash'),
   program = require('commander'),
   forever = require('forever'),
   glob = require('glob'),
+  lib = require('xtuple-server-lib'),
+  path = require('path'),
   fs = require('fs');
 
 var xtupled = module.exports = {
@@ -16,31 +18,38 @@ var xtupled = module.exports = {
 
   stop: function (descriptors) {
     _.each(descriptors, function (descriptor) {
-      forever.stop(descriptor.uid);
+      try {
+        forever.stop(descriptor.uid);
+      }
+      catch (e) {
+        console.log(descriptor.uid + ' already stopped.');
+      }
     });
   },
 
   restart: function (descriptors) {
     _.each(descriptors, function (descriptor) {
-      forever.stop(descriptor.uid);
-      forever.startDaemon(descriptor.script, descriptor);
+      xtupled.stop([ descriptor ]);
+      xtupled.start([ descriptor ]);
     });
   },
 
-  getInstanceProcesses: function (version, name) {
-    return _.map(glob.sync('/etc/xtuple' + version + '/' + name + '/processes/*'), function (file) {
+  getInstanceProcesses: function (name, version) {
+    var id = name + '-' + version;
+    //var id = lib.util.$({ xt: { name: name, version: version }, type: '*' });
+    return _.map(glob.sync('/etc/xtuple/' + id + '/processes/*'), function (file) {
       return require(file);
     });
   },
 
   getAccountProcesses: function (name) {
-    return _.map(glob.sync('/etc/xtuple/*/' + name + '/processes/*'), function (file) {
+    return _.map(glob.sync('/etc/xtuple/' + name + '-*/processes/*'), function (file) {
       return require(file);
     });
   },
 
   getAllProcesses: function () {
-    return _.map(glob.sync('/etc/xtuple/*/*/processes/*'), function (file) {
+    return _.map(glob.sync('/etc/xtuple/*/processes/*'), function (file) {
       console.log(file);
       return require(file);
     });
@@ -48,58 +57,63 @@ var xtupled = module.exports = {
 };
 
 program
-  .command('start [version] <name>')
-  .action(function (version, name) {
-    xtupled.start(xtupled.getInstanceProcesses(version, name));
+  .command('start [name] [version]')
+  .action(function (name, version) {
+    if (_.isString(name) && _.isString(version)) {
+      xtupled.start(xtupled.getInstanceProcesses(name, version));
+    }
+    else if (_.isString(name)) {
+      xtupled.start(xtupled.getAccountProcesses(name));
+    }
+    else {
+      xtupled.start(xtupled.getAllProcesses());
+    }
   });
 
 program
-  .command('startall')
-  .action(function () {
-    xtupled.start(xtupled.getAllProcesses());
+  .command('stop [name] [version]')
+  .action(function (name, version) {
+    if (_.isString(name) && _.isString(version)) {
+      xtupled.stop(xtupled.getInstanceProcesses(name, version));
+    }
+    else if (_.isString(name)) {
+      xtupled.stop(xtupled.getAccountProcesses(name));
+    }
+    else {
+      xtupled.stop(xtupled.getAllProcesses());
+    }
   });
 
 program
-  .command('stop [version] <name>')
-  .action(function (version, name) {
-    xtupled.stop(xtupled.getInstanceProcesses(version, name));
+  .command('restart [name] [version]')
+  .action(function (name, version) {
+    if (_.isString(name) && _.isString(version)) {
+      xtupled.restart(xtupled.getInstanceProcesses(name, version));
+    }
+    else if (_.isString(name)) {
+      xtupled.restart(xtupled.getAccountProcesses(name));
+    }
+    else {
+      xtupled.restart(xtupled.getAllProcesses());
+    }
   });
 
 program
-  .command('stopall')
-  .action(function () {
-    xtupled.stop(xtupled.getAllProcesses());
-  });
-
-program
-  .command('restart [version] <name>')
-  .action(function (version, name) {
-    xtupled.restart(xtupled.getInstanceProcesses(version, name));
-  });
-
-program
-  .command('restartall')
-  .action(function () {
-    xtupled.restart(xtupled.getAllProcesses());
-  });
-
-program
-  .command('status [version] <name>')
-  .action(function (version, name) {
+  .command('status [name] [version]')
+  .action(function (name, version) {
     forever.list(false, function (err, data) {
-      console.dir(data);
-    });
-  });
-
-program
-  .command('statusall')
-  .action(function () {
-    forever.list(false, function (err, data) {
+      // TODO filter and prettify
       console.dir(data);
     });
   });
 
 if (require.main === module) {
-  forever.load(require('/usr/local/xtuple/.forever/config'));
+  var home = '/usr/local/xtuple';
+  process.env.HOME = home;
+  process.chdir(process.env.HOME);
+  forever.load({
+    root: path.resolve(home, '.forever'),
+    pidPath: path.resolve(home, '.forever', 'pids')
+  });
   program.parse(process.argv);
 }

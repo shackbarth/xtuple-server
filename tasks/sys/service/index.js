@@ -47,12 +47,19 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   afterInstall: function (options) {
-    xtupled.restart(xtupled.getInstanceProcesses(options.xt.version, options.xt.name));
+    if (/^install/.test(options.planName)) {
+      xtupled.restart(xtupled.getInstanceProcesses(options.xt.version, options.xt.name));
+    }
   },
 
   /** @override */
   uninstall: function (options) {
+    var backup = path.resolve(options.xt.userconfig, 'backup');
+    mkdirp.sync(backup);
     forever.cleanUp();
+    if (fs.existsSync(options.xt.configdir) && !fs.existsSync(backup)) {
+      fs.renameSync(options.xt.configdir, path.resolve(backup, lib.util.$(options)));
+    }
   },
 
   /**
@@ -77,22 +84,27 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       uid: 'web-server-' + options.pg.cluster.name,
 
       // invocation attributes
-      command: 'sudo -u '+ options.xt.name + ' node',
+      command: 'sudo -u '+ options.xt.name + ' ' + options.n.use,
       script: 'node-datasource/main.js',
       options: [
         '-c', options.xt.configfile
       ],
       root: options.xt.homedir,
       pidPath: options.xt.statedir,
-      sourceDir: options.xt.usersrc,
-      cwd: options.xt.usersrc,
-      pidFile: path.resolve(options.xt.rundir, 'web-server.pid'),
+      sourceDir: options.xt.coredir,
+      cwd: options.xt.coredir,
 
-      // process env
+      // NODE_ENV
       env: {
+        NODE_ENV: 'production',
+        NODE_VERSION: options.n.version
+      },
+
+      // process env vars
+      spawnWith: {
         SUDO_USER: options.xt.name,
         USER: options.xt.name,
-        NODE_ENV: 'production',
+        USERNAME: options.xt.name,
         HOME: options.xt.userhome
       },
 

@@ -115,6 +115,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
       ],
       user_ownership = [
         'chown -R :xtuser {pg.logdir}'.format(options),
+        'chown -R {xt.name}:xtuser /usr/local/{xt.name}'.format(options),
         'chown -R {xt.name}:xtuser {xt.logdir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.configdir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.statedir}'.format(options),
@@ -122,6 +123,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
         'chown -R {xt.name}:ssl-cert {xt.ssldir}'.format(options)
       ],
       user_mode = [
+        'chmod -R u=rwx /usr/local/{xt.name}'.format(options),
         'chmod -R u=rwx,g=wx {xt.logdir}'.format(options),
         'chmod -R u=rwx,g=wx {pg.logdir}'.format(options),
         'chmod -R u=rwx,g-rwx {xt.statedir}'.format(options),

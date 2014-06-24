@@ -20,6 +20,6 @@ describe('uninstall-live', function () {
   it('should run uninstall', function () {
     planner.compileOptions(options.plan, options);
     planner.verifyOptions(options.plan, options);
-    planner.uninstall(options);
+    planner.execute(options.plan, options);
   });
 });
