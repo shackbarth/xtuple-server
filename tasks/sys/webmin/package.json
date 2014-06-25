@@ -28,11 +28,11 @@
     "request": "^2.36.0",
     "rimraf": "^2.2.8",
     "tar": "^0.1.19",
+    "usermin": "^1.6.0-r3",
+    "webmin": "^1.6.90-r3",
     "xtuple-server-lib": "^0.9.0",
     "xtuple-server-nginx-site": "^0.9.0",
-    "xtuple-server-nginx-ssl": "^0.9.0",
-    "webmin": "^1.69.0",
-    "usermin": "^1.60.0"
+    "xtuple-server-nginx-ssl": "^0.9.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",
