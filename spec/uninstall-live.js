@@ -12,14 +12,16 @@ describe('uninstall-live', function () {
       version: process.env.XT_VERSION
     },
     pg: {
-      version: process.env.XT_PG_VERSION,
+      version: '9.3',
       capacity: 8
     }
   };
 
-  it('should run uninstall', function () {
+  it('should run uninstall', function (done) {
     planner.compileOptions(options.plan, options);
     planner.verifyOptions(options.plan, options);
-    planner.execute(options.plan, options);
+    planner.execute(options.plan, options)
+      .then(done)
+      .fail(assert.fail);
   });
 });
