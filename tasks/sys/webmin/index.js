@@ -117,6 +117,11 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       'width=',
       'wrap='
     ].join('\n').trim());
+
+    fs.symlinkSync(options.sys.webminCustomPath, path.resolve('/etc/usermin/custom'));
+    fs.symlinkSync(options.sys.webminXtuplePath, path.resolve('/etc/usermin/xtuple'));
+    fs.symlinkSync(options.sys.webminMiniservConfigFile, path.resolve('/etc/usermin/miniserv.conf'));
+    fs.symlinkSync('/etc/webmin/miniserv.users', '/etc/usermin/miniserv.users');
   },
 
   installCustomCommands: function (options) {
