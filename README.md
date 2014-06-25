@@ -3,7 +3,7 @@
 
 ### Build From Source
 1. `wget git.io/hikK5g -qO- | sudo bash`
-2. `git clone --recursive git@github.com:xtuple/xtuple-server-commercial.git`
+2. `git clone --recursive https://github.com/xtuple/xtuple-server-commercial.git`
 3. `npm install nde -g`
 4. `nde install`
 5. `npm install -g`
