@@ -44,7 +44,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.nginx.outcrt = path.resolve('/srv/ssl/webmin.crt');
     options.nginx.domain = options.sys.webmindomain;
 
-    options.sys.etcWebmin = path.resolve(__dirname, 'node_modules/webmin/etc');
+    options.sys.etcWebmin = '/etc/webmin';
     options.sys.webminConfigFile = path.resolve(options.sys.etcWebmin, 'config');
     options.sys.webminMiniservConfigFile = path.resolve(options.sys.etcWebmin, 'miniserv.conf');
     options.sys.webminCustomPath = path.resolve(options.sys.etcWebmin, 'custom');
@@ -59,12 +59,17 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
   /** @override */
   executeTask: function (options) {
-    var installBin = path.resolve(__dirname, 'node_modules/.bin/install');
+    var bin = path.resolve(__dirname, 'node_modules/.bin');
     exec([
-      'sudo -E',
-      'WEBMIN_USER=xtremote',
-      'WEBMIN_PASSWORD=', options.sys.policy.remotePassword,
-      'node '+ installBin
+      'sudo node ', path.resolve(bin, 'webmin'),
+      '--username xtremote',
+      '--password', options.sys.policy.remotePassword,
+    ].join(' '));
+
+    exec([
+      'sudo node ', path.resolve(bin, 'usermin'),
+      '--username xtremote',
+      '--password', options.sys.policy.remotePassword,
     ].join(' '));
 
     webmin.setupPermissions(options);
@@ -76,7 +81,6 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
   /** @override */
   afterTask: function (options) {
-    exec('service webmin restart');
     exec('service nginx reload');
   },
 

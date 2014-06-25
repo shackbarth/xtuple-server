@@ -5,7 +5,9 @@
   "description": "xTuple Server Task [sys.webmin]: set up webmin and integrate it with the xTuple Server",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha spec/ -R spec"
+    "test": "./node_modules/.bin/mocha spec/ -R spec",
+    "webmin": "./node_modules/.bin/webmin"
+    "usermin": "./node_modules/.bin/usermin"
   },
   "repository": {
     "type": "git",
@@ -26,10 +28,11 @@
     "request": "^2.36.0",
     "rimraf": "^2.2.8",
     "tar": "^0.1.19",
-    "webmin": "^1.69.0-r1",
     "xtuple-server-lib": "^0.9.0",
     "xtuple-server-nginx-site": "^0.9.0",
-    "xtuple-server-nginx-ssl": "^0.9.0"
+    "xtuple-server-nginx-ssl": "^0.9.0",
+    "webmin": "^1.69.0",
+    "usermin": "^1.60.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",
