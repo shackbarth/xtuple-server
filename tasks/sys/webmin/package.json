@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha spec/ -R spec",
-    "webmin": "./node_modules/.bin/webmin"
+    "webmin": "./node_modules/.bin/webmin",
     "usermin": "./node_modules/.bin/usermin"
   },
   "repository": {
