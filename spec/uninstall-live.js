@@ -18,12 +18,10 @@ describe('uninstall-live', function () {
     }
   };
 
-  it('should run uninstall', function (done) {
+  it('should run uninstall', function () {
     this.timeout(30000);
     planner.compileOptions(options.plan, options);
     planner.verifyOptions(options.plan, options);
-    planner.execute(options.plan, options)
-      .then(done)
-      .fail(done);
+    planner.execute(options.plan, options);
   });
 });
