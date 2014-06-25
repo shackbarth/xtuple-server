@@ -1,4 +1,5 @@
-var planner = require('xtuple-server');
+var planner = require('xtuple-server'),
+  assert = require('chai').assert;
 
 describe('uninstall-live', function () {
   var planObject = require('../plans')['uninstall-live'];

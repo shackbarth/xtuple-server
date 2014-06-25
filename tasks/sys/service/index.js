@@ -31,7 +31,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   beforeTask: function (options) {
     options.sys.initd = path.resolve('/etc/init.d/xtuple');
     options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
-    exec('chown {xt.name}:{xt.name} {xt.processdir}'.format(options));
+    exec('chown -R {xt.name}:{xt.name} {xt.processdir}'.format(options));
     mkdirp.sync(options.xt.processdir);
   },
 
