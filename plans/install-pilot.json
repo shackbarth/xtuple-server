@@ -1,0 +1,35 @@
+{
+  "description": "Install xTuple Pilot Instance",
+  "types": [ "pilot" ],
+  "plan": [
+    {
+      "name": "sys",
+      "tasks": [ "paths", "policy" ]
+    },
+    {
+      "name": "pg",
+      "tasks": [ "cluster" ]
+    },
+    {
+      "name": "nginx",
+      "tasks": [ "ssl", "site", "hosts" ]
+    },
+    {
+      "name": "pg",
+      "tasks": [ "hba", "tuner", "config" ]
+    },
+    {
+      "name": "xt",
+      "tasks": [ "install", "test", "config", "database" ]
+    },
+    {
+      "name": "pg",
+      "tasks": [ "snapshotmgr" ]
+    },
+    {
+      "name": "sys",
+      "tasks": [ "cups", "ssh", "service", "report" ]
+    }
+  ]
+}
+
