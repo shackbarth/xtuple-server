@@ -127,7 +127,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
     // copy menus
     _.each(glob.sync(path.resolve(__dirname, '*.menu')), function (file) {
-      cp.sync(file, options.sys.webminCustomPath);
+      cp.sync(file, path.resolve(options.sys.webminCustomPath, path.basename(file)));
     });
   },
 
