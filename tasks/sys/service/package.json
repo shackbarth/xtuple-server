@@ -7,6 +7,9 @@
   "scripts": {
     "test": "mocha spec/ -R spec"
   },
+  "bin": {
+    "xtupled": "cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/xtuple/xtuple-server"
