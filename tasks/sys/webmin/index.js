@@ -89,9 +89,9 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   },
 
   setupPermissions: function (options) {
-    fs.chmodSync(options.sys.etcWebmin, 'a+xr');
-    fs.chmodSync(options.sys.webminCustomPath, 'a+xr');
-    fs.chmodSync(options.sys.webminXtuplePath, 'a+xr');
+    fs.chmodSync(options.sys.etcWebmin, '775');
+    fs.chmodSync(options.sys.webminCustomPath, '775');
+    fs.chmodSync(options.sys.webminXtuplePath, '775');
   },
 
   writeConfiguration: function (options) {
