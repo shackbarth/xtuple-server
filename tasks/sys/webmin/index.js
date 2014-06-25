@@ -60,20 +60,21 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   /** @override */
   executeTask: function (options) {
     var bin = path.resolve(__dirname, 'node_modules/.bin');
-    var webmin = exec([
+    var installWebmin = exec([
       'node ', path.resolve(bin, 'webmin'), 'install',
       '--username xtremote',
       '--password', options.sys.policy.remotePassword,
     ].join(' '));
 
-    var usermin = exec([
+    var installUsermin = exec([
       'node ', path.resolve(bin, 'usermin'), 'install',
       '--username xtremote',
       '--password', options.sys.policy.remotePassword,
+      '--port 10001'
     ].join(' '));
 
-    console.log(webmin.stdout);
-    console.log(usermin.stdout);
+    console.log(installWebmin.stdout);
+    console.log(installUsermin.stdout);
 
     webmin.setupPermissions(options);
     webmin.writeConfiguration(options);
