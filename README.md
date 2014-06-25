@@ -7,6 +7,6 @@
 3. `nde install`
 4. `npm install -g`
 5. `npm run plan-install`
-6 `sudo xtuple-server setup`
+6. `sudo xtuple-server setup`
 
-# [Visit the Wiki](https://github.com/xtuple/xtuple-server/wiki)
+# [Visit the Wiki](https://github.com/xtuple/xtuple-server/wiki) for Usage Info
