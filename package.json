@@ -71,9 +71,6 @@
     "test": "mocha -R spec spec/ -b",
     "plan-install": "node link-core.js"
   },
-  "bin": {
-    "xtupled": "node_modules/xtuple-server-sys-service/cli.js"
-  },
   "preferGlobal": true,
   "engines": {
     "node": ">=0.10.26 <0.11"

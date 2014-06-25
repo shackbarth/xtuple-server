@@ -61,13 +61,13 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   executeTask: function (options) {
     var bin = path.resolve(__dirname, 'node_modules/.bin');
     var installWebmin = exec([
-      'node ', path.resolve(bin, 'webmin'), 'install',
+      'sudo node ', path.resolve(bin, 'webmin'), 'install',
       '--username xtremote',
       '--password', options.sys.policy.remotePassword,
     ].join(' '));
 
     var installUsermin = exec([
-      'node ', path.resolve(bin, 'usermin'), 'install',
+      'sudo node ', path.resolve(bin, 'usermin'), 'install',
       '--username xtremote',
       '--password', options.sys.policy.remotePassword,
       '--port 10001'
@@ -89,9 +89,9 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   },
 
   setupPermissions: function (options) {
-    fs.chmodSync(options.sys.etcWebmin, 'a+xr');
-    fs.chmodSync(options.sys.webminCustomPath, 'a+xr');
-    fs.chmodSync(options.sys.webminXtuplePath, 'a+xr');
+    fs.chmodSync(options.sys.etcWebmin, '775');
+    fs.chmodSync(options.sys.webminCustomPath, '775');
+    fs.chmodSync(options.sys.webminXtuplePath, '775');
   },
 
   writeConfiguration: function (options) {
@@ -127,7 +127,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
     // copy menus
     _.each(glob.sync(path.resolve(__dirname, '*.menu')), function (file) {
-      cp.sync(file, options.sys.webminCustomPath);
+      cp.sync(file, path.resolve(options.sys.webminCustomPath, path.basename(file)));
     });
   },
 

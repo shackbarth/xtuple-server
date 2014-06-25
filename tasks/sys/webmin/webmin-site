@@ -1,6 +1,9 @@
 upstream webmin {
   server 127.0.0.1:10000;
 }
+upstream usermin {
+  server 127.0.0.1:10001;
+}
 
 # auto redirect http -> https
 server {
@@ -30,6 +33,14 @@ server {
   # support for large-ish db installations via webmin
   client_max_body_size 32G;
 
+  location /usermin/ {
+    proxy_redirect http://$host:10001/ /usermin/;
+    proxy_pass http://usermin/;
+    proxy_set_header Host $host;
+
+    # increase read timeout to 1 hour
+    proxy_read_timeout 3600s;
+  }
   location /webmin/ {
     proxy_redirect http://$host:10000/ /webmin/;
     proxy_pass http://webmin/;
