@@ -67,9 +67,8 @@
     "enterprise"
   ],
   "scripts": {
-    "pretest": "mocha -R spec spec/uninstall-live.js -b",
-    "test": "mocha -R spec spec/ -b",
-    "plan-install": "node link-core.js"
+    "postinstall": "node link-core.js",
+    "test": "node node_modules/xtuple-server/spec"
   },
   "preferGlobal": true,
   "engines": {
