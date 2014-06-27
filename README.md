@@ -7,8 +7,7 @@
 3. `npm install nde -g`
 4. `cd xtuple-server-commercial`
 5. `nde install`
-6. `npm install -g`
-7. `npm run plan-install`
-8. `sudo xtuple-server setup`
+6. `sudo xtuple-server setup`
+7. `sudo -E NODE_VERSION=0.8.26 xtuple-server install-pilot --xt-name servertest --xt-version 4.5.0 --xt-demo`
 
 # [Visit the Wiki](https://github.com/xtuple/xtuple-server/wiki) for Usage Info
