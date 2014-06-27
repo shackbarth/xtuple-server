@@ -70,9 +70,6 @@
     "postinstall": "node link-core.js",
     "test": "node node_modules/xtuple-server/spec"
   },
-  "bin": {
-    "xtupled": "./node_modules/xtuple-server-sys-service/cli.js"
-  },
   "preferGlobal": true,
   "engines": {
     "node": ">=0.10.26 <0.11"
