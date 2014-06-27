@@ -50,6 +50,13 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.sys.webminCustomPath = path.resolve(options.sys.etcWebmin, 'custom');
     options.sys.webminCustomConfigFile = path.resolve(options.sys.webminCustomPath, 'config');
     options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
+
+    if (fs.existsSync(options.sys.etcWebmin)) {
+      throw new Error('Webmin seems to already be installed. Please uninstall it and try again');
+    }
+    if (fs.existsSync('/etc/usermin')) {
+      throw new Error('Usermin seems to already be installed. Please uninstall it and try again');
+    }
   },
 
   /** @override */
