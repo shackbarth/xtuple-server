@@ -39,7 +39,8 @@
     "xtuple-server": "^0.9.0"
   },
   "globalDependencies": {
-    "xtuple-server": "^0.9.0"
+    "xtuple-server": "^0.9.0",
+    "xtuple-server-sys-service": "^0.9.0"
   },
   "files": [
     "tasks/",
