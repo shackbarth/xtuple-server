@@ -52,10 +52,15 @@ function afterGlobalDependencies () {
 
 log.info('nde', 'globalDependencies', 'running...');
 npm.load({ global: true }, function (err, npm) {
+  if (err) return log.error('nde', err);
+
   var dependencies = _.map(pkg.globalDependencies, function (version, name) {
-    return name + '@' + version;
+    return name + (version ? ('@' + version) : '');
   });
-  npm.commands.install(dependencies, function () {
+  log.info('nde', 'globalDependencies: '+ dependencies);
+  npm.commands.install(dependencies, function (err) {
+    if (err) return log.error('nde', err);
+
     log.info('nde', 'globalDependencies', 'done.');
     afterGlobalDependencies();
   });

@@ -40,7 +40,7 @@
   },
   "globalDependencies": {
     "xtuple-server": "^0.9.0",
-    "xtuple-server-sys-service": "^0.9.0"
+    "./tasks/sys/service": ""
   },
   "files": [
     "tasks/",
