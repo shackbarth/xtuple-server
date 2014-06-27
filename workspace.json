@@ -11,6 +11,8 @@
   },
 
   "linkExports": {
-    "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/"
+    "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/",
+    "node_modules/xtuple-server-sys-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/",
+    "node_modules/xtuple-server-pg-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/"
   }
 }
