@@ -137,6 +137,8 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   },
 
   installCustomCommands: function (options) {
+    mkdirp.sync('/etc/webmin/custom');
+    mkdirp.sync('/etc/usermin/custom');
     // copy commands
     _.each(glob.sync(path.resolve(__dirname, '*.cmd')), function (file, i) {
       cp.sync(file, path.resolve(options.sys.webminXtuplePath, (i + 1000) + '.cmd'));
