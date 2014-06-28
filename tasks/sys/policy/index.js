@@ -148,8 +148,10 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   uninstall: function (options) {
+    /*
     if (!_.isEmpty(options.xt.name)) {
-      exec('skill -KILL -u {xt.name}'.format(options));
+      //exec('skill -KILL -u {xt.name}'.format(options));
     }
+    */
   }
 });

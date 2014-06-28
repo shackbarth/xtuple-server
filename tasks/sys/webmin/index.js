@@ -50,6 +50,13 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.sys.webminCustomPath = path.resolve(options.sys.etcWebmin, 'custom');
     options.sys.webminCustomConfigFile = path.resolve(options.sys.webminCustomPath, 'config');
     options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
+
+    if (fs.existsSync(options.sys.etcWebmin)) {
+      throw new Error('Webmin seems to already be installed. Please uninstall it and try again');
+    }
+    if (fs.existsSync('/etc/usermin')) {
+      throw new Error('Usermin seems to already be installed. Please uninstall it and try again');
+    }
   },
 
   /** @override */
@@ -76,9 +83,9 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     console.log(installWebmin.stdout);
     console.log(installUsermin.stdout);
 
-    webmin.setupPermissions(options);
-    webmin.writeConfiguration(options);
     webmin.installCustomCommands(options);
+    //webmin.setupPermissions(options);
+    webmin.writeConfiguration(options);
     webmin.installUsers(options);
     webmin.installNginxSite(options);
   },
@@ -117,12 +124,24 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       'width=',
       'wrap='
     ].join('\n').trim());
+
+    fs.symlinkSync(options.sys.webminCustomPath, path.resolve('/etc/usermin/custom'));
+    fs.symlinkSync(options.sys.webminXtuplePath, path.resolve('/etc/usermin/xtuple'));
+
+    if (fs.existsSync('/etc/usermin/miniserv.conf')) {
+      fs.unlinkSync('/etc/usermin/miniserv.conf');
+    }
+    fs.symlinkSync(options.sys.webminMiniservConfigFile, path.resolve('/etc/usermin/miniserv.conf'));
+
+    // replace usermin users file
+    cp.sync('/etc/webmin/miniserv.users', '/etc/usermin/miniserv.users');
   },
 
   installCustomCommands: function (options) {
+    mkdirp.sync('/etc/webmin/custom');
     // copy commands
     _.each(glob.sync(path.resolve(__dirname, '*.cmd')), function (file, i) {
-      cp.sync(file, path.resolve(options.sys.webminCustomPath, (i + 1000) + '.cmd'));
+      cp.sync(file, path.resolve(options.sys.webminXtuplePath, (i + 1000) + '.cmd'));
     });
 
     // copy menus

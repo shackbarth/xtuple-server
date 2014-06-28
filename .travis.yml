@@ -16,14 +16,12 @@ before_install:
 install:
   - npm install nde -g
   - nde install
-  - npm install -g
-  - npm run plan-install
-  - sudo xtuple-server setup
 
 script: 
+  - sudo xtuple-server setup
   - sudo -E XT_VERSION=4.5.0 npm test
 
 after_failure:
   - cat /var/spool/cron/crontabs/travis
   - cat /var/spool/cron/crontabs/root
-  - cat install.log
+  - cat xtuple-server.log

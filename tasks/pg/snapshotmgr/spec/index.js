@@ -2,6 +2,10 @@ var fs = require('fs'),
   path = require('path'),
   assert = require('assert');
 
+exports.beforeExecute = function (options) {
+  options.pg.snapenable = true;
+};
+
 exports.afterExecute = function (options) {
 
   describe('crontab', function () {

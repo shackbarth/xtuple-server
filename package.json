@@ -6,8 +6,11 @@
   "dependencies": {
     "cron-tab": "^1.1.0",
     "glob": "^4.0.2",
+    "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
-    "xtuple-server-lib": "^0.9.0",
+    "npm": "^1.4.16",
+    "npmlog": "^0.1.1",
+    "requireindex": "^1.1.0",
     "xtuple-server-pg-snapshotmgr": "^0.9.0",
     "xtuple-server-pg-tuner": "^0.9.0",
     "xtuple-server-sys-cups": "^0.9.0",
@@ -31,16 +34,13 @@
     "chai": "^1.9.1",
     "execSync": "^1.0.1-pre",
     "latest-version": "^0.2.0",
-    "lodash": "^2.4.1",
     "mocha": "^1.20.1",
     "npm": "^1.4.16",
-    "requireindex": "^1.1.0",
     "xtuple-server": "^0.9.0"
   },
-  "peerDependencies": {
+  "globalDependencies": {
     "xtuple-server": "^0.9.0",
-    "forever": "^0.11.0",
-    "nde": "^0.1.0"
+    "./tasks/sys/service": ""
   },
   "files": [
     "tasks/",
@@ -67,9 +67,9 @@
     "enterprise"
   ],
   "scripts": {
-    "pretest": "mocha -R spec spec/uninstall-live.js -b",
-    "test": "mocha -R spec spec/ -b",
-    "plan-install": "node link-core.js"
+    "postinstall": "node link-core.js",
+    "pretest": "XT_VERSION=${XT_VERSION:-4.5.0} mocha spec/uninstall-live.js",
+    "test": "XT_VERSION=${XT_VERSION:-4.5.0} node node_modules/xtuple-server/spec"
   },
   "preferGlobal": true,
   "engines": {

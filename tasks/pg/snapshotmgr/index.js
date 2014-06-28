@@ -1,4 +1,5 @@
 var lib = require('xtuple-server-lib'),
+  log = require('npmlog'),
   fs = require('fs'),
   os = require('os'),
   crontab = require('cron-tab'),
@@ -10,8 +11,8 @@ var lib = require('xtuple-server-lib'),
 /**
  * Schedule backups of a postgres cluster.
  */
-_.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
-
+var task = _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
+  name: 'pg-snapshotmgr',
   options: {
     snapenable: {
       optional: '[boolean]',
@@ -57,7 +58,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr */ {
 
   installService: function (options) {
     var dbs = require(options.xt.configfile).datasource.databases;
-    console.log(dbs);
+    log.verbose(task.name, dbs);
     _.each(dbs, function (db) {
       lib.util.createJob('backup-database', options.type, options.pg.snapschedule, [
         '--xt-name',    options.xt.name,
