@@ -83,9 +83,9 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     console.log(installWebmin.stdout);
     console.log(installUsermin.stdout);
 
-    webmin.setupPermissions(options);
-    webmin.writeConfiguration(options);
     webmin.installCustomCommands(options);
+    //webmin.setupPermissions(options);
+    webmin.writeConfiguration(options);
     webmin.installUsers(options);
     webmin.installNginxSite(options);
   },
