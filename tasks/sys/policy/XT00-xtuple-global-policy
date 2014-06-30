@@ -6,12 +6,15 @@ Cmnd_Alias POWERCYCLE = /sbin/shutdown, /sbin/reboot, /sbin/halt
 Cmnd_Alias PACKAGEMGR = /usr/bin/dpkg *, /usr/bin/apt-get *, /usr/bin/aptitude
 
 Cmnd_Alias SERVICES = \
+      /usr/sbin/service couchdb *, \
       /usr/sbin/service xtuple *, \
       /usr/sbin/service nginx *, \
       /usr/sbin/service cups *, \
       /usr/sbin/service tomcat7 *
 
 Cmnd_Alias POSTGRES = \
+      /usr/bin/pg_createcluster *, \
+      /usr/bin/pg_dropcluster *, \
       /usr/bin/pg_ctlcluster *, \
       /usr/bin/pg_lsclusters, \
       /usr/bin/pg_dump *, \
