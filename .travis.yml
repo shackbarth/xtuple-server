@@ -6,7 +6,7 @@ env:
 
 matrix:
   allow_failures:
-    - NODE_VERSION=0.10.29
+    - env: NODE_VERSION=0.10.29
 
 before_install:
   - rm -rf ~/.nvm
