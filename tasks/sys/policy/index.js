@@ -1,6 +1,6 @@
 var lib = require('xtuple-server-lib'),
   localPolicy = require('xtuple-server-local-policy'),
-  exec = require('execSync').exec,
+  exec = require('child_process').execSync,
   _ = require('lodash'),
   path = require('path'),
   fs = require('fs'),
@@ -20,9 +20,15 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     if (options.planName === 'setup') {
       options.sys.policy.remotePassword = lib.util.getPassword();
     }
-
-    if (options.xt && !_.isEmpty(options.xt.name) && exec('id -u {xt.name}'.format(options)).code !== 0) {
-      options.sys.policy.userPassword = lib.util.getPassword();
+    else {
+      try {
+        exec('id -u' + options.xt.name);
+      }
+      catch (e) {
+        if (options.xt && !_.isEmpty(options.xt.name)) {
+          options.sys.policy.userPassword = lib.util.getPassword();
+        }
+      }
     }
   },
 
@@ -51,10 +57,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     exec('chmod 440 /etc/sudoers.d/*');
 
     // validate sudoers files
-    var visudo_cmd = exec('visudo -c');
-    if (visudo_cmd.code !== 0) {
-      throw new Error(JSON.stringify(visudo_cmd, null, 2));
-    }
+    exec('visudo -c');
   },
 
   /** @private */
@@ -98,7 +101,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     }
 
     // set xtremote shell to bash
-    exec('sudo chsh -s /bin/bash xtremote'.format(options));
+    exec('sudo chsh -s /bin/bash xtremote');
   },
 
   /** @private */
@@ -143,7 +146,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     }
 
     // set user shell to bash
-    exec('sudo chsh -s /bin/bash {xt.name}'.format(options));
+    exec('sudo chsh -s /bin/bash' + options.xt.name);
   },
 
   /** @override */

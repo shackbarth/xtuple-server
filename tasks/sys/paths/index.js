@@ -1,5 +1,5 @@
 var lib = require('xtuple-server-lib'),
-  exec = require('execSync').exec,
+  exec = require('child_process').execSync,
   rimraf = require('rimraf'),
   mkdirp = require('mkdirp'),
   path = require('path'),
@@ -64,9 +64,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
     mkdirp.sync(options.xt.socketdir);
     mkdirp.sync(options.xt.statedir);
 
-    exec([ 'chown -R ', options.xt.name, options.xt.userhome ].join(' '));
-    exec([ 'chown -R ', options.xt.name, options.xt.userconfig ].join(' '));
+    exec('chown', [ '-R', options.xt.name, options.xt.userhome ]);
+    exec('chown', [ '-R', options.xt.name, options.xt.userconfig ]);
 
-    exec([ 'chown -R xtadmin:xtuser ', options.xt.homedir ].join(' '));
+    exec('chown', [ '-R', 'xtadmin:xtuser', options.xt.homedir ]);
   }
 });

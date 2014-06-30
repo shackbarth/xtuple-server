@@ -11,7 +11,7 @@ var lib = require('xtuple-server-lib'),
   cp = require('cp'),
   ssl = require('xtuple-server-nginx-ssl'),
   site = require('xtuple-server-nginx-site'),
-  exec = require('execSync').exec,
+  exec = require('child_process').execSync,
   fs = require('fs');
 
 _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
@@ -71,17 +71,17 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       'sudo node ', path.resolve(bin, 'webmin'), 'install',
       '--username xtremote',
       '--password', options.sys.policy.remotePassword,
-    ].join(' '));
+    ].join(' ')).toString();
 
     var installUsermin = exec([
       'sudo node ', path.resolve(bin, 'usermin'), 'install',
       '--username xtremote',
       '--password', options.sys.policy.remotePassword,
       '--port 10001'
-    ].join(' '));
+    ].join(' ')).toString();
 
-    console.log(installWebmin.stdout);
-    console.log(installUsermin.stdout);
+    log.verbose('sys-webmin', installWebmin);
+    log.verbose('sys-webmin', installUsermin);
 
     webmin.installCustomCommands(options);
     //webmin.setupPermissions(options);
