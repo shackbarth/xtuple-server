@@ -31,13 +31,13 @@
   "dependencies": {
     "cron-parser": "^0.3.6",
     "cron-tab": "^1.1.5",
-    "execSync": "^1.0.1-pre",
     "forever": "^0.11.1",
     "forever-monitor": "^1.2.3",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
     "node-crontab": "0.0.8",
     "npmlog": "^0.1.1",
+    "sync-exec": "^0.3.2",
     "xtuple-server-lib": "^0.9.0"
   },
   "devDependencies": {
