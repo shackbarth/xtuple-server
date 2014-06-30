@@ -48,8 +48,8 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     exec('rm -f ~/.bash_history');
     exec('rm -f /root/.bash_history');
 
-    exec('chmod a-w {xt.configdir}/install-arguments.json'.format(options));
-    exec('chmod a-w {xt.configdir}/install-results.json'.format(options));
+    //exec('chmod a-w {xt.configdir}/install-arguments.json'.format(options));
+    //exec('chmod a-w {xt.configdir}/install-results.json'.format(options));
   },
 
   /** @override */
@@ -73,11 +73,11 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
         'usermod -a -G ssl-cert,xtuser,www-data postgres',
       ],
       system_ownership = [
-        'chown -R xtadmin:xtuser /etc/xtuple',
-        'chown -R xtadmin:xtuser /var/log/xtuple',
-        'chown -R xtadmin:xtuser /var/lib/xtuple',
-        'chown -R xtadmin:xtuser /usr/sbin/xtuple',
-        'chown -R xtadmin:xtuser /usr/local/xtuple',
+        'chown -R :xtuser /etc/xtuple',
+        'chown -R :xtuser /var/log/xtuple',
+        'chown -R :xtuser /var/lib/xtuple',
+        'chown -R :xtuser /usr/sbin/xtuple',
+        'chown -R :xtuser /usr/local/xtuple',
         'chown -R postgres:xtuser /var/run/postgresql'
       ],
       system_mode = [
@@ -91,17 +91,24 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
 
     // create system users
     if (options.sys.policy.remotePassword) {
-      _.map(system_users, exec);
-      _.map(_.flatten([ system_ownership, system_mode ]), exec);
+
+      // set xtremote shell to bash
+      exec('sudo chsh -s /bin/bash xtremote');
+      _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
+        try {
+          exec(cmd);
+        }
+        catch (e) {
+          //log.warn('sys-policy', e.message.trim().split('\n')[1]);
+          log.verbose('sys-policy', e.stack.split('\n'));
+        }
+      });
     }
 
     // write sudoers file
     if (!fs.existsSync(global_policy_target)) {
       fs.writeFileSync(global_policy_target, global_policy_src);
     }
-
-    // set xtremote shell to bash
-    exec('sudo chsh -s /bin/bash xtremote');
   },
 
   /** @private */

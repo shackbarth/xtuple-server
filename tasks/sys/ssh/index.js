@@ -12,11 +12,6 @@ _.extend(exports, lib.task, /** @exports policy */ {
 
   /** @override */
   executeTask: function (options) {
-    var me = exec('logname');
-
-    exec('usermod -a -G xtuser '+ me);
-    exec('usermod -a -G xtadmin '+ me);
-
     exports.configure(options);
   },
 

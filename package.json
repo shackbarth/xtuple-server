@@ -49,7 +49,7 @@
   },
   "globalDependencies": {
     "xtuple-server": "^0.9.0",
-    "./tasks/sys/service": ""
+    "forever": "^0.11"
   },
   "symlinkExports": {
     "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/",
@@ -81,7 +81,7 @@
     "enterprise"
   ],
   "scripts": {
-    "preinstall": "nex clean && nex install",
+    "preinstall": "node --harmony /usr/local/bin/nex clean && sleep 2 && node --harmony /usr/local/bin/nex install -g",
     "postinstall": "node link-core.js",
     "pretest": "XT_VERSION=${XT_VERSION:-4.5.0} mocha spec/uninstall-live.js",
     "test": "XT_VERSION=${XT_VERSION:-4.5.0} node node_modules/xtuple-server/spec"

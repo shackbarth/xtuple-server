@@ -7,6 +7,7 @@ var lib = require('xtuple-server-lib'),
   _ = require('lodash'),
   path = require('path'),
   mkdirp = require('mkdirp'),
+  rimraf = require('rimraf');
   glob = require('glob'),
   cp = require('cp'),
   ssl = require('xtuple-server-nginx-ssl'),
@@ -52,39 +53,59 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
 
     if (fs.existsSync(options.sys.etcWebmin)) {
-      throw new Error('Webmin seems to already be installed. Please uninstall it and try again');
+      log.warn('sys-webmin', 'Webmin seems to already be installed.');
     }
     if (fs.existsSync('/etc/usermin')) {
-      throw new Error('Usermin seems to already be installed. Please uninstall it and try again');
+      log.warn('sys-webmin', 'Usermin seems to already be installed.');
     }
   },
 
   /** @override */
   beforeTask: function (options) {
-    mkdirp.sync(options.sys.webminXtuplePath);
+    try {
+      exec('killall /usr/bin/perl', { stdio: 'ignore' });
+    }
+    catch (e) {
+      log.info('sys-webmin', 'No previous webmin servers running');
+    }
+    rimraf.sync('/etc/webmin');
+    rimraf.sync('/etc/usermin');
+    rimraf.sync('/usr/local/webmin');
+    rimraf.sync('/usr/local/usermin');
   },
 
   /** @override */
   executeTask: function (options) {
     var bin = path.resolve(__dirname, 'node_modules/.bin');
-    var installWebmin = exec([
-      'sudo node ', path.resolve(bin, 'webmin'), 'install',
-      '--username xtremote',
-      '--password', options.sys.policy.remotePassword,
-    ].join(' ')).toString();
+    try {
+      var installWebmin = exec([
+        'sudo node', path.resolve(bin, 'webmin'), 'install',
+        '--username xtremote',
+        '--password', options.sys.policy.remotePassword,
+        '--port 10000'
+      ].join(' '), { stdio: 'inherit' });
 
-    var installUsermin = exec([
-      'sudo node ', path.resolve(bin, 'usermin'), 'install',
-      '--username xtremote',
-      '--password', options.sys.policy.remotePassword,
-      '--port 10001'
-    ].join(' ')).toString();
+      log.verbose('sys-webmin', installWebmin);
+    }
+    catch (e) {
+      log.warn('sys-webmin', e.message.trim());
+    }
 
-    log.verbose('sys-webmin', installWebmin);
-    log.verbose('sys-webmin', installUsermin);
+    try {
+      var installUsermin = exec([
+        'sudo node', path.resolve(bin, 'usermin'), 'install',
+        '--username xtremote',
+        '--password', options.sys.policy.remotePassword,
+        '--port 10001'
+      ].join(' '), { stdio: 'inherit' });
+
+      log.verbose('sys-webmin', installUsermin);
+    }
+    catch (e) {
+      log.warn('sys-webmin', e.message.trim());
+    }
 
     webmin.installCustomCommands(options);
-    //webmin.setupPermissions(options);
     webmin.writeConfiguration(options);
     webmin.installUsers(options);
     webmin.installNginxSite(options);
@@ -93,12 +114,6 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
   /** @override */
   afterTask: function (options) {
     exec('service nginx reload');
-  },
-
-  setupPermissions: function (options) {
-    fs.chmodSync(options.sys.etcWebmin, '775');
-    fs.chmodSync(options.sys.webminCustomPath, '775');
-    fs.chmodSync(options.sys.webminXtuplePath, '775');
   },
 
   writeConfiguration: function (options) {
@@ -125,8 +140,8 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       'wrap='
     ].join('\n').trim());
 
-    fs.symlinkSync(options.sys.webminCustomPath, path.resolve('/etc/usermin/custom'));
-    fs.symlinkSync(options.sys.webminXtuplePath, path.resolve('/etc/usermin/xtuple'));
+    //fs.symlinkSync(options.sys.webminCustomPath, path.resolve('/etc/usermin/custom'));
+    //fs.symlinkSync(options.sys.webminXtuplePath, path.resolve('/etc/usermin/xtuple'));
 
     if (fs.existsSync('/etc/usermin/miniserv.conf')) {
       fs.unlinkSync('/etc/usermin/miniserv.conf');
@@ -139,14 +154,16 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
   installCustomCommands: function (options) {
     mkdirp.sync('/etc/webmin/custom');
+    mkdirp.sync(options.sys.webminXtuplePath);
+
     // copy commands
     _.each(glob.sync(path.resolve(__dirname, '*.cmd')), function (file, i) {
-      cp.sync(file, path.resolve(options.sys.webminXtuplePath, (i + 1000) + '.cmd'));
+      cp.sync(file, path.resolve(options.sys.webminCustomPath, (i + 1000) + '.cmd'));
     });
 
     // copy menus
     _.each(glob.sync(path.resolve(__dirname, '*.menu')), function (file) {
-      cp.sync(file, path.resolve(options.sys.webminCustomPath, path.basename(file)));
+      cp.sync(file, path.resolve(options.sys.webminXtuplePath, path.basename(file)));
     });
   },
 
