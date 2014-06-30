@@ -34,7 +34,6 @@
     "cli-table": "^0.3.0",
     "commander": "^2.2.0",
     "cp": "^0.1.1",
-    "forever": "^0.11.1",
     "forever-monitor": "^1.2.3",
     "glob": "^4.0.2",
     "lodash": "^2.4.1",
@@ -46,5 +45,9 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "mocha": "^1.20.0"
+  },
+  "globalDependencies": {
+    "ansi2html": "0.0.1",
+    "forever": "^0.11.1"
   }
 }
