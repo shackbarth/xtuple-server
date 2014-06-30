@@ -96,7 +96,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
       exec('sudo chsh -s /bin/bash xtremote');
       _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
         try {
-          exec(cmd);
+          exec(cmd, { stdio: 'ignore' });
         }
         catch (e) {
           //log.warn('sys-policy', e.message.trim().split('\n')[1]);
@@ -130,7 +130,9 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
         'chown -R {xt.name}:xtuser {xt.configdir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.statedir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.rundir}'.format(options),
-        'chown -R {xt.name}:ssl-cert {xt.ssldir}'.format(options)
+        'chown -R {xt.name}:ssl-cert {xt.ssldir}'.format(options),
+        'chown -R {xt.name}:{xt.name} {xt.userhome}'.format(options),
+        'chown -R {xt.name}:{xt.name} {xt.userconfig}'.format(options)
       ],
       user_mode = [
         'chmod -R u=rwx /usr/local/{xt.name}'.format(options),
@@ -143,8 +145,15 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
 
     // create *this* user, and set access rules
     if (options.sys.policy.userPassword) {
-      _.map(xtuple_users, exec);
-      _.map(_.flatten([ user_ownership, user_mode ]), exec);
+      _.map(_.flatten([ xtuple_users, user_ownership, user_mode ]), function (cmd) {
+        try {
+          exec(cmd, { stdio: 'ignore' });
+        }
+        catch (e) {
+          //log.warn('sys-policy', e.message.trim().split('\n')[1]);
+          log.verbose('sys-policy', e.stack.split('\n'));
+        }
+      });
     }
 
     // write sudoers file for user
@@ -153,7 +162,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     }
 
     // set user shell to bash
-    exec('sudo chsh -s /bin/bash' + options.xt.name);
+    exec('sudo chsh -s /bin/bash/' + options.xt.name);
   },
 
   /** @override */

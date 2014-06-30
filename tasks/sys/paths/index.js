@@ -63,10 +63,5 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
     mkdirp.sync(options.xt.rundir);
     mkdirp.sync(options.xt.socketdir);
     mkdirp.sync(options.xt.statedir);
-
-    exec('chown', [ '-R', options.xt.name, options.xt.userhome ]);
-    exec('chown', [ '-R', options.xt.name, options.xt.userconfig ]);
-
-    exec('chown', [ '-R', 'xtadmin:xtuser', options.xt.homedir ]);
   }
 });
