@@ -1,7 +1,7 @@
 var lib = require('xtuple-server-lib'),
   fs = require('fs'),
   rimraf = require('rimraf'),
-  exec = require('execSync').exec,
+  exec = require('child_process').execSync,
   path = require('path'),
   _ = require('lodash');
 
@@ -12,11 +12,6 @@ _.extend(exports, lib.task, /** @exports policy */ {
 
   /** @override */
   executeTask: function (options) {
-    var me = exec('logname').stdout;
-
-    exec('usermod -a -G xtuser '+ me);
-    exec('usermod -a -G xtadmin '+ me);
-
     exports.configure(options);
   },
 

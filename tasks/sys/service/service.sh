@@ -20,7 +20,7 @@ help() {
 
   if [[ $EUID -eq 0 ]]; then
     echo -e 'Usage: service xtuple {stop|restart|reload|status|help}'
-    echo -e '       service xtuple [version] [name]-[type] {stop|restart|reload|status|help}'
+    echo -e '       service xtuple [name] [version]-[type] {stop|restart|reload|status|help}'
     echo -e ''
     echo -e 'Examples:'
     echo -e '   Restart all instances:        service xtuple restart'
@@ -47,8 +47,8 @@ trap help ERR SIGINT SIGTERM
 
 export PATH=$PATH:/usr/bin:/usr/local/bin
 
-VERSION="$1"
-ACCOUNT="$2"
+ACCOUNT="$1"
+VERSION="$2"
 ACTION="$3"
 
 # non-root users must specify account and VERSION

@@ -1,6 +1,6 @@
 var lib = require('xtuple-server-lib'),
   localPolicy = require('xtuple-server-local-policy'),
-  exec = require('execSync').exec,
+  exec = require('child_process').execSync,
   _ = require('lodash'),
   path = require('path'),
   fs = require('fs'),
@@ -20,9 +20,15 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     if (options.planName === 'setup') {
       options.sys.policy.remotePassword = lib.util.getPassword();
     }
-
-    if (options.xt && !_.isEmpty(options.xt.name) && exec('id -u {xt.name}'.format(options)).code !== 0) {
-      options.sys.policy.userPassword = lib.util.getPassword();
+    else {
+      try {
+        exec('id -u' + options.xt.name);
+      }
+      catch (e) {
+        if (options.xt && !_.isEmpty(options.xt.name)) {
+          options.sys.policy.userPassword = lib.util.getPassword();
+        }
+      }
     }
   },
 
@@ -42,8 +48,8 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     exec('rm -f ~/.bash_history');
     exec('rm -f /root/.bash_history');
 
-    exec('chmod a-w {xt.configdir}/install-arguments.json'.format(options));
-    exec('chmod a-w {xt.configdir}/install-results.json'.format(options));
+    //exec('chmod a-w {xt.configdir}/install-arguments.json'.format(options));
+    //exec('chmod a-w {xt.configdir}/install-results.json'.format(options));
   },
 
   /** @override */
@@ -51,10 +57,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     exec('chmod 440 /etc/sudoers.d/*');
 
     // validate sudoers files
-    var visudo_cmd = exec('visudo -c');
-    if (visudo_cmd.code !== 0) {
-      throw new Error(JSON.stringify(visudo_cmd, null, 2));
-    }
+    exec('visudo -c');
   },
 
   /** @private */
@@ -70,11 +73,11 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
         'usermod -a -G ssl-cert,xtuser,www-data postgres',
       ],
       system_ownership = [
-        'chown -R xtadmin:xtuser /etc/xtuple',
-        'chown -R xtadmin:xtuser /var/log/xtuple',
-        'chown -R xtadmin:xtuser /var/lib/xtuple',
-        'chown -R xtadmin:xtuser /usr/sbin/xtuple',
-        'chown -R xtadmin:xtuser /usr/local/xtuple',
+        'chown -R :xtuser /etc/xtuple',
+        'chown -R :xtuser /var/log/xtuple',
+        'chown -R :xtuser /var/lib/xtuple',
+        'chown -R :xtuser /usr/sbin/xtuple',
+        'chown -R :xtuser /usr/local/xtuple',
         'chown -R postgres:xtuser /var/run/postgresql'
       ],
       system_mode = [
@@ -88,17 +91,24 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
 
     // create system users
     if (options.sys.policy.remotePassword) {
-      _.map(system_users, exec);
-      _.map(_.flatten([ system_ownership, system_mode ]), exec);
+
+      // set xtremote shell to bash
+      exec('sudo chsh -s /bin/bash xtremote');
+      _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
+        try {
+          exec(cmd, { stdio: 'ignore' });
+        }
+        catch (e) {
+          //log.warn('sys-policy', e.message.trim().split('\n')[1]);
+          log.verbose('sys-policy', e.stack.split('\n'));
+        }
+      });
     }
 
     // write sudoers file
     if (!fs.existsSync(global_policy_target)) {
       fs.writeFileSync(global_policy_target, global_policy_src);
     }
-
-    // set xtremote shell to bash
-    exec('sudo chsh -s /bin/bash xtremote'.format(options));
   },
 
   /** @private */
@@ -120,7 +130,9 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
         'chown -R {xt.name}:xtuser {xt.configdir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.statedir}'.format(options),
         'chown -R {xt.name}:xtuser {xt.rundir}'.format(options),
-        'chown -R {xt.name}:ssl-cert {xt.ssldir}'.format(options)
+        'chown -R {xt.name}:ssl-cert {xt.ssldir}'.format(options),
+        'chown -R {xt.name}:{xt.name} {xt.userhome}'.format(options),
+        'chown -R {xt.name}:{xt.name} {xt.userconfig}'.format(options)
       ],
       user_mode = [
         'chmod -R u=rwx /usr/local/{xt.name}'.format(options),
@@ -133,8 +145,15 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
 
     // create *this* user, and set access rules
     if (options.sys.policy.userPassword) {
-      _.map(xtuple_users, exec);
-      _.map(_.flatten([ user_ownership, user_mode ]), exec);
+      _.map(_.flatten([ xtuple_users, user_ownership, user_mode ]), function (cmd) {
+        try {
+          exec(cmd, { stdio: 'ignore' });
+        }
+        catch (e) {
+          //log.warn('sys-policy', e.message.trim().split('\n')[1]);
+          log.verbose('sys-policy', e.stack.split('\n'));
+        }
+      });
     }
 
     // write sudoers file for user
@@ -143,7 +162,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     }
 
     // set user shell to bash
-    exec('sudo chsh -s /bin/bash {xt.name}'.format(options));
+    exec('sudo chsh -s /bin/bash/' + options.xt.name);
   },
 
   /** @override */

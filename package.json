@@ -32,15 +32,29 @@
   ],
   "devDependencies": {
     "chai": "^1.9.1",
-    "execSync": "^1.0.1-pre",
     "latest-version": "^0.2.0",
     "mocha": "^1.20.1",
     "npm": "^1.4.16",
     "xtuple-server": "^0.9.0"
   },
+  "linkDependencies": {
+    "xtuple-server-sys-cups": "tasks/sys/cups",
+    "xtuple-server-sys-paths": "tasks/sys/paths",
+    "xtuple-server-sys-policy": "tasks/sys/policy",
+    "xtuple-server-sys-service": "tasks/sys/service",
+    "xtuple-server-sys-ssh": "tasks/sys/ssh",
+    "xtuple-server-sys-webmin": "tasks/sys/webmin",
+    "xtuple-server-pg-tuner": "tasks/pg/tuner",
+    "xtuple-server-pg-snapshotmgr": "tasks/pg/snapshotmgr"
+  },
   "globalDependencies": {
     "xtuple-server": "^0.9.0",
-    "./tasks/sys/service": ""
+    "tasks/sys/service": ""
+  },
+  "symlinkExports": {
+    "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/",
+    "node_modules/xtuple-server-sys-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/",
+    "node_modules/xtuple-server-pg-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/"
   },
   "files": [
     "tasks/",
@@ -67,13 +81,14 @@
     "enterprise"
   ],
   "scripts": {
+    "preinstall": "nex clean && nex install -g",
     "postinstall": "node link-core.js",
     "pretest": "XT_VERSION=${XT_VERSION:-4.5.0} mocha spec/uninstall-live.js",
     "test": "XT_VERSION=${XT_VERSION:-4.5.0} node node_modules/xtuple-server/spec"
   },
   "preferGlobal": true,
   "engines": {
-    "node": ">=0.10.26 <0.11"
+    "node": "0.11.13"
   },
   "cpu": [
     "!ia32"

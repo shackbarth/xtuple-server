@@ -4,7 +4,7 @@ var lib = require('xtuple-server-lib'),
   os = require('os'),
   crontab = require('cron-tab'),
   mkdirp = require('mkdirp'),
-  exec = require('execSync').exec,
+  exec = require('sync-exec'),
   path = require('path'),
   _ = require('lodash');
 

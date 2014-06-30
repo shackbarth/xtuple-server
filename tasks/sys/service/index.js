@@ -1,6 +1,6 @@
 var lib = require('xtuple-server-lib'),
   _ = require('lodash'),
-  exec = require('execSync').exec,
+  exec = require('sync-exec'),
   mkdirp = require('mkdirp'),
   cp = require('cp'),
   forever = require('forever'),
