@@ -30,13 +30,13 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
     options.xt.dist = path.resolve(options.xt.homedir, 'dist', options.xt.version);
 
     // shared config (per account)
-    log.info('sys-paths usrLocal', exports.usrLocal);
-    log.info('sys-paths xt.name', options.xt.name);
     options.xt.userhome = path.resolve(exports.usrLocal, options.xt.name);
     options.xt.userconfig = path.resolve(options.xt.userhome, '.xtuple');
+    options.xt.typeconfig = path.resolve(options.xt.userconfig, options.type);
+    options.xt.rand64file = path.resolve(options.xt.typeconfig, 'rand64.txt');
+    options.xt.key256file = path.resolve(options.xt.typeconfig, 'key256.txt');
     options.xt.userdist = path.resolve(options.xt.userconfig, 'dist', options.xt.version);
-    options.xt.rand64file = path.resolve(options.xt.userconfig, 'rand64.txt');
-    options.xt.key256file = path.resolve(options.xt.userconfig, 'key256.txt');
+    options.xt.coredir = path.resolve(options.xt.userdist, 'xtuple');
 
     // other system paths
     options.xt.logdir = path.resolve(exports.varLog, 'xtuple', options.xt.id);
@@ -45,9 +45,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
     options.xt.rundir = path.resolve(exports.varRun, 'xtuple', options.xt.id);
     options.xt.statedir = path.resolve(exports.varLibXtuple, options.xt.id);
 
-    // repositories
-    options.xt.coredir = path.resolve(options.xt.userdist, 'xtuple');
-
     options.pg.snapshotdir = path.resolve(exports.varLibXtuple, options.xt.id, 'snapshots');
   },
 
@@ -55,6 +52,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
   executeTask: function (options) {
     mkdirp.sync(options.xt.userhome);
     mkdirp.sync(options.xt.userconfig);
+    mkdirp.sync(options.xt.typeconfig);
     mkdirp.sync(options.xt.userdist);
     mkdirp.sync(options.pg.snapshotdir);
 
