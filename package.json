@@ -4,34 +4,32 @@
   "version": "0.9.1",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
-    "cron-tab": "^1.1.0",
     "glob": "^4.0.2",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
     "npmlog": "^0.1.1",
-    "requireindex": "^1.1.0",
-    "xtuple-server-pg-snapshotmgr": "^0.9.0",
-    "xtuple-server-pg-tuner": "^0.9.0",
-    "xtuple-server-sys-cups": "^0.9.0",
-    "xtuple-server-sys-paths": "^0.9.0",
-    "xtuple-server-sys-policy": "^0.9.0",
-    "xtuple-server-sys-service": "^0.9.0",
-    "xtuple-server-sys-ssh": "^0.9.0",
-    "xtuple-server-sys-webmin": "^0.9.0"
+    "requireindex": "^1.1.0"
   },
   "bundledDependencies": [
-    "xtuple-server-pg-snapshotmgr",
-    "xtuple-server-pg-tuner",
+    "glob",
+    "lodash",
+    "mkdirp",
+    "npmlog",
+    "requireindex",
     "xtuple-server-sys-cups",
-    "xtuple-server-sys-service",
-    "xtuple-server-sys-policy",
     "xtuple-server-sys-paths",
+    "xtuple-server-sys-policy",
+    "xtuple-server-sys-service",
     "xtuple-server-sys-ssh",
-    "xtuple-server-sys-webmin"
+    "xtuple-server-sys-webmin",
+    "xtuple-server-pg-tuner",
+    "xtuple-server-pg-snapshotmgr"
   ],
   "devDependencies": {
     "chai": "^1.9.1",
-    "mocha": "^1.20.1",
+    "mocha": "^1.20.1"
+  },
+  "peerDependencies": {
     "xtuple-server": "^0.9.0"
   },
   "linkDependencies": {
@@ -46,7 +44,7 @@
   },
   "globalDependencies": {
     "xtuple-server": "^0.9.0",
-    "tasks/sys/service": ""
+    "xtuple-server-sys-service": "^0.9.0"
   },
   "symlinkExports": {
     "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/",
@@ -80,8 +78,6 @@
   "scripts": {
     "preinstall": "nex clean && nex install -g",
     "postinstall": "node link-core.js",
-    "prepublish": "npm dedupe",
-    "postpublish": "git push origin"
     "pretest": "XT_VERSION=${XT_VERSION:-4.5.0} mocha spec/uninstall-live.js",
     "test": "XT_VERSION=${XT_VERSION:-4.5.0} node node_modules/xtuple-server/spec"
   },
