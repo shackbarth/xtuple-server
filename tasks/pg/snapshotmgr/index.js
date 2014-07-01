@@ -46,6 +46,10 @@ var task = _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr
   /** @override */
   beforeInstall: function (options) {
     mkdirp.sync(options.pg.snapshotdir);
+  },
+
+  /** @override */
+  beforeTask: function (options) {
     exec('chown -R '+ options.xt.name + ':' + options.xt.name + ' ' + options.pg.snapshotdir);
   },
 
