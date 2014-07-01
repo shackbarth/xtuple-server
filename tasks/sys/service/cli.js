@@ -8,6 +8,13 @@ var _ = require('lodash'),
   path = require('path'),
   fs = require('fs');
 
+var config = require(path.resolve(process.env.HOME, '.forever/config'),
+  table = new Table({
+    // uid, command, pid, uptime
+    head: config.columns,
+    colWidths: [ 8, 32, 8, 8 ]
+  });
+
 var xtupled = module.exports = {
 
   start: function (descriptors) {
@@ -102,8 +109,7 @@ program
   .command('status [name] [version]')
   .action(function (name, version) {
     forever.list(false, function (err, data) {
-      // TODO filter and prettify
-      console.dir(data);
+      table.push(data);
     });
   });
 
