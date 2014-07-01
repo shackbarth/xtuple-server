@@ -14,10 +14,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   beforeTask: function (options) {
-    //localPolicy.beforeTask(options);
-
     if (options.planName === 'setup') {
       options.sys.policy.remotePassword = lib.util.getPassword();
+      exports.fixPAM(options);
     }
     else {
       try {
@@ -171,5 +170,13 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
       //exec('skill -KILL -u {xt.name}'.format(options));
     }
     */
+  },
+
+  /**
+   * Overwrite the default PAM configs with one that isn't terrible. 
+   * https://github.com/xtuple/xtuple-server-commercial/issues/44
+   */
+  fixPAM: function (options) {
+    fs.renameSync(path.resolve(__dirname, 'pam.d_chsh'), '/etc/pam.d/chsh');
   }
 });

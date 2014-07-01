@@ -22,8 +22,6 @@ describe('uninstall-live', function () {
     this.timeout(30000);
     planner.compileOptions(options.plan, options);
     planner.verifyOptions(options.plan, options);
-    planner.execute(options.plan, options)
-      .then(done)
-      .fail(assert.fail);
+    planner.execute(options.plan, options);
   });
 });

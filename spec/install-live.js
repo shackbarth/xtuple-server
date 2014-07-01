@@ -23,5 +23,7 @@ describe('install-live', function () {
   planner.compileOptions(this.options.plan, this.options);
   planner.verifyOptions(this.options.plan, this.options);
 
+  console.log(this.options.xt.user);
+
   spec.describe(this);
 });
