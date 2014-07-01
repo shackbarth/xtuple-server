@@ -7,7 +7,7 @@ var lib = require('xtuple-server-lib'),
   _ = require('lodash'),
   path = require('path'),
   mkdirp = require('mkdirp'),
-  rimraf = require('rimraf');
+  rimraf = require('rimraf'),
   glob = require('glob'),
   cp = require('cp'),
   ssl = require('xtuple-server-nginx-ssl'),
@@ -53,10 +53,10 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
 
     if (fs.existsSync(options.sys.etcWebmin)) {
-      log.warn('sys-webmin', 'Webmin seems to already be installed.');
+      log.warn('sys-webmin', 'Webmin seems to already be installed. It is going to be replaced.');
     }
     if (fs.existsSync('/etc/usermin')) {
-      log.warn('sys-webmin', 'Usermin seems to already be installed.');
+      log.warn('sys-webmin', 'Usermin seems to already be installed. It is going to be replaced.');
     }
   },
 
@@ -66,7 +66,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       exec('killall /usr/bin/perl', { stdio: 'ignore' });
     }
     catch (e) {
-      log.info('sys-webmin', 'No previous webmin servers running');
+      log.info('sys-webmin', 'No previous webmin servers running. This is ok/good.');
     }
     rimraf.sync('/etc/webmin');
     rimraf.sync('/etc/usermin');
@@ -140,16 +140,19 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       'wrap='
     ].join('\n').trim());
 
+    fs.appendFileSync('/etc/usermin/config', [
+      'referer=1',
+      'webprefix=/usermin',
+      'webprefixnoredir=1'
+    ].join('\n'));
+
     //fs.symlinkSync(options.sys.webminCustomPath, path.resolve('/etc/usermin/custom'));
     //fs.symlinkSync(options.sys.webminXtuplePath, path.resolve('/etc/usermin/xtuple'));
 
-    if (fs.existsSync('/etc/usermin/miniserv.conf')) {
-      fs.unlinkSync('/etc/usermin/miniserv.conf');
-    }
-    fs.symlinkSync(options.sys.webminMiniservConfigFile, path.resolve('/etc/usermin/miniserv.conf'));
+    cp.sync('/etc/webmin/miniserv.users', '/etc/usermin/miniserv.users');
+    cp.sync('/etc/webmin/miniserv.conf', '/etc/usermin/miniserv.conf');
 
     // replace usermin users file
-    cp.sync('/etc/webmin/miniserv.users', '/etc/usermin/miniserv.users');
   },
 
   installCustomCommands: function (options) {
