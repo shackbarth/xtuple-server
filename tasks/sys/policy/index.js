@@ -90,9 +90,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
     // create system users
     if (options.sys.policy.remotePassword) {
-
       // set xtremote shell to bash
-      exec('sudo chsh -s /bin/bash xtremote');
       _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
         try {
           exec(cmd, { stdio: 'ignore' });
@@ -102,6 +100,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
           log.verbose('sys-policy', e.stack.split('\n'));
         }
       });
+      exec('sudo chsh -s /bin/bash xtremote');
     }
 
     // write sudoers file
