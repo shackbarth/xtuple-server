@@ -6,6 +6,7 @@ node_modules
 *.backup
 *.zip*
 *.tar.gz*
+*.tgz*
 *.deb
 *.exec
 *.tgz
