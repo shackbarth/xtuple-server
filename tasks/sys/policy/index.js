@@ -3,6 +3,7 @@ var lib = require('xtuple-server-lib'),
   _ = require('lodash'),
   path = require('path'),
   fs = require('fs'),
+  cp = require('cp'),
   global_policy_filename = 'XT00-xtuple-global-policy',
   user_policy_filename = 'XT10-xtuple-user-policy',
   sudoers_d = path.resolve('/etc/sudoers.d');
@@ -163,20 +164,11 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     exec('sudo chsh -s /bin/bash/' + options.xt.name);
   },
 
-  /** @override */
-  uninstall: function (options) {
-    /*
-    if (!_.isEmpty(options.xt.name)) {
-      //exec('skill -KILL -u {xt.name}'.format(options));
-    }
-    */
-  },
-
   /**
    * Overwrite the default PAM configs with one that isn't terrible. 
    * https://github.com/xtuple/xtuple-server-commercial/issues/44
    */
   fixPAM: function (options) {
-    fs.renameSync(path.resolve(__dirname, 'pam.d_chsh'), '/etc/pam.d/chsh');
+    cp.sync(path.resolve(__dirname, 'pam.d_chsh'), '/etc/pam.d/chsh');
   }
 });
