@@ -1,9 +1,9 @@
 var lib = require('xtuple-server-lib'),
-  localPolicy = require('xtuple-server-local-policy'),
   exec = require('child_process').execSync,
   _ = require('lodash'),
   path = require('path'),
   fs = require('fs'),
+  cp = require('cp'),
   global_policy_filename = 'XT00-xtuple-global-policy',
   user_policy_filename = 'XT10-xtuple-user-policy',
   sudoers_d = path.resolve('/etc/sudoers.d');
@@ -11,18 +11,17 @@ var lib = require('xtuple-server-lib'),
 /**
  * Setup machine access policies.
  */
-_.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
+_.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   beforeTask: function (options) {
-    localPolicy.beforeTask(options);
-
     if (options.planName === 'setup') {
       options.sys.policy.remotePassword = lib.util.getPassword();
+      exports.fixPAM(options);
     }
     else {
       try {
-        exec('id -u' + options.xt.name);
+        exec('id -u ' + options.xt.name);
       }
       catch (e) {
         if (options.xt && !_.isEmpty(options.xt.name)) {
@@ -91,9 +90,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
 
     // create system users
     if (options.sys.policy.remotePassword) {
-
       // set xtremote shell to bash
-      exec('sudo chsh -s /bin/bash xtremote');
       _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
         try {
           exec(cmd, { stdio: 'ignore' });
@@ -103,6 +100,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
           log.verbose('sys-policy', e.stack.split('\n'));
         }
       });
+      exec('sudo chsh -s /bin/bash xtremote');
     }
 
     // write sudoers file
@@ -146,6 +144,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     // create *this* user, and set access rules
     if (options.sys.policy.userPassword) {
       _.map(_.flatten([ xtuple_users, user_ownership, user_mode ]), function (cmd) {
+        console.log(cmd);
         try {
           exec(cmd, { stdio: 'ignore' });
         }
@@ -162,15 +161,14 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     }
 
     // set user shell to bash
-    exec('sudo chsh -s /bin/bash/' + options.xt.name);
+    exec('sudo chsh -s /bin/bash ' + options.xt.name);
   },
 
-  /** @override */
-  uninstall: function (options) {
-    /*
-    if (!_.isEmpty(options.xt.name)) {
-      //exec('skill -KILL -u {xt.name}'.format(options));
-    }
-    */
+  /**
+   * Overwrite the default PAM configs with one that isn't terrible. 
+   * https://github.com/xtuple/xtuple-server-commercial/issues/44
+   */
+  fixPAM: function (options) {
+    cp.sync(path.resolve(__dirname, 'pam.d_chsh'), '/etc/pam.d/chsh');
   }
 });

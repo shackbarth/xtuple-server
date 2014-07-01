@@ -1,7 +1,7 @@
 var lib = require('xtuple-server-lib'),
   format = require('string-format'),
   _ = require('lodash'),
-  exec = require('sync-exec'),
+  exec = require('child_process').execSync,
   fs = require('fs'),
   os = require('os'),
   path = require('path'),
@@ -85,7 +85,13 @@ _.extend(exports, lib.task, /** @exports tuner */ {
       });
 
     fs.writeFileSync(sysctl_conf_path, sysctl_conf);
-    exec('sysctl -p ' + sysctl_conf_path);
+    try {
+      exec('sysctl -p ' + sysctl_conf_path);
+    }
+    catch (e) {
+      log.error('pg-tuner', 'Failed to reload sysctl config. The postgres server may experience problems.');
+      log.error('pg-tuner', e.message);
+    }
   }
 });
 

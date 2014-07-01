@@ -30,6 +30,8 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
     options.xt.dist = path.resolve(options.xt.homedir, 'dist', options.xt.version);
 
     // shared config (per account)
+    log.info('sys-paths usrLocal', exports.usrLocal);
+    log.info('sys-paths xt.name', options.xt.name);
     options.xt.userhome = path.resolve(exports.usrLocal, options.xt.name);
     options.xt.userconfig = path.resolve(options.xt.userhome, '.xtuple');
     options.xt.userdist = path.resolve(options.xt.userconfig, 'dist', options.xt.version);

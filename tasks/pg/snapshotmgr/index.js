@@ -4,7 +4,7 @@ var lib = require('xtuple-server-lib'),
   os = require('os'),
   crontab = require('cron-tab'),
   mkdirp = require('mkdirp'),
-  exec = require('sync-exec'),
+  exec = require('child_process').execSync,
   path = require('path'),
   _ = require('lodash');
 
@@ -46,7 +46,7 @@ var task = _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr
   /** @override */
   beforeInstall: function (options) {
     mkdirp.sync(options.pg.snapshotdir);
-    exec(('chown {xt.name}:{xt.name} '+ options.pg.snapshotdir).format(options));
+    exec('chown -R '+ options.xt.name + ':' + options.xt.name + ' ' + options.pg.snapshotdir);
   },
 
   /** @override */
