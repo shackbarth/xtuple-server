@@ -28,7 +28,7 @@
     "xtuple-server-pg-snapshotmgr"
   ],
   "devDependencies": {
-    "xtuple-server": "https://github.com/xtuple/xtuple-server/releases/download/v0.9.94/xtuple-server-0.9.94.tgz",
+    "xtuple-server": "https://registry.npmjs.org/xtuple-server/-/xtuple-server-0.9.95.tgz",
     "chai": "^1.9.1",
     "mocha": "^1.20.1"
   },
@@ -46,7 +46,7 @@
     "xtuple-server-pg-snapshotmgr": "tasks/pg/snapshotmgr"
   },
   "globalDependencies": {
-    "xtuple-server": "https://github.com/xtuple/xtuple-server/releases/download/v0.9.94/xtuple-server-0.9.94.tgz",
+    "xtuple-server": "https://registry.npmjs.org/xtuple-server/-/xtuple-server-0.9.95.tgz",
     "tasks/sys/service": ""
   },
   "symlinkExports": {
