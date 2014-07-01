@@ -21,7 +21,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     }
     else {
       try {
-        exec('id -u' + options.xt.name);
+        exec('id -u ' + options.xt.name);
       }
       catch (e) {
         if (options.xt && !_.isEmpty(options.xt.name)) {
@@ -161,7 +161,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     }
 
     // set user shell to bash
-    exec('sudo chsh -s /bin/bash/' + options.xt.name);
+    exec('sudo chsh -s /bin/bash ' + options.xt.name);
   },
 
   /**
