@@ -1,5 +1,4 @@
 var lib = require('xtuple-server-lib'),
-  localPolicy = require('xtuple-server-local-policy'),
   exec = require('child_process').execSync,
   _ = require('lodash'),
   path = require('path'),
@@ -11,11 +10,11 @@ var lib = require('xtuple-server-lib'),
 /**
  * Setup machine access policies.
  */
-_.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
+_.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   beforeTask: function (options) {
-    localPolicy.beforeTask(options);
+    //localPolicy.beforeTask(options);
 
     if (options.planName === 'setup') {
       options.sys.policy.remotePassword = lib.util.getPassword();
@@ -146,6 +145,7 @@ _.extend(exports, localPolicy, /** @exports xtuple-server-sys-policy */ {
     // create *this* user, and set access rules
     if (options.sys.policy.userPassword) {
       _.map(_.flatten([ xtuple_users, user_ownership, user_mode ]), function (cmd) {
+        console.log(cmd);
         try {
           exec(cmd, { stdio: 'ignore' });
         }

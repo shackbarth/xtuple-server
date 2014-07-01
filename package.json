@@ -8,7 +8,8 @@
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
     "npmlog": "^0.1.1",
-    "requireindex": "^1.1.0"
+    "requireindex": "^1.1.0",
+    "xtuple-server-lib": "^0.9.61"
   },
   "bundledDependencies": [
     "glob",
@@ -16,6 +17,7 @@
     "mkdirp",
     "npmlog",
     "requireindex",
+    "xtuple-server-lib",
     "xtuple-server-sys-cups",
     "xtuple-server-sys-paths",
     "xtuple-server-sys-policy",
@@ -43,7 +45,7 @@
     "xtuple-server-pg-snapshotmgr": "tasks/pg/snapshotmgr"
   },
   "globalDependencies": {
-    "xtuple-server": "^0.9.0",
+    "xtuple-server": "https://github.com/xtuple/xtuple-server/releases/download/v0.9.94/xtuple-server-0.9.94.tgz",
     "tasks/sys/service": ""
   },
   "symlinkExports": {
@@ -76,7 +78,7 @@
     "enterprise"
   ],
   "scripts": {
-    "preinstall": "nex clean && nex install -g",
+    "preinstall": "nex install -g && nex install",
     "postinstall": "node link-core.js",
     "pretest": "XT_VERSION=${XT_VERSION:-4.5.0} mocha spec/uninstall-live.js",
     "test": "XT_VERSION=${XT_VERSION:-4.5.0} node node_modules/xtuple-server/spec"

@@ -3,7 +3,6 @@ var lib = require('xtuple-server-lib'),
   exec = require('sync-exec'),
   mkdirp = require('mkdirp'),
   cp = require('cp'),
-  forever = require('forever'),
   fs = require('fs'),
   xtupled = require('./cli'),
   path = require('path');
@@ -56,7 +55,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   uninstall: function (options) {
     var backup = path.resolve(options.xt.userconfig, 'backup');
     mkdirp.sync(backup);
-    forever.cleanUp();
     if (fs.existsSync(options.xt.configdir) && !fs.existsSync(backup)) {
       fs.renameSync(options.xt.configdir, path.resolve(backup, lib.util.$(options)));
     }

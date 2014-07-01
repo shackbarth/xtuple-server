@@ -1,6 +1,7 @@
 var _ = require('lodash'),
   path = require('path'),
-  planner = require('xtuple-server/spec/planner');
+  planner = require('xtuple-server'),
+  spec = require('xtuple-server/spec/planner');
 
 describe('install-live', function () {
   this.planObject = require('../plans')['install-live'];
@@ -19,5 +20,8 @@ describe('install-live', function () {
       capacity: 8
     }
   };
-  planner.describe(this);
+  planner.compileOptions(this.options.plan, this.options);
+  planner.verifyOptions(this.options.plan, this.options);
+
+  spec.describe(this);
 });
