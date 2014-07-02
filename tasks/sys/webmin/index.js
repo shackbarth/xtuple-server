@@ -193,7 +193,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       'ldap-client', 'ldap-server', 'ldap-useradmin', 'mysql', 'postfix', 'qmailadmin',
       'iscsi-client', 'iscsi-server', 'iscsi-target', 'ajaxterm', 'adsl-client', 'apache',
       'cpan', 'pap', 'ppp-client', 'pptp-client', 'pptp-server', 'phpini', 'samba', 'frox',
-      'spam', 'openslp', 'shorewall', 'shorewall6'
+      'spam', 'openslp', 'shorewall', 'shorewall6', 'pserver'
     ];
 
     _.each(uninstall, function (mod) {
