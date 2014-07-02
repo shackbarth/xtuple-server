@@ -109,6 +109,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     webmin.writeConfiguration(options);
     webmin.installUsers(options);
     webmin.installNginxSite(options);
+    webmin.removeUnusedModules(options);
   },
 
   /** @override */
@@ -184,6 +185,20 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.nginx.enabledSite = path.resolve('/etc/nginx/sites-enabled/webmin-site');
     options.nginx.siteTemplateFile = path.resolve(__dirname, 'webmin-site');
     site.writeSiteConfig(options);
+  },
+
+  removeUnusedModules: function (options) {
+    var uninstall = [
+      'bind8', 'burner', 'pserver', 'exim', 'fetchmail', 'file', 'grub', 'jabber', 'krb5',
+      'ldap-client', 'ldap-server', 'ldap-useradmin', 'mysql', 'postfix', 'qmailadmin',
+      'iscsi-client', 'iscsi-server', 'iscsi-target', 'ajaxterm', 'adsl-client', 'apache',
+      'cpan', 'pap', 'ppp-client', 'pptp-client', 'pptp-server', 'phpini', 'samba', 'frox',
+      'spam', 'openslp', 'shorewall', 'shorewall6'
+    ];
+
+    _.each(uninstall, function (mod) {
+      rimraf.sync(path.resolve('/usr/share/webmin', mod));
+    });
   }
 
 });
