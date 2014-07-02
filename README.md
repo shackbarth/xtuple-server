@@ -5,6 +5,7 @@
 1. `wget git.io/hikK5g -qO- | sudo bash`
 2. `git clone --recursive https://github.com/xtuple/xtuple-server-commercial.git`
 3. `cd xtuple-server-commercial`
+4. `npm install -g nex`
 5. `npm install`
 6. `sudo xtuple-server setup`
 7. `sudo -E NODE_VERSION=0.8.26 xtuple-server install-pilot --xt-name tjwebb --xt-version 4.5.0 --xt-demo`

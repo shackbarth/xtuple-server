@@ -24,6 +24,8 @@ var task = _.extend(exports, lib.task, /** @exports xtuple-server-pg-snapshotmgr
       description: 'crontab entry for snapshot schedule [daily at 2am]',
       value: '0 2 * * *',
       validate: function (value, options) {
+        if (!options.snapenable) return null;
+
         if (!_.isEmpty(value)) {
           var tab = crontab.load.sync();
           var job = tab.create('ls', value);
