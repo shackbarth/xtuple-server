@@ -9,11 +9,11 @@ describe('install-live', function () {
     planName: 'install-live',
     plan: this.planObject.plan,
     type: 'live',
-    requiresRoot: true,
     xt: {
       name: 'xtservtest',
       version: process.env.XT_VERSION,
-      demo: true
+      demo: true,
+      edition: 'manufacturing'
     },
     pg: {
       version: '9.3',
