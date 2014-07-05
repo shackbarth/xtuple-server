@@ -47,8 +47,12 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     exec('rm -f ~/.bash_history');
     exec('rm -f /root/.bash_history');
 
-    //exec('chmod a-w {xt.configdir}/install-arguments.json'.format(options));
-    //exec('chmod a-w {xt.configdir}/install-results.json'.format(options));
+    if (!_.isEmpty(options.sys.policy.userPassword)) {
+      options.report['System User Account'] = {
+        'Username': options.xt.name,
+        'Password': options.sys.policy.userPassword
+      };
+    }
   },
 
   /** @override */
