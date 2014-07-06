@@ -3,7 +3,7 @@
   "plan": [
     {
       "name": "sys",
-      "tasks": [ "policy", "ssh" ],
+      "tasks": [ "paths", "policy", "ssh" ],
       "options": { "validate": false }
     },
     {
