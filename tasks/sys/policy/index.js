@@ -97,10 +97,11 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
       // set xtremote shell to bash
       _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
         try {
-          exec(cmd, { stdio: 'ignore' });
+          exec(cmd);
         }
         catch (e) {
-          //log.warn('sys-policy', e.message.trim().split('\n')[1]);
+          log.silly('sys-policy', cmd);
+          log.silly('sys-policy', e.message);
           log.verbose('sys-policy', e.stack.split('\n'));
         }
       });
