@@ -19,6 +19,7 @@
     "npmlog",
     "requireindex",
     "rimraf",
+    "semver",
     "xtuple-server-sys-cups",
     "xtuple-server-sys-paths",
     "xtuple-server-sys-policy",
@@ -30,6 +31,7 @@
   ],
   "devDependencies": {
     "mocha": "^1.20.1",
+    "semver": "^2.3.1",
     "xtuple-server": "^0.9.0"
   },
   "peerDependencies": {
