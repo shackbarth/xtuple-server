@@ -10,4 +10,4 @@
 6. `sudo xtuple-server setup`
 7. `sudo -E NODE_VERSION=0.8.26 xtuple-server install-pilot --xt-name tjwebb --xt-version 4.5.0 --xt-demo`
 
-# [Visit the Wiki](https://github.com/xtuple/xtuple-server/wiki) for Usage Info
+# [Visit the Wiki](https://github.com/xtuple/xtuple-server-commercial/wiki) for Usage Info
