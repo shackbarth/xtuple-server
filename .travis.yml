@@ -17,3 +17,4 @@ after_failure:
   - cat /var/spool/cron/crontabs/travis
   - cat /var/spool/cron/crontabs/root
   - cat xtuple-server.log
+  - env

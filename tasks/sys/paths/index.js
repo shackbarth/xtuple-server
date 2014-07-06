@@ -64,21 +64,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
     mkdirp.sync(options.xt.rundir);
     mkdirp.sync(options.xt.socketdir);
     mkdirp.sync(options.xt.statedir);
-
-    if (/^setup/.test(options.planName)) {
-      exports.addNodePath(options);
-    }
-  },
-
-  /**
-   * Add to NODE_PATH the path of the xtuple-server dependencies
-   */
-  addNodePath: function (options) {
-    var xtupleServerPath = path.resolve(path.dirname(require.resolve('xtuple-server'), 'node_modules'));
-    var exportCommand = 'export NODE_PATH=$NODE_PATH:'+ xtupleServerPath;
-
-    fs.appendSync('/etc/profile.d/nodepath.sh', exportCommand);
-    exec(exportCommand);
   }
 
 });

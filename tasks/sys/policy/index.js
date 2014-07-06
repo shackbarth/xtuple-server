@@ -42,10 +42,23 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
   },
 
   /** @override */
+  afterTask: function (options) {
+    exec('chmod 440 /etc/sudoers.d/*');
+
+    // validate sudoers files
+    exec('visudo -c');
+
+    if (/^setup/.test(options.planName)) {
+      exports.addNodePath(options);
+    }
+  },
+
+  /** @override */
   afterInstall: function (options) {
     exec('rm -f ~/.pgpass');
     exec('rm -f ~/.bash_history');
     exec('rm -f /root/.bash_history');
+
 
     if (!_.isEmpty(options.sys.policy.userPassword)) {
       options.report['System User Account'] = {
@@ -55,12 +68,15 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     }
   },
 
-  /** @override */
-  afterTask: function (options) {
-    exec('chmod 440 /etc/sudoers.d/*');
+  /**
+   * Add to NODE_PATH the path of the xtuple-server dependencies
+   */
+  addNodePath: function (options) {
+    var xtupleServerPath = path.resolve(path.dirname(require.resolve('xtuple-server'), 'node_modules'));
+    var exportCommand = 'export NODE_PATH=$NODE_PATH:'+ xtupleServerPath;
 
-    // validate sudoers files
-    exec('visudo -c');
+    fs.appendSync('/etc/profile.d/nodepath.sh', exportCommand);
+    exec(exportCommand);
   },
 
   /** @private */
