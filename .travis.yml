@@ -11,7 +11,7 @@ install:
 
 script: 
   - sudo xtuple-server setup
-  - sudo -E XT_VERSION=4.5.0 npm test
+  - sudo npm test
 
 after_failure:
   - cat /var/spool/cron/crontabs/travis

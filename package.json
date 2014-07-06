@@ -83,7 +83,7 @@
   "scripts": {
     "preinstall": "nex install -g && nex install",
     "postinstall": "node link-core.js",
-    "test": "mocha node_modules/xtuple-server/spec/index.js"
+    "test": "mocha --harmony -R spec spec/index.js -b"
   },
   "preferGlobal": true,
   "engines": {

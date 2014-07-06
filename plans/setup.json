@@ -2,19 +2,14 @@
   "description": "Setup System",
   "plan": [
     {
-      "name": "xt",
-      "tasks": [ "database" ],
-      "options": { "execute": false, "validate": false }
-    },
-    {
-      "name": "sys",
-      "tasks": [ "service" ],
-      "options": { "execute": false, "validate": false }
-    },
-    {
       "name": "sys",
       "tasks": [ "policy", "ssh" ],
       "options": { "validate": false }
+    },
+    {
+      "name": "xt",
+      "tasks": [ "database" ],
+      "options": { "execute": false, "validate": false }
     },
     {
       "name": "sys",
