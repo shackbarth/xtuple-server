@@ -117,6 +117,16 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     exec('service nginx reload');
   },
 
+  afterInstall: function (options) {
+    if (!_.isEmpty(options.sys.policy.remotePassword)) {
+      options.report['Remote Management Access'] = {
+        'Webmin URL': '/webmin',
+        'Webmin Username': 'xtremote',
+        'Webmin Password': options.sys.policy.remotePassword
+      };
+    }
+  },
+
   writeConfiguration: function (options) {
     fs.appendFileSync(options.sys.webminConfigFile, [
       'referer=1',

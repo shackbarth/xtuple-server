@@ -29,8 +29,8 @@
     "xtuple-server-pg-snapshotmgr"
   ],
   "devDependencies": {
-    "xtuple-server": "^0.9.0",
-    "mocha": "^1.20.1"
+    "mocha": "^1.20.1",
+    "xtuple-server": "^0.9.0"
   },
   "peerDependencies": {
     "xtuple-server": "^0.9.0"
@@ -53,6 +53,10 @@
     "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/",
     "node_modules/xtuple-server-sys-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/",
     "node_modules/xtuple-server-pg-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/"
+  },
+  "taskOverrides": {
+    "sys-paths": "local-paths",
+    "sys-policy": "local-policy"
   },
   "files": [
     "tasks/",
@@ -79,8 +83,7 @@
   "scripts": {
     "preinstall": "nex install -g && nex install",
     "postinstall": "node link-core.js",
-    "pretest": "XT_VERSION=${XT_VERSION:-4.5.0} mocha spec/uninstall-live.js",
-    "test": "XT_VERSION=${XT_VERSION:-4.5.0} node node_modules/xtuple-server/spec"
+    "test": "mocha node_modules/xtuple-server/spec/index.js"
   },
   "preferGlobal": true,
   "engines": {
