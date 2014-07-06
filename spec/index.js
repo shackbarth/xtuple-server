@@ -3,6 +3,7 @@
 
 var assert = require('assert');
 
+var githubLatest = require('github-latest');
 var lib = require('xtuple-server-lib');
 var plans = require('../plans');
 var planner = require('../');
@@ -13,6 +14,7 @@ var fs = require('fs');
 var path = require('path');
 var n = require('n-api');
 var proc = require('child_process');
+var xtupleVersion = '';
 
 global.log = require('npmlog');
 
@@ -24,6 +26,13 @@ process.on('exit', function () {
 });
 
 describe('xTuple Server Commercial', function () {
+
+  before(function (done) {
+    githubLatest('xtuple', 'xtuple', function (e, tag) {
+      xtupleVersion = tag;
+      done();
+    });
+  });
 
   beforeEach(function () {
     log.heading = 'xtuple-server-test';
@@ -55,7 +64,7 @@ describe('xTuple Server Commercial', function () {
         requiresRoot: true,
         xt: {
           name: 'xtservtest',
-          version: process.env.XT_VERSION
+          version: xtupleVersion
         }
       };
 
@@ -75,7 +84,7 @@ describe('xTuple Server Commercial', function () {
         type: 'live',
         xt: {
           name: 'xtservtest',
-          version: process.env.XT_VERSION,
+          version: xtupleVersion,
           demo: true,
           edition: 'manufacturing'
         }
@@ -112,7 +121,7 @@ describe('xTuple Server Commercial', function () {
         type: 'live',
         xt: {
           name: 'xtservtest',
-          version: process.env.XT_VERSION,
+          version: xtupleVersion
         },
         pg: {
           dbname: 'demo_live'

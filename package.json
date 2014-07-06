@@ -30,6 +30,7 @@
     "xtuple-server-pg-snapshotmgr"
   ],
   "devDependencies": {
+    "github-latest": "^0.1.2",
     "mocha": "^1.20.1",
     "n-api": "^1.2.20",
     "semver": "^2.3.1",
