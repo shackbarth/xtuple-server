@@ -12,7 +12,7 @@ repository.version = pkg.version;
 github.getRelease(repository)
   .then(function (tarball) {
     cp.sync(tarball, path.resolve(process.cwd()));
-    proc.exec('npm install '+ tarball);
+    proc.exec('npm tarball-install '+ tarball);
   },
   function () {
     log.error('Failed to download xtuple-server-commercial. Please try again');
