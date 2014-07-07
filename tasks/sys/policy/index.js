@@ -89,8 +89,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     }
 
     _.each(glob.sync(path.resolve(home(), '.ssh', '*')), function (file) {
-      cp.sync(file, rootSsh);
-      fs.chownSync(path.resolve(rootSsh, path.basename(file)), 0, 0);
+      var target = path.resolve(rootSsh, path.basename(file));
+      cp.sync(file, target);
+      fs.chownSync(target, 0, 0);
     });
   },
 
