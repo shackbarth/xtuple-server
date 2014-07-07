@@ -11,9 +11,15 @@ var _ = require('lodash'),
 
 var config = require(path.resolve(process.env.HOME, '.forever/config')),
   table = new Table({
-    // uid, command, pid, uptime
-    head: config.columns,
-    colWidths: [ 8, 32, 8, 8 ]
+    head: [
+      'process',
+      'user',
+      'node',
+      'pg port',
+      'pid',
+      'uptime'
+    ],
+    colWidths: [ 48, 16, 8, 32, 8 ]
   });
 
 var xtupled = module.exports = {
@@ -110,9 +116,17 @@ program
   .command('status [name] [version]')
   .action(function (name, version) {
     forever.list(false, function (err, data) {
-      table.push(data);
-
-      console.dir(data);
+      _.each(data, function (row) {
+        table.push([
+          row.uid,
+          row.spawnWith.SUDO_USER,
+          row.spawnWith.NODE_VERSION,
+          row.spawnWith.PG_PORT,
+          row.pid,
+          row.uptime
+        ]);
+      });
+      console.log(table.toString());
     });
   });
 

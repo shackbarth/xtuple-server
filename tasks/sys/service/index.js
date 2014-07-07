@@ -40,6 +40,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       exports.setupServiceManager(options);
     }
     else {
+      exports.preparePermissions(options);
       exports.installService(options);
     }
   },
@@ -74,6 +75,19 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
     exec('update-rc.d xtuple defaults');
   },
 
+  preparePermissions: function (options) {
+    // FIXME hackery
+    try {
+      exec('chown -R '+ options.xt.name + ' ' + options.xt.logdir);
+      exec('chmod -R +rwx ' + options.xt.logdir);
+      exec('chown -R '+ options.xt.name + ' ' + options.xt.configdir);
+      exec('chmod -R u=rx '+ options.xt.configdir + '/ssl');
+    }
+    catch (e) {
+      log.silly('preparePermissions', e);
+    }
+  },
+
   /**
    * Install a particular account into the service manager
    */
@@ -92,18 +106,15 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       sourceDir: options.xt.coredir,
       cwd: options.xt.coredir,
 
-      // NODE_ENV
-      env: {
-        NODE_ENV: 'production',
-        NODE_VERSION: options.n.version
-      },
-
       // process env vars
       spawnWith: {
+        NODE_ENV: 'production',
+        NODE_VERSION: options.n.version,
         SUDO_USER: options.xt.name,
         USER: options.xt.name,
         USERNAME: options.xt.name,
-        HOME: options.xt.userhome
+        HOME: options.xt.userhome,
+        PG_PORT: options.pg.cluster.port
       },
 
       // process mgmt options
