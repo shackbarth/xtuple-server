@@ -69,24 +69,6 @@ describe('xTuple Server Commercial', function () {
 
   describe('plans', function () {
 
-    describe('@uninstall-live', function () {
-      var planObject = require('../plans')['uninstall-live'];
-      var options = {
-        planName: 'uninstall-live',
-        plan: planObject.plan,
-        type: 'live',
-        xt: {
-          name: 'xtservtest'
-        }
-      };
-
-      before(function () {
-        options.xt.version = xtupleVersion;
-      });
-
-      specPlanner.describe({ planObject: planObject, options: options });
-    });
-
     describe('@install-live', function () {
       var planObject = require('../plans')['install-live'];
       var options = {
