@@ -63,7 +63,8 @@
     "index.js",
     "install.js",
     "link-core.js",
-    "plans/"
+    "plans/",
+    "spec/"
   ],
   "keywords": [
     "xtuple",
