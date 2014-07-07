@@ -28,10 +28,12 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   beforeTask: function (options) {
-    options.sys.initd = path.resolve('/etc/init.d/xtuple');
-    options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
-    exec('chown -R {xt.name}:{xt.name} {xt.processdir}'.format(options));
-    mkdirp.sync(options.xt.processdir);
+    if (!_.isEmpy(options.xt.configdir)) {
+      options.sys.initd = path.resolve('/etc/init.d/xtuple');
+      options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
+      exec('chown -R {xt.name}:{xt.name} {xt.processdir}'.format(options));
+      mkdirp.sync(options.xt.processdir);
+    }
   },
 
   /** @override */
@@ -48,7 +50,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   /** @override */
   afterInstall: function (options) {
     if (/^install/.test(options.planName)) {
-      xtupled.start(xtupled.getInstanceProcesses(options.xt.name, options.xt.version));
+      xtupled.restart(xtupled.getInstanceProcesses(options.xt.name, options.xt.version));
     }
   },
 
