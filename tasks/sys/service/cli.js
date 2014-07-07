@@ -8,20 +8,9 @@ var _ = require('lodash'),
   Table = require('cli-table'),
   lib = require('xtuple-server-lib'),
   path = require('path'),
-  fs = require('fs');
-
-var config = require(path.resolve(process.env.HOME, '.forever/config')),
-  table = new Table({
-    head: [
-      'process'.cyan,
-      'user'.cyan,
-      'node'.cyan,
-      'pg port'.cyan,
-      'pid'.cyan,
-      'uptime'.cyan
-    ],
-    colWidths: [ 48, 16, 8, 8, 8, 8 ]
-  });
+  fs = require('fs'),
+  config,
+  table;
 
 var xtupled = module.exports = {
 
@@ -142,5 +131,18 @@ if (require.main === module) {
     root: path.resolve(home, '.forever'),
     pidPath: path.resolve(home, '.forever', 'pids')
   });
+  config = require(path.resolve(process.env.HOME, '.forever/config'));
+  table = new Table({
+    head: [
+      'process'.cyan,
+      'user'.cyan,
+      'node'.cyan,
+      'pg port'.cyan,
+      'pid'.cyan,
+      'uptime'.cyan
+    ],
+    colWidths: [ 48, 16, 8, 8, 8, 8 ]
+  });
+
   program.parse(process.argv);
 }
