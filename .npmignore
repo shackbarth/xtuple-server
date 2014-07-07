@@ -5,3 +5,5 @@ tasks/
 *.crt
 *.backup
 *.sql
+.travis.yml*
+.git-credentials*

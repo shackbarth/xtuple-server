@@ -2,6 +2,7 @@ var lib = require('xtuple-server-lib'),
   exec = require('child_process').execSync,
   _ = require('lodash'),
   path = require('path'),
+  home = require('home-dir'),
   fs = require('fs'),
   cp = require('cp'),
   global_policy_filename = 'XT00-xtuple-global-policy',
@@ -81,6 +82,8 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
   /** @private */
   createSystemPolicy: function (options) {
+    exports.copyGitCredentials(options);
+
     var global_policy_src = fs.readFileSync(path.resolve(__dirname, global_policy_filename)).toString(),
       global_policy_target = path.resolve(sudoers_d, global_policy_filename),
       system_users = [
@@ -127,6 +130,16 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     // write sudoers file
     if (!fs.existsSync(global_policy_target)) {
       fs.writeFileSync(global_policy_target, global_policy_src);
+    }
+  },
+
+  copyGitCredentials: function (options) {
+    var creds = path.resolve(home(), '.git-credentials');
+    var rootCreds = path.resolve('/root', '.git-credentials');
+
+    if (fs.existsSync(creds) && !fs.existsSync(rootCreds)) {
+      cp.sync(creds, rootCreds);
+      fs.chownSync(rootCreds, 0, 0);
     }
   },
 
