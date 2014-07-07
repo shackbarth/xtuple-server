@@ -71,65 +71,68 @@ var xtupled = module.exports = {
   }
 };
 
-program
-  .command('start [name] [version]')
-  .action(function (name, version) {
-    if (_.isString(name) && _.isString(version)) {
-      xtupled.start(xtupled.getInstanceProcesses(name, version));
-    }
-    else if (_.isString(name)) {
-      xtupled.start(xtupled.getAccountProcesses(name));
-    }
-    else {
-      xtupled.start(xtupled.getAllProcesses());
-    }
-  });
+var commands = {
 
-program
-  .command('stop [name] [version]')
-  .action(function (name, version) {
-    if (_.isString(name) && _.isString(version)) {
-      xtupled.stop(xtupled.getInstanceProcesses(name, version));
-    }
-    else if (_.isString(name)) {
-      xtupled.stop(xtupled.getAccountProcesses(name));
-    }
-    else {
-      xtupled.stop(xtupled.getAllProcesses());
-    }
-  });
+  start: program
+    .command('start [name] [version]')
+    .action(function (name, version) {
+      if (_.isString(name) && _.isString(version)) {
+        xtupled.start(xtupled.getInstanceProcesses(name, version));
+      }
+      else if (_.isString(name)) {
+        xtupled.start(xtupled.getAccountProcesses(name));
+      }
+      else {
+        xtupled.start(xtupled.getAllProcesses());
+      }
+    }),
 
-program
-  .command('restart [name] [version]')
-  .action(function (name, version) {
-    if (_.isString(name) && _.isString(version)) {
-      xtupled.restart(xtupled.getInstanceProcesses(name, version));
-    }
-    else if (_.isString(name)) {
-      xtupled.restart(xtupled.getAccountProcesses(name));
-    }
-    else {
-      xtupled.restart(xtupled.getAllProcesses());
-    }
-  });
+  stop: program
+    .command('stop [name] [version]')
+    .action(function (name, version) {
+      if (_.isString(name) && _.isString(version)) {
+        xtupled.stop(xtupled.getInstanceProcesses(name, version));
+      }
+      else if (_.isString(name)) {
+        xtupled.stop(xtupled.getAccountProcesses(name));
+      }
+      else {
+        xtupled.stop(xtupled.getAllProcesses());
+      }
+    }),
 
-program
-  .command('status [name] [version]')
-  .action(function (name, version) {
-    forever.list(false, function (err, data) {
-      _.each(data, function (row) {
-        table.push([
-          '' + row.uid,
-          '' + row.spawnWith.SUDO_USER,
-          '' + row.spawnWith.NODE_VERSION,
-          '' + row.spawnWith.PG_PORT,
-          '' + row.pid,
-          '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
-        ]);
+  restart: program
+    .command('restart [name] [version]')
+    .action(function (name, version) {
+      if (_.isString(name) && _.isString(version)) {
+        xtupled.restart(xtupled.getInstanceProcesses(name, version));
+      }
+      else if (_.isString(name)) {
+        xtupled.restart(xtupled.getAccountProcesses(name));
+      }
+      else {
+        xtupled.restart(xtupled.getAllProcesses());
+      }
+    }),
+
+  status: program
+    .command('status [name] [version]')
+    .action(function (name, version) {
+      forever.list(false, function (err, data) {
+        _.each(data, function (row) {
+          table.push([
+            '' + row.uid,
+            '' + row.spawnWith.SUDO_USER,
+            '' + row.spawnWith.NODE_VERSION,
+            '' + row.spawnWith.PG_PORT,
+            '' + row.pid,
+            '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
+          ]);
+        });
+        console.log(table.toString());
       });
-      console.log(table.toString());
-    });
-  });
+    })
+};
 
 if (require.main === module) {
   var home = '/usr/local/xtuple';

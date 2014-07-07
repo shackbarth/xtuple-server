@@ -1,6 +1,6 @@
 var lib = require('xtuple-server-lib'),
   _ = require('lodash'),
-  exec = require('sync-exec'),
+  exec = require('child_process').execSync,
   mkdirp = require('mkdirp'),
   cp = require('cp'),
   fs = require('fs'),
@@ -28,7 +28,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   beforeTask: function (options) {
-    if (!_.isEmpy(options.xt.configdir)) {
+    if (!_.isEmpty(options.xt.configdir)) {
       options.sys.initd = path.resolve('/etc/init.d/xtuple');
       options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
       exec('chown -R {xt.name}:{xt.name} {xt.processdir}'.format(options));
@@ -38,7 +38,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   executeTask: function (options) {
-    if (options.planName === 'setup') {
+    if (/^setup/.test(options.planName)) {
       exports.setupServiceManager(options);
     }
     else {
@@ -67,14 +67,22 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
    * Perform initial setup of the service management system.
    */
   setupServiceManager: function (options) {
-    if (fs.existsSync(options.sys.initd)) {
+    try {
       exec('update-rc.d -f xtuple remove');
+    }
+    catch (e) {
+      //log.verbose('sys-service', 'xtuple service h
     }
 
     cp.sync(path.resolve(__dirname, 'service.sh'), options.sys.initd);
 
-    // create upstart service 'xtuple'
-    exec('update-rc.d xtuple defaults');
+    try {
+      // create upstart service 'xtuple'
+      exec('update-rc.d xtuple defaults');
+    }
+    catch (e) {
+
+    }
   },
 
   preparePermissions: function (options) {
