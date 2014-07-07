@@ -173,7 +173,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       //log.verbose('sys-service', 'xtuple service h
     }   
 
-    cp.sync(path.resolve(__dirname, 'service.sh'), options.sys.initd);
+    cp.sync(path.resolve(__dirname, 'service.sh'), '/etc/init.d/webmin');
 
     try {
       // create upstart service 'xtuple'
