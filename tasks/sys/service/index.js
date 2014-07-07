@@ -31,8 +31,13 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
     if (!_.isEmpty(options.xt.configdir)) {
       options.sys.initd = path.resolve('/etc/init.d/xtuple');
       options.xt.processdir = path.resolve(options.xt.configdir, 'processes');
-      exec('chown -R {xt.name}:{xt.name} {xt.processdir}'.format(options));
-      mkdirp.sync(options.xt.processdir);
+      try {
+        mkdirp.sync(options.xt.processdir);
+        exec('chown -R {xt.name}:{xt.name} {xt.processdir}'.format(options));
+      }
+      catch (e) {
+
+      }
     }
   },
 
@@ -75,7 +80,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       //log.verbose('sys-service', 'xtuple service h
     }
 
-    cp.sync(path.resolve(__dirname, 'service.sh'), options.sys.initd);
+    cp.sync(path.resolve(__dirname, 'service.sh'), '/etc/init.d/xtuple');
 
     try {
       // create upstart service 'xtuple'
