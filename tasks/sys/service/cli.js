@@ -19,7 +19,7 @@ var config = require(path.resolve(process.env.HOME, '.forever/config')),
       'pid',
       'uptime'
     ],
-    colWidths: [ 48, 16, 8, 32, 8 ]
+    colWidths: [ 48, 16, 8, 8, 32, 8 ]
   });
 
 var xtupled = module.exports = {
