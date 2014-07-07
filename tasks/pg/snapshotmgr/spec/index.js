@@ -3,6 +3,7 @@ var fs = require('fs'),
   assert = require('assert');
 
 exports.beforeExecute = function (options) {
+  options.pg || (options.pg = { });
   options.pg.snapenable = true;
 };
 

@@ -6,7 +6,7 @@ var assert = require('assert');
 var githubLatest = require('github-latest');
 var lib = require('xtuple-server-lib');
 var plans = require('../plans');
-var planner = require('../');
+var planner = require('xtuple-server');
 var specPlanner = require('xtuple-server/spec/planner');
 var semver = require('semver');
 var pkg = require('../package');
@@ -14,13 +14,14 @@ var fs = require('fs');
 var path = require('path');
 var n = require('n-api');
 var proc = require('child_process');
+var logfile = require('npmlog-file');
 var xtupleVersion = '';
 
 global.log = require('npmlog');
 
 process.on('exit', function () {
   log.info('test', 'Test result details in xtuple-server-test.log');
-  fs.appendFileSync('xtuple-server-test.log', JSON.stringify(log.record, null, 2));
+  logfile.write(log, 'xtuple-server-test.log');
 
   n(process.version);
 });
@@ -38,6 +39,11 @@ describe('xTuple Server Commercial', function () {
     log.heading = 'xtuple-server-test';
     log.level = 'verbose';
   });
+
+  it('node version range must equal that of xtuple-server core edition', function () {
+    assert.equal(require('xtuple-server/package').engines.node, pkg.engines.node);
+  });
+
 
   describe('@cli', function () {
 

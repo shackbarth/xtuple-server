@@ -75,7 +75,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     var xtupleServerPath = path.resolve(path.dirname(require.resolve('xtuple-server'), 'node_modules'));
     var exportCommand = 'export NODE_PATH=$NODE_PATH:'+ xtupleServerPath;
 
-    fs.appendSync('/etc/profile.d/nodepath.sh', exportCommand);
+    fs.appendFileSync('/etc/profile.d/nodepath.sh', exportCommand);
     exec(exportCommand);
   },
 
