@@ -101,6 +101,13 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     exports.copyGitCredentials(options);
     exports.copySshDirectory(options);
 
+    mkdirp.sync('/etc/xtuple');
+    mkdirp.sync('/var/log/xtuple');
+    mkdirp.sync('/var/lib/xtuple');
+    mkdirp.sync('/usr/sbin/xtuple');
+    mkdirp.sync('/usr/local/xtuple');
+    mkdirp.sync('/var/run/postgresql');
+
     var global_policy_src = fs.readFileSync(path.resolve(__dirname, global_policy_filename)).toString(),
       global_policy_target = path.resolve(sudoers_d, global_policy_filename),
       system_users = [
