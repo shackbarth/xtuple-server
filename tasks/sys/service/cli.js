@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
+global.log = require('npmlog');
+
 var _ = require('lodash'),
   program = require('commander'),
   forever = require('forever'),
