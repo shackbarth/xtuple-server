@@ -141,7 +141,7 @@ if (require.main === module) {
       'pid'.cyan,
       'uptime'.cyan
     ],
-    colWidths: [ 48, 16, 8, 8, 8, 8 ]
+    colWidths: [ 48, 16, 8, 16, 8, 8 ]
   });
 
   program.parse(process.argv);
