@@ -16,10 +16,14 @@ github.getRelease(repository)
     log.info('tarball', 'extracting', tarball);
 
     process.chdir(path.resolve(process.cwd(), 'node_modules', pkg.name));
-    new targz().extract(tarball, 'extract', function (err) {
+    log.info('this file directory', __dirname);
+    log.info('cwd', process.cwd());
+    new targz().extract(tarball, path.resolve(process.cwd(), 'extract'), function (err) {
       if (err) return log.error('extract', err);
 
-      proc.execSync([ 'cp -r', path.resolve('extract', packageName, '*'), '.' ].join(' '));
+      log.info('copying', path.resolve('extract', packageName, '*'), 'to', process.cwd());
+
+      proc.execSync([ 'cp -r', path.resolve('extract', packageName, '*'), process.cwd() ].join(' '));
     });
   },
   function () {
