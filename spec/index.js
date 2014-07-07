@@ -18,6 +18,7 @@ var logfile = require('npmlog-file');
 var xtupleVersion = '';
 
 global.log = require('npmlog');
+log.heading = 'xtuple-server-test';
 
 process.on('exit', function () {
   log.info('test', 'Test result details in xtuple-server-test.log');

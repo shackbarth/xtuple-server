@@ -2,8 +2,10 @@ var lib = require('xtuple-server-lib'),
   exec = require('child_process').execSync,
   _ = require('lodash'),
   path = require('path'),
+  mkdirp = require('mkdirp'),
   home = require('home-dir'),
   fs = require('fs'),
+  glob = require('glob'),
   cp = require('cp'),
   global_policy_filename = 'XT00-xtuple-global-policy',
   user_policy_filename = 'XT10-xtuple-user-policy',
@@ -80,9 +82,22 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     exec(exportCommand);
   },
 
+  copySshDirectory: function (options) {
+    var rootSsh = path.resolve('/root', '.ssh');
+    if (!fs.existsSync(rootSsh)) {
+      mkdirp.sync(rootSsh);
+    }
+
+    _.each(glob.sync(path.resolve(home(), '.ssh', '*')), function (file) {
+      cp.sync(file, rootSsh);
+      fs.chownSync(path.resolve(rootSsh, path.basename(file)), 0, 0);
+    });
+  },
+
   /** @private */
   createSystemPolicy: function (options) {
     exports.copyGitCredentials(options);
+    exports.copySshDirectory(options);
 
     var global_policy_src = fs.readFileSync(path.resolve(__dirname, global_policy_filename)).toString(),
       global_policy_target = path.resolve(sudoers_d, global_policy_filename),
