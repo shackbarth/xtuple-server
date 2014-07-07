@@ -55,7 +55,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   /** @override */
   afterInstall: function (options) {
     if (/^install/.test(options.planName)) {
-      xtupled.restart(xtupled.getInstanceProcesses(options.xt.name, options.xt.version));
+      xtupled.start(xtupled.getInstanceProcesses(options.xt.name, options.xt.version));
     }
   },
 
@@ -138,7 +138,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       minUptime: 10000,
       spinSleepTime: 10000,
       killTree: true,
-      max: 100,
+      max: 30,  // try for 5 minutes
       watch: true,
       watchIgnoreDotFiles: true,
       watchDirectory: options.xt.configdir,

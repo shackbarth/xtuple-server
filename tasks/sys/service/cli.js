@@ -16,11 +16,47 @@ var _ = require('lodash'),
 
 log.heading = 'xtupled';
 
+function list (cb) {
+  forever.list(false, function (err, data) {
+    if (err) return log.warn(err.message);
+
+    var list = _.map(data, function (row) {
+      table.push([
+        '' + row.uid,
+        '' + row.spawnWith.SUDO_USER,
+        '' + row.spawnWith.NODE_VERSION,
+        '' + row.spawnWith.PG_PORT,
+        '' + row.pid,
+        // TODO format with moment
+        '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
+      ]);
+    });
+    if (!_.isFunction(cb)) {
+      console.log(table.toString());
+    }
+    else {
+      cb(list);
+    }
+  });
+}
+
 var xtupled = module.exports = {
 
   start: function (descriptors) {
-    _.each(descriptors, function (descriptor) {
-      forever.startDaemon(descriptor.script, descriptor);
+    list(function (current) {
+      var nascent = _.difference(_.pluck(descriptors, 'uid'), _.pluck(current, 'uid'));
+      var extant = _.difference(_.pluck(current, 'uid'), _.pluck(descriptors, 'uid'));
+
+      // start new processes
+      _.each(nascent, function (uid) {
+        var descriptor = _.find(descriptors, { uid: uid });
+        forever.startDaemon(descriptor.script, descriptor);
+      });
+
+      // restart existing processes
+      xtupled.restart(_.map(extant, function (uid) {
+        return _.find(descriptors, { uid: uid });
+      }));
     });
   },
 
@@ -110,10 +146,8 @@ var commands = {
   status: program
     .command('status [name] [version]')
     .action(function (name, version) {
-      forever.list(false, function (err, data) {
-        if (err) return log.warn(err.message);
-
-        _.each(data, function (row) {
+      list(function (list) {
+        _.each(list, function (row) {
           table.push([
             '' + row.uid,
             '' + row.spawnWith.SUDO_USER,
