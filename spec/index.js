@@ -33,7 +33,7 @@ describe('xTuple Server Commercial', function () {
       if (e) assert.fail('could not determine xtuple version');
 
       log.info('xtuple', 'using version', tag);
-      xtupleVersion = tag;
+      xtupleVersion = tag.replace(/^v/, '');
       done();
     });
   });
@@ -47,7 +47,6 @@ describe('xTuple Server Commercial', function () {
     assert.equal(require('xtuple-server/package').engines.node, pkg.engines.node);
   });
 
-
   describe('@cli', function () {
 
     afterEach(function () { log.silly(this.child); });
@@ -60,6 +59,12 @@ describe('xTuple Server Commercial', function () {
       assert(/xtupled\n$/.test(stdout));
     });
 
+    it('@uninstall-live', function () {
+      this.child = proc.execSync(
+        'xtuple-server uninstall-live --xt-name xtservtest --xt-version '+ xtupleVersion + ' --verbose'
+      );
+    });
+
   });
 
   describe('plans', function () {
@@ -70,7 +75,6 @@ describe('xTuple Server Commercial', function () {
         planName: 'uninstall-live',
         plan: planObject.plan,
         type: 'live',
-        requiresRoot: true,
         xt: {
           name: 'xtservtest'
         }
