@@ -119,12 +119,12 @@ program
     forever.list(false, function (err, data) {
       _.each(data, function (row) {
         table.push([
-          row.uid,
-          row.spawnWith.SUDO_USER,
-          row.spawnWith.NODE_VERSION,
-          row.spawnWith.PG_PORT,
-          row.pid,
-          row.uptime
+          '' + row.uid,
+          '' + row.spawnWith.SUDO_USER,
+          '' + row.spawnWith.NODE_VERSION,
+          '' + row.spawnWith.PG_PORT,
+          '' + row.pid,
+          '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
         ]);
       });
       console.log(table.toString());
