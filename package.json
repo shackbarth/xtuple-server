@@ -12,6 +12,7 @@
     "npmlog": "^0.1.1",
     "requireindex": "^1.1.0",
     "rimraf": "^2.2.8",
+    "tar.gz": "^0.1.1",
     "xtuple-server-lib": "^0.9.61"
   },
   "bundledDependencies": [
@@ -80,9 +81,7 @@
     "enterprise"
   ],
   "scripts": {
-    "tarball-install": "nex install -g && nex install",
-    "install": "node install.js",
-    "postinstall": "node link-core.js && node install.js",
+    "postinstall": "node install.js && nex install -g && nex install && node link-core.js",
     "test": "mocha --harmony -R spec spec/index.js -b"
   },
   "preferGlobal": true,
