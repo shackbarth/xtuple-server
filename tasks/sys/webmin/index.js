@@ -52,26 +52,27 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.sys.webminCustomConfigFile = path.resolve(options.sys.webminCustomPath, 'config');
     options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
 
-    if (fs.existsSync(options.sys.etcWebmin)) {
-      log.warn('sys-webmin', 'Webmin seems to already be installed. It is going to be replaced.');
-    }
-    if (fs.existsSync('/etc/usermin')) {
-      log.warn('sys-webmin', 'Usermin seems to already be installed. It is going to be replaced.');
-    }
-  },
-
-  /** @override */
-  beforeTask: function (options) {
     try {
       exec('killall /usr/bin/perl', { stdio: 'ignore' });
     }
     catch (e) {
       log.info('sys-webmin', 'No previous webmin servers running. This is ok/good.');
     }
-    rimraf.sync('/etc/webmin');
-    rimraf.sync('/etc/usermin');
-    rimraf.sync('/usr/local/webmin');
-    rimraf.sync('/usr/local/usermin');
+
+    if (fs.existsSync(options.sys.etcWebmin)) {
+      log.warn('sys-webmin', 'Webmin seems to already be installed. It is going to be replaced.');
+
+      rimraf.sync('/etc/webmin');
+      rimraf.sync('/usr/share/webmin');
+      rimraf.sync('/usr/local/webmin');
+    }
+    if (fs.existsSync('/etc/usermin')) {
+      log.warn('sys-webmin', 'Usermin seems to already be installed. It is going to be replaced.');
+
+      rimraf.sync('/etc/usermin');
+      rimraf.sync('/usr/share/usermin');
+      rimraf.sync('/usr/local/usermin');
+    }
   },
 
   /** @override */
@@ -117,6 +118,17 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     exec('service nginx reload');
   },
 
+  /** @override */
+  afterInstall: function (options) {
+    if (!_.isEmpty(options.sys.policy.remotePassword)) {
+      options.report['Remote Management Access'] = {
+        'Webmin URL': '/webmin',
+        'Webmin Username': 'xtremote',
+        'Webmin Password': options.sys.policy.remotePassword
+      };
+    }
+  },
+
   writeConfiguration: function (options) {
     fs.appendFileSync(options.sys.webminConfigFile, [
       'referer=1',
@@ -147,13 +159,8 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       'webprefixnoredir=1'
     ].join('\n'));
 
-    //fs.symlinkSync(options.sys.webminCustomPath, path.resolve('/etc/usermin/custom'));
-    //fs.symlinkSync(options.sys.webminXtuplePath, path.resolve('/etc/usermin/xtuple'));
-
     cp.sync('/etc/webmin/miniserv.users', '/etc/usermin/miniserv.users');
     cp.sync('/etc/webmin/miniserv.conf', '/etc/usermin/miniserv.conf');
-
-    // replace usermin users file
   },
 
   installCustomCommands: function (options) {

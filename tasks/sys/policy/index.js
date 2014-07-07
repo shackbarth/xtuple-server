@@ -2,7 +2,10 @@ var lib = require('xtuple-server-lib'),
   exec = require('child_process').execSync,
   _ = require('lodash'),
   path = require('path'),
+  mkdirp = require('mkdirp'),
+  home = require('home-dir'),
   fs = require('fs'),
+  glob = require('glob'),
   cp = require('cp'),
   global_policy_filename = 'XT00-xtuple-global-policy',
   user_policy_filename = 'XT10-xtuple-user-policy',
@@ -42,25 +45,69 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
   },
 
   /** @override */
-  afterInstall: function (options) {
-    exec('rm -f ~/.pgpass');
-    exec('rm -f ~/.bash_history');
-    exec('rm -f /root/.bash_history');
-
-    //exec('chmod a-w {xt.configdir}/install-arguments.json'.format(options));
-    //exec('chmod a-w {xt.configdir}/install-results.json'.format(options));
-  },
-
-  /** @override */
   afterTask: function (options) {
     exec('chmod 440 /etc/sudoers.d/*');
 
     // validate sudoers files
     exec('visudo -c');
+
+    if (/^setup/.test(options.planName)) {
+      exports.addNodePath(options);
+    }
+  },
+
+  /** @override */
+  afterInstall: function (options) {
+    exec('rm -f ~/.pgpass');
+    exec('rm -f ~/.bash_history');
+    exec('rm -f /root/.bash_history');
+
+
+    if (!_.isEmpty(options.sys.policy.userPassword)) {
+      options.report['System User Account'] = {
+        'Username': options.xt.name,
+        'Password': options.sys.policy.userPassword
+      };
+    }
+  },
+
+  /**
+   * Add to NODE_PATH the path of the xtuple-server dependencies
+   */
+  addNodePath: function (options) {
+    var xtupleServerPath = path.resolve(path.dirname(require.resolve('xtuple-server'), 'node_modules'));
+    var exportCommand = 'export NODE_PATH=$NODE_PATH:'+ xtupleServerPath;
+
+    fs.appendFileSync('/etc/profile.d/nodepath.sh', exportCommand);
+    exec(exportCommand);
+  },
+
+  copySshDirectory: function (options) {
+    var rootSsh = path.resolve('/root', '.ssh');
+    if (!fs.existsSync(rootSsh)) {
+      mkdirp.sync(rootSsh);
+    }
+
+    _.each(glob.sync(path.resolve(home(), '.ssh', '*')), function (file) {
+      var target = path.resolve(rootSsh, path.basename(file));
+      cp.sync(file, target);
+      fs.chownSync(target, 0, 0);
+      fs.chmodSync(target, '600');
+    });
   },
 
   /** @private */
   createSystemPolicy: function (options) {
+    exports.copyGitCredentials(options);
+    exports.copySshDirectory(options);
+
+    mkdirp.sync('/etc/xtuple');
+    mkdirp.sync('/var/log/xtuple');
+    mkdirp.sync('/var/lib/xtuple');
+    mkdirp.sync('/usr/sbin/xtuple');
+    mkdirp.sync('/usr/local/xtuple');
+    mkdirp.sync('/var/run/postgresql');
+
     var global_policy_src = fs.readFileSync(path.resolve(__dirname, global_policy_filename)).toString(),
       global_policy_target = path.resolve(sudoers_d, global_policy_filename),
       system_users = [
@@ -93,10 +140,11 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
       // set xtremote shell to bash
       _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
         try {
-          exec(cmd, { stdio: 'ignore' });
+          exec(cmd);
         }
         catch (e) {
-          //log.warn('sys-policy', e.message.trim().split('\n')[1]);
+          log.silly('sys-policy', cmd);
+          log.silly('sys-policy', e.message);
           log.verbose('sys-policy', e.stack.split('\n'));
         }
       });
@@ -106,6 +154,16 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     // write sudoers file
     if (!fs.existsSync(global_policy_target)) {
       fs.writeFileSync(global_policy_target, global_policy_src);
+    }
+  },
+
+  copyGitCredentials: function (options) {
+    var creds = path.resolve(home(), '.git-credentials');
+    var rootCreds = path.resolve('/root', '.git-credentials');
+
+    if (fs.existsSync(creds) && !fs.existsSync(rootCreds)) {
+      cp.sync(creds, rootCreds);
+      fs.chownSync(rootCreds, 0, 0);
     }
   },
 

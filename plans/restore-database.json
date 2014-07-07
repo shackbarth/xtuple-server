@@ -1,0 +1,25 @@
+{
+  "description": "Restore xTuple Database",
+  "types": "all",
+  "plan": [
+    {
+      "name": "xt",
+      "tasks": [ "database" ],
+      "options": { "execute": false, "validate": false }
+    },
+    {
+      "name": "sys",
+      "tasks": [ "paths" ],
+      "options": { "execute": false }
+    },
+    {
+      "name": "pg",
+      "tasks": [ "config" ],
+      "options": { "execute": false }
+    },
+    {
+      "name": "pg",
+      "tasks": [ "restore" ]
+    }
+  ]
+}

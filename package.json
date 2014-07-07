@@ -1,36 +1,37 @@
 {
-  "private": true,
   "name": "xtuple-server-commercial",
-  "version": "0.9.1",
+  "version": "0.9.9",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
+    "cp": "^0.1.1",
     "glob": "^4.0.2",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
+    "nex": "^1.2.47",
+    "nex-github": "^0.5.5",
     "npmlog": "^0.1.1",
     "requireindex": "^1.1.0",
+    "rimraf": "^2.2.8",
+    "tar.gz": "^0.1.1",
     "xtuple-server-lib": "^0.9.61"
   },
   "bundledDependencies": [
+    "cp",
     "glob",
     "lodash",
     "mkdirp",
     "npmlog",
     "requireindex",
-    "xtuple-server-lib",
-    "xtuple-server-sys-cups",
-    "xtuple-server-sys-paths",
-    "xtuple-server-sys-policy",
-    "xtuple-server-sys-service",
-    "xtuple-server-sys-ssh",
-    "xtuple-server-sys-webmin",
-    "xtuple-server-pg-tuner",
-    "xtuple-server-pg-snapshotmgr"
+    "rimraf",
+    "semver"
   ],
   "devDependencies": {
-    "xtuple-server": "^0.9.0",
-    "chai": "^1.9.1",
-    "mocha": "^1.20.1"
+    "github-latest": "^0.1.2",
+    "mocha": "^1.20.1",
+    "n-api": "^1.2.20",
+    "npmlog-file": "^0.1.1",
+    "semver": "^2.3.1",
+    "xtuple-server": "^0.9.0"
   },
   "peerDependencies": {
     "xtuple-server": "^0.9.0"
@@ -54,12 +55,16 @@
     "node_modules/xtuple-server-sys-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/",
     "node_modules/xtuple-server-pg-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/"
   },
+  "taskOverrides": {
+    "sys-paths": "local-paths",
+    "sys-policy": "local-policy"
+  },
   "files": [
-    "tasks/",
-    "plans/",
-    "spec/",
     "index.js",
-    "link-core.js"
+    "install.js",
+    "link-core.js",
+    "plans/",
+    "spec/"
   ],
   "keywords": [
     "xtuple",
@@ -77,14 +82,12 @@
     "enterprise"
   ],
   "scripts": {
-    "preinstall": "nex install -g && nex install",
-    "postinstall": "node link-core.js",
-    "pretest": "XT_VERSION=${XT_VERSION:-4.5.0} mocha spec/uninstall-live.js",
-    "test": "XT_VERSION=${XT_VERSION:-4.5.0} node node_modules/xtuple-server/spec"
+    "postinstall": "node install.js && nex install -g && nex install && node link-core.js",
+    "test": "mocha --harmony -R spec spec/index.js -b"
   },
   "preferGlobal": true,
   "engines": {
-    "node": "0.11.13"
+    "node": "^0.11.13"
   },
   "cpu": [
     "!ia32"
@@ -92,9 +95,13 @@
   "os": [
     "linux"
   ],
+  "license": "Proprietary",
   "repository": {
     "type": "git",
-    "url": "git://github.com/xtuple/xtuple-server-commercial.git"
+    "org": "xtuple",
+    "repo": "xtuple-server-commercial",
+    "url": "git://github.com/xtuple/xtuple-server-commercial.git",
+    "private": true
   },
   "author": "Travis Webb <travis@xtuple.com>",
   "bugs": {

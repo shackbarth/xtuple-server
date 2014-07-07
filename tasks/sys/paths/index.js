@@ -3,6 +3,7 @@ var lib = require('xtuple-server-lib'),
   rimraf = require('rimraf'),
   mkdirp = require('mkdirp'),
   path = require('path'),
+  fs = require('fs'),
   _ = require('lodash'),
   prefix = '/';
 
@@ -64,4 +65,5 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-paths */ {
     mkdirp.sync(options.xt.socketdir);
     mkdirp.sync(options.xt.statedir);
   }
+
 });
