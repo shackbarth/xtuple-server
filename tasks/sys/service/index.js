@@ -71,6 +71,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       exec('update-rc.d -f xtuple remove');
     }
     catch (e) {
+      log.warn(e);
       //log.verbose('sys-service', 'xtuple service h
     }
 
@@ -79,9 +80,10 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
     try {
       // create upstart service 'xtuple'
       exec('update-rc.d xtuple defaults');
+      exec('chmod +x /etc/init.d/xtuple');
     }
     catch (e) {
-
+      log.warn(e);
     }
   },
 
