@@ -162,12 +162,13 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     var rootCreds = path.resolve('/root', '.git-credentials');
     mkdirp.sync(path.resolve(home(), '.git'));
     exec('git config credential.helper store');
+    exec('sudo git config --global credential.helper "cache --timeout=31557600"');
 
     if (fs.existsSync(creds) && !fs.existsSync(rootCreds)) {
+      mkdirp.sync(path.resolve('/root', '.git'));
       cp.sync(creds, rootCreds);
       fs.chownSync(rootCreds, 0, 0);
-      mkdirp.sync('/root/.git');
-      cp.sync(path.resolve(home(), '.git/config'), '/root/.git/config');
+      cp.sync(path.resolve(home(), '.gitconfig'), '/root/.gitconfig');
     }
   },
 
