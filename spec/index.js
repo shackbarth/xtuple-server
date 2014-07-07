@@ -71,23 +71,44 @@ describe('xTuple Server Commercial', function () {
   describe('plans', function () {
 
     describe('@install-live', function () {
-      var planObject = require('../plans')['install-live'];
-      var options = {
-        planName: 'install-live',
-        plan: planObject.plan,
-        type: 'live',
-        xt: {
-          name: 'xtservtest',
-          demo: true,
-          edition: 'manufacturing'
-        }
-      };
+      describe('@manufacturing edition', function () {
+        var planObject = require('../plans')['install-live'];
+        var options = {
+          planName: 'install-live',
+          plan: planObject.plan,
+          type: 'live',
+          xt: {
+            name: 'xtmochamfg',
+            demo: true,
+            edition: 'manufacturing'
+          }
+        };
 
-      before(function () {
-        options.xt.version = xtupleVersion;
+        before(function () {
+          options.xt.version = xtupleVersion;
+        });
+
+        specPlanner.describe({ planObject: planObject, options: options });
       });
+      describe('@distribution edition', function () {
+        var planObject = require('../plans')['install-live'];
+        var options = {
+          planName: 'install-live',
+          plan: planObject.plan,
+          type: 'live',
+          xt: {
+            name: 'xtmochadistribution',
+            demo: true,
+            edition: 'distribution'
+          }
+        };
 
-      specPlanner.describe({ planObject: planObject, options: options });
+        before(function () {
+          options.xt.version = xtupleVersion;
+        });
+
+        specPlanner.describe({ planObject: planObject, options: options });
+      });
     });
 
     describe.skip('@setup', function () {
