@@ -15,7 +15,7 @@ github.getRelease(repository)
   .then(function (tarball) {
     log.info('tarball', 'extracting', tarball);
 
-    process.chdir(path.resolve('node_modules', pkg.name));
+    process.chdir(path.resolve(process.cwd(), 'node_modules', pkg.name));
     new targz().extract(tarball, 'extract', function (err) {
       if (err) return log.error('extract', err);
 
