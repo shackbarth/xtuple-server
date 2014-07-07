@@ -19,24 +19,7 @@ log.heading = 'xtupled';
 function list (cb) {
   forever.list(false, function (err, data) {
     if (err) return log.warn(err.message);
-
-    var list = _.map(data, function (row) {
-      table.push([
-        '' + row.uid,
-        '' + row.spawnWith.SUDO_USER,
-        '' + row.spawnWith.NODE_VERSION,
-        '' + row.spawnWith.PG_PORT,
-        '' + row.pid,
-        // TODO format with moment
-        '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
-      ]);
-    });
-    if (!_.isFunction(cb)) {
-      console.log(table.toString());
-    }
-    else {
-      cb(list);
-    }
+    if (_.isFunction(cb)) cb(data);
   });
 }
 
