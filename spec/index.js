@@ -30,6 +30,9 @@ describe('xTuple Server Commercial', function () {
 
   before(function (done) {
     githubLatest('xtuple', 'xtuple', function (e, tag) {
+      if (e) assert.fail('could not determine xtuple version');
+
+      log.info('xtuple', 'using version', tag);
       xtupleVersion = tag;
       done();
     });
@@ -69,14 +72,12 @@ describe('xTuple Server Commercial', function () {
         type: 'live',
         requiresRoot: true,
         xt: {
-          name: 'xtservtest',
-          version: xtupleVersion
+          name: 'xtservtest'
         }
       };
 
       before(function () {
-        planner.compileOptions(options.plan, options);
-        planner.verifyOptions(options.plan, options);
+        options.xt.version = xtupleVersion;
       });
 
       specPlanner.describe({ planObject: planObject, options: options });
@@ -90,15 +91,13 @@ describe('xTuple Server Commercial', function () {
         type: 'live',
         xt: {
           name: 'xtservtest',
-          version: xtupleVersion,
           demo: true,
           edition: 'manufacturing'
         }
       };
 
       before(function () {
-        planner.compileOptions(options.plan, options);
-        planner.verifyOptions(options.plan, options);
+        options.xt.version = xtupleVersion;
       });
 
       specPlanner.describe({ planObject: planObject, options: options });
@@ -112,8 +111,7 @@ describe('xTuple Server Commercial', function () {
       };
 
       before(function () {
-        planner.compileOptions(options.plan, options);
-        planner.verifyOptions(options.plan, options);
+        options.xt.version = xtupleVersion;
       });
 
       specPlanner.describe({ planObject: planObject, options: options });
@@ -126,8 +124,7 @@ describe('xTuple Server Commercial', function () {
         plan: planObject.plan,
         type: 'live',
         xt: {
-          name: 'xtservtest',
-          version: xtupleVersion
+          name: 'xtservtest'
         },
         pg: {
           dbname: 'demo_live'
@@ -135,11 +132,8 @@ describe('xTuple Server Commercial', function () {
       };
 
       before(function () {
-
-
+        options.xt.version = xtupleVersion;
         options.pg.infile = lib.util.getSnapshotPath(options, true);
-        planner.compileOptions(options.plan, options);
-        planner.verifyOptions(options.plan, options);
       });
 
       specPlanner.describe({ planObject: planObject, options: options });
