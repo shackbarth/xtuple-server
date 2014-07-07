@@ -92,6 +92,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
       var target = path.resolve(rootSsh, path.basename(file));
       cp.sync(file, target);
       fs.chownSync(target, 0, 0);
+      fs.chmodSync(target, '600');
     });
   },
 
