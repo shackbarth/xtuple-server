@@ -160,10 +160,14 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
   copyGitCredentials: function (options) {
     var creds = path.resolve(home(), '.git-credentials');
     var rootCreds = path.resolve('/root', '.git-credentials');
+    mkdirp.sync(path.resolve(home(), '.git'));
+    exec('git config credential.helper store');
 
     if (fs.existsSync(creds) && !fs.existsSync(rootCreds)) {
       cp.sync(creds, rootCreds);
       fs.chownSync(rootCreds, 0, 0);
+      mkdirp.sync('/root/.git');
+      cp.sync(path.resolve(home(), '.git/config'), '/root/.git/config');
     }
   },
 
