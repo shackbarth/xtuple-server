@@ -12,6 +12,8 @@ var _ = require('lodash'),
   config,
   table;
 
+log.heading = 'xtupled';
+
 var xtupled = module.exports = {
 
   start: function (descriptors) {
@@ -22,25 +24,24 @@ var xtupled = module.exports = {
 
   stop: function (descriptors) {
     _.each(descriptors, function (descriptor) {
-      try {
-        forever.stop(descriptor.uid);
-      }
-      catch (e) {
-        console.log(descriptor.uid + ' already stopped.');
-      }
+      var proc = forever.stop(descriptor.uid);
+      proc.on('stop', function (err) {
+        log.info('stopped', descriptor.uid);
+      });
     });
   },
 
   restart: function (descriptors) {
     _.each(descriptors, function (descriptor) {
-      xtupled.stop([ descriptor ]);
-      xtupled.start([ descriptor ]);
+      var proc = forever.restart(descriptor.uid);
+      proc.on('restart', function (err) {
+        log.info('restarted', descriptor.uid);
+      });
     });
   },
 
   getInstanceProcesses: function (name, version) {
     var id = name + '-' + version;
-    //var id = lib.util.$({ xt: { name: name, version: version }, type: '*' });
     return _.map(glob.sync('/etc/xtuple/' + id + '/processes/*'), function (file) {
       return require(file);
     });
@@ -108,6 +109,8 @@ var commands = {
     .command('status [name] [version]')
     .action(function (name, version) {
       forever.list(false, function (err, data) {
+        if (err) return log.warn(err.message);
+
         _.each(data, function (row) {
           table.push([
             '' + row.uid,
@@ -115,6 +118,7 @@ var commands = {
             '' + row.spawnWith.NODE_VERSION,
             '' + row.spawnWith.PG_PORT,
             '' + row.pid,
+            // TODO format with moment
             '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
           ]);
         });
@@ -141,7 +145,7 @@ if (require.main === module) {
       'pid'.cyan,
       'uptime'.cyan
     ],
-    colWidths: [ 48, 16, 8, 16, 8, 8 ]
+    colWidths: [ 48, 16, 8, 16, 8, 16 ]
   });
 
   program.parse(process.argv);

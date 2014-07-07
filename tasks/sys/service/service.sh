@@ -18,7 +18,7 @@ help() {
   echo -e 'xTuple Service Manager'
   echo -e ''
 
-  if [[ $EUID -eq 0 ]]; then
+  if [[ $(id -u) -eq 0 ]]; then
     echo -e 'Usage: service xtuple {stop|restart|reload|status|help}'
     echo -e '       service xtuple [name] [version]-[type] {stop|restart|reload|status|help}'
     echo -e ''
@@ -43,7 +43,7 @@ help() {
   exit $RETVAL
 }
 
-trap help ERR SIGINT SIGTERM
+#trap help ERR SIGINT SIGTERM
 
 export PATH=$PATH:/usr/bin:/usr/local/bin
 
@@ -51,28 +51,13 @@ ACCOUNT="$1"
 VERSION="$2"
 ACTION="$3"
 
-# non-root users must specify account and VERSION
-if [[ $EUID -ne 0 && -z $ACCOUNT ]]; then
-  help
-fi
-
-# if root does not specify account, then the first argument is the ACTION
-# e.g. sudo service xtuple status, ACTION = status
-if [[ -z $ACCOUNT ]]; then
+if [[ -z $ACTION ]]; then
+  ACTION="$2"
   VERSION=
-  ACTION="$1"
-  HOME="/usr/local/xtuple"
-else
-  HOME=$(getent passwd "$ACCOUNT" | cut -d: -f6)
-  if [[ -z $HOME ]]; then
-    # looks like user doesn't exist, or at least has no homedir
-    echo "User $ACCOUNT not found"
-    exit 2
-  fi
 fi
-
-if [[ -z $ACCOUNT && ! -z $VERSION ]]; then
-  help
+if [[ -z $ACTION ]]; then
+  ACTION="$1"
+  ACCOUNT=
 fi
 
 PG_VERSION=$(psql -V | grep [[:digit:]].[[:digit:]] --only-matching)
@@ -84,24 +69,21 @@ xtupled() {
 start() {
   echo -e "Initializing xTuple services..."
 
-  if [[ $EUID -eq 0 && -z $ACCOUNT ]]; then
+  if [[ $(id -u) -eq 0 && -z $ACCOUNT ]]; then
     service nginx start &> /dev/null
     service postgresql start &> /dev/null
-    xtupled start
   fi
+  xtupled start "$@"
   echo -e "Done."
 }
 
 stop() {
   echo -e "Stopping xTuple services... "
 
-  if [[ -z $ACCOUNT ]]; then
-    xtupled stop
-    service postgresql stop &> /dev/null
-  else
-    xtupled stop $ACCOUNT $VERSION
+  if [[ -n "$VERSION" && -n "$ACCOUNT" ]]; then
     pg_ctlcluster $PG_VERSION $ACCOUNT-$VERSION stop -m fast &> /dev/null
   fi
+  xtupled stop "$@"
   echo -e "Done."
 }
 
@@ -111,36 +93,20 @@ restart() {
   if [[ -z $ACCOUNT ]]; then
     service postgresql restart &> /dev/null
     service nginx restart &> /dev/null
-    xtupled restart
-  else
+  elif [[ -n "$VERSION" ]]; then
     pg_ctlcluster $PG_VERSION $ACCOUNT-$VERSION restart -m fast &> /dev/null
-    xtupled restart $ACCOUNT $VERSION
   fi
+  xtupled restart "$@"
 
   echo -e "Done."
 }
 
 reload() {
-  echo -e "Reloading xTuple services..."
-
-  if [[ -z $ACCOUNT ]]; then
-    service postgresql reload &> /dev/null
-    service nginx reload &> /dev/null
-    xtupled restart
-  else
-    pg_ctlcluster $PG_VERSION $ACCOUNT-$VERSION reload &> /dev/null
-    xtupled restart $ACCOUNT $VERSION
-  fi
-
-  echo -e "Done."
+  restart "$@"
 }
 
 status() {
-  if [[ -z $ACCOUNT ]]; then
-    xtupled status $ACCOUNT $VERSION
-  else 
-    xtupled status
-  fi
+  xtupled status "$@"
 }
 
 case "$ACTION" in
