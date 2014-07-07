@@ -4,6 +4,7 @@ var _ = require('lodash'),
   program = require('commander'),
   forever = require('forever'),
   glob = require('glob'),
+  colors = require('colors'),
   Table = require('cli-table'),
   lib = require('xtuple-server-lib'),
   path = require('path'),
@@ -12,14 +13,14 @@ var _ = require('lodash'),
 var config = require(path.resolve(process.env.HOME, '.forever/config')),
   table = new Table({
     head: [
-      'process',
-      'user',
-      'node',
-      'pg port',
-      'pid',
-      'uptime'
+      'process'.cyan,
+      'user'.cyan,
+      'node'.cyan,
+      'pg port'.cyan,
+      'pid'.cyan,
+      'uptime'.cyan
     ],
-    colWidths: [ 48, 16, 8, 8, 32, 8 ]
+    colWidths: [ 48, 16, 8, 8, 8, 8 ]
   });
 
 var xtupled = module.exports = {
