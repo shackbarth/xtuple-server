@@ -13,7 +13,7 @@
     },
     {
       "name": "sys",
-      "tasks": [ "cups", "webmin", "report" ]
+      "tasks": [ "service", "cups", "webmin", "report" ]
     }
   ]
 }

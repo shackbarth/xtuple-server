@@ -8,10 +8,10 @@ xtEdition:9:/etc/webmin/xtuple/editions.menu:1,1:xTuple Edition
 xtDatabases:12:/etc/webmin/xtuple/databases.menu:0,1:Initialize Databases
 xtMaindb:5::1,0:xTuple Main Database File
 xtAdminpw:8::1,0:xTuple "admin" Password
-nginxDomain:0::1,0:Domain Name
+nginxDomain:0:localhost:1,0:Domain Name
 nginxInkey:5::1,0:SSL key (.key)
 nginxIncrt:5::1,0:SSL certificate (.crt or .pem)
-pgVersion:0:/etc/webmin/xtuple/pgversions.menu:1,1:Postgres Server Version
+pgVersion:9:/etc/webmin/xtuple/pgversions.menu:1,1:Postgres Server Version
 pgCapacity:0:32:1,1:Capacity (slots)
 pgSlots:0:1:1,1:Provision (slots)
 pgWorldLogin:7:--pg-worldlogin:0,0:Expose Postgres to All IPs

@@ -111,11 +111,12 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     webmin.installUsers(options);
     webmin.installNginxSite(options);
     webmin.removeUnusedModules(options);
+    webmin.installService(options);
   },
 
   /** @override */
   afterTask: function (options) {
-    exec('service nginx reload');
+    exec('service nginx restart');
   },
 
   /** @override */
@@ -161,6 +162,27 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
     cp.sync('/etc/webmin/miniserv.users', '/etc/usermin/miniserv.users');
     cp.sync('/etc/webmin/miniserv.conf', '/etc/usermin/miniserv.conf');
+  },
+
+  installService: function (options) {
+    try {
+      exec('update-rc.d -f webmin remove');
+    }   
+    catch (e) {
+      log.warn(e);
+      //log.verbose('sys-service', 'xtuple service h
+    }   
+
+    cp.sync(path.resolve(__dirname, 'service.sh'), '/etc/init.d/webmin');
+
+    try {
+      // create upstart service 'xtuple'
+      exec('update-rc.d webmin defaults');
+      exec('chmod +x /etc/init.d/webmin');
+    }   
+    catch (e) {
+      log.warn(e);
+    }   
   },
 
   installCustomCommands: function (options) {
