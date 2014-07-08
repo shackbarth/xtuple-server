@@ -32,6 +32,13 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
         }
       }
     }
+
+    // FIXME copy-paste from local-policy task 
+    // if account appears new, that is they've provided no main database,
+    // snapshot to restore from, or admin password, generate a admin password
+    if (_.isEmpty(options.xt.adminpw) && /^install/.test(options.planName)) {
+      options.xt.adminpw = lib.util.getPassword();
+    }
   },
 
   /** @override */
