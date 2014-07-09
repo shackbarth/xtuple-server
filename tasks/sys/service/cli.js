@@ -61,8 +61,11 @@ var xtupled = module.exports = {
     });
   },
 
-  getInstanceProcesses: function (name, version) {
-    var id = name + '-' + version;
+  getInstanceProcesses: function (name, version, type) {
+    var id = lib.util.$({
+      xt: { name: name, version: version },
+      type: type
+    });
     return _.map(glob.sync('/etc/xtuple/' + id + '/processes/*'), function (file) {
       return require(file);
     });
