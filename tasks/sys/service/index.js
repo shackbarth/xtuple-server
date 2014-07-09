@@ -2,6 +2,7 @@ var lib = require('xtuple-server-lib'),
   _ = require('lodash'),
   exec = require('child_process').execSync,
   mkdirp = require('mkdirp'),
+  rimraf = require('rimraf'),
   cp = require('cp'),
   fs = require('fs'),
   xtupled = require('./cli'),
@@ -61,10 +62,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   uninstall: function (options) {
-    var backup = path.resolve(options.xt.userconfig, 'backup');
-    mkdirp.sync(backup);
-    if (fs.existsSync(options.xt.configdir) && !fs.existsSync(backup)) {
-      fs.renameSync(options.xt.configdir, path.resolve(backup, lib.util.$(options)));
+    xtupled.stop(xtupled.getInstanceProcesses(options.xt.name, options.xt.version));
+    if (fs.existsSync(options.xt.configdir)) {
+      rimraf.sync(path.resolve(options.xt.configdir, 'processes'));
     }
   },
 
