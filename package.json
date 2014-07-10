@@ -50,14 +50,10 @@
     "xtuple-server": "^0.9.0",
     "tasks/sys/service": ""
   },
-  "symlinkExports": {
+  "symlinks": {
     "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/",
     "node_modules/xtuple-server-sys-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/",
     "node_modules/xtuple-server-pg-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/"
-  },
-  "taskOverrides": {
-    "sys-paths": "local-paths",
-    "sys-policy": "local-policy"
   },
   "files": [
     "index.js",

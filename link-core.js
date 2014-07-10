@@ -11,7 +11,7 @@ process.chdir(__dirname);
 
 var pkg = require('./package');
 
-_.each(pkg.symlinkExports, function (_target, _source) {
+_.each(pkg.symlinks, function (_target, _source) {
   var target = path.resolve(_target);
   var files = glob.sync(path.resolve(_source));
 
@@ -23,9 +23,9 @@ _.each(pkg.symlinkExports, function (_target, _source) {
     }
 
     if (fs.existsSync(file)) {
-      log.info('symlinkExports', file, '->', targetfile);
+      log.info('symlinks', file, '->', targetfile);
       fs.symlinkSync(file, targetfile);
     }
   });
 });
-log.info('symlinkExports', 'done.');
+log.info('symlinks', 'done.');
