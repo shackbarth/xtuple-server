@@ -7,12 +7,9 @@
     "glob": "^4.0.2",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
-    "nex": "^1.2.47",
-    "nex-github": "^0.5.5",
     "npmlog": "^0.1.1",
     "requireindex": "^1.1.0",
     "rimraf": "^2.2.8",
-    "tar.gz": "^0.1.1",
     "xtuple-server-lib": "^0.9.61"
   },
   "bundledDependencies": [
@@ -21,19 +18,16 @@
     "lodash",
     "mkdirp",
     "npmlog",
+    "npmlog-file",
     "requireindex",
     "rimraf",
     "semver"
   ],
   "devDependencies": {
-    "github-latest": "^0.1.2",
     "mocha": "^1.20.1",
     "n-api": "^1.2.20",
     "npmlog-file": "^0.1.1",
     "semver": "^2.3.1",
-    "xtuple-server": "^0.9.0"
-  },
-  "peerDependencies": {
     "xtuple-server": "^0.9.0"
   },
   "linkDependencies": {
@@ -51,14 +45,35 @@
     "tasks/sys/service": ""
   },
   "symlinks": {
-    "plans/*": "/usr/local/lib/node_modules/xtuple-server/plans/",
-    "node_modules/xtuple-server-sys-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/",
-    "node_modules/xtuple-server-pg-*": "/usr/local/lib/node_modules/xtuple-server/node_modules/"
+    "plans/setup.json": "/usr/local/lib/node_modules/xtuple-server/plans/setup.json",
+    "plans/install-live.json": "/usr/local/lib/node_modules/xtuple-server/plans/install-live.json",
+    "plans/uninstall-live.js": "/usr/local/lib/node_modules/xtuple-server/plans/uninstall-live.js",
+    "plans/install-pilot.json": "/usr/local/lib/node_modules/xtuple-server/plans/install-pilot.json",
+    "plans/uninstall-pilot.js": "/usr/local/lib/node_modules/xtuple-server/plans/uninstall-pilot.js",
+    "plans/backup-database.json": "/usr/local/lib/node_modules/xtuple-server/plans/backup-database.json",
+    "plans/copy-database.json": "/usr/local/lib/node_modules/xtuple-server/plans/copy-database.json",
+    "plans/drop-database.json": "/usr/local/lib/node_modules/xtuple-server/plans/drop-database.json",
+    "plans/rename-database.json": "/usr/local/lib/node_modules/xtuple-server/plans/rename-database.json",
+    "plans/restore-database.json": "/usr/local/lib/node_modules/xtuple-server/plans/restore-database.json",
+    "plans/import-users.json": "/usr/local/lib/node_modules/xtuple-server/plans/import-users.json",
+
+    "node_modules/xtuple-server-sys-cups": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-cups",
+    "node_modules/xtuple-server-sys-paths": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-paths",
+    "node_modules/xtuple-server-sys-policy": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-policy",
+    "node_modules/xtuple-server-sys-service": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-service",
+    "node_modules/xtuple-server-sys-ssh": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-ssh",
+    "node_modules/xtuple-server-sys-webmin": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-webmin",
+    "node_modules/xtuple-server-pg-snapshotmgr": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-pg-snapshotmgr",
+    "node_modules/xtuple-server-pg-tuner": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-pg-tuner"
   },
+  "nex": [
+    "engines",
+    "globalDependencies",
+    "linkDependencies",
+    "symlinks"
+  ],
   "files": [
     "index.js",
-    "install.js",
-    "link-core.js",
     "plans/",
     "spec/"
   ],
@@ -78,7 +93,9 @@
     "enterprise"
   ],
   "scripts": {
-    "postinstall": "node install.js && nex install -g && nex install && node link-core.js",
+    "preinstall": "nex do repository && nex do engines",
+    "postinstall": "nex do",
+    "pretest": "nex do engines",
     "test": "mocha --harmony -R spec spec/index.js -b"
   },
   "preferGlobal": true,

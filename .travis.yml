@@ -7,10 +7,7 @@ before_install:
   - wget git.io/hikK5g -qO- | sudo bash
 
 install:
-  - npm install --ignore-scripts
-  - nex install -g
-  - nex install
-  - node link-core.js
+  - npm install
 
 script: 
   - sudo xtuple-server setup
