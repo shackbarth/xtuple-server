@@ -4,6 +4,7 @@
   "description": "xTuple Server Commercial Package",
   "dependencies": {
     "cp": "^0.1.1",
+    "github-latest": "^0.1.2",
     "glob": "^4.0.2",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
@@ -56,7 +57,6 @@
     "plans/rename-database.json": "/usr/local/lib/node_modules/xtuple-server/plans/rename-database.json",
     "plans/restore-database.json": "/usr/local/lib/node_modules/xtuple-server/plans/restore-database.json",
     "plans/import-users.json": "/usr/local/lib/node_modules/xtuple-server/plans/import-users.json",
-
     "node_modules/xtuple-server-sys-cups": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-cups",
     "node_modules/xtuple-server-sys-paths": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-paths",
     "node_modules/xtuple-server-sys-policy": "/usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-policy",
