@@ -1,7 +1,5 @@
 #! /usr/bin/env node
 
-global.log = require('npmlog');
-
 var _ = require('lodash'),
   program = require('commander'),
   forever = require('forever'),
@@ -9,7 +7,9 @@ var _ = require('lodash'),
   colors = require('colors'),
   Table = require('cli-table'),
   lib = require('xtuple-server-lib'),
+  moment = require('moment'),
   path = require('path'),
+  log = require('npmlog'),
   fs = require('fs'),
   config,
   table;
@@ -33,13 +33,16 @@ var xtupled = module.exports = {
       // start new processes
       _.each(nascent, function (uid) {
         var descriptor = _.find(descriptors, { uid: uid });
+        if (!descriptor) return;
+
         forever.startDaemon(descriptor.script, descriptor);
+        log.info('started', descriptor.uid);
       });
 
       // restart existing processes
-      xtupled.restart(_.map(extant, function (uid) {
+      xtupled.restart(_.compact(_.map(extant, function (uid) {
         return _.find(descriptors, { uid: uid });
-      }));
+      })));
     });
   },
 
@@ -62,24 +65,31 @@ var xtupled = module.exports = {
   },
 
   getInstanceProcesses: function (name, version, type) {
+    if (!_.isString(type)) {
+      log.error('start', 'if you provide the name and version, then type is also required');
+      return;
+    }
     var id = lib.util.$({
       xt: { name: name, version: version },
       type: type
     });
-    return _.map(glob.sync('/etc/xtuple/' + id + '/processes/*'), function (file) {
+    log.info('name', name);
+    log.info('version', version);
+    log.info('type', type);
+    return _.map(glob.sync(path.resolve('/etc/xtuple', id, 'processes/*')), function (file) {
       return require(file);
     });
   },
 
   getAccountProcesses: function (name) {
-    return _.map(glob.sync('/etc/xtuple/' + name + '-*/processes/*'), function (file) {
+    log.info('name', name);
+    return _.map(glob.sync(path.resolve('/etc/xtuple', name + '-*', 'processes/*')), function (file) {
       return require(file);
     });
   },
 
   getAllProcesses: function () {
     return _.map(glob.sync('/etc/xtuple/*/processes/*'), function (file) {
-      console.log(file);
       return require(file);
     });
   }
@@ -88,10 +98,10 @@ var xtupled = module.exports = {
 var commands = {
 
   start: program
-    .command('start [name] [version]')
-    .action(function (name, version) {
+    .command('start [name] [version] [type]')
+    .action(function (name, version, type) {
       if (_.isString(name) && _.isString(version)) {
-        xtupled.start(xtupled.getInstanceProcesses(name, version));
+        xtupled.start(xtupled.getInstanceProcesses(name, version, type));
       }
       else if (_.isString(name)) {
         xtupled.start(xtupled.getAccountProcesses(name));
@@ -99,13 +109,14 @@ var commands = {
       else {
         xtupled.start(xtupled.getAllProcesses());
       }
+      log.info('Done.');
     }),
 
   stop: program
-    .command('stop [name] [version]')
-    .action(function (name, version) {
+    .command('stop [name] [version] [type]')
+    .action(function (name, version, type) {
       if (_.isString(name) && _.isString(version)) {
-        xtupled.stop(xtupled.getInstanceProcesses(name, version));
+        xtupled.stop(xtupled.getInstanceProcesses(name, version, type));
       }
       else if (_.isString(name)) {
         xtupled.stop(xtupled.getAccountProcesses(name));
@@ -113,13 +124,14 @@ var commands = {
       else {
         xtupled.stop(xtupled.getAllProcesses());
       }
+      log.info('Done.');
     }),
 
   restart: program
-    .command('restart [name] [version]')
-    .action(function (name, version) {
+    .command('restart [name] [version] [type]')
+    .action(function (name, version, type) {
       if (_.isString(name) && _.isString(version)) {
-        xtupled.restart(xtupled.getInstanceProcesses(name, version));
+        xtupled.restart(xtupled.getInstanceProcesses(name, version, type));
       }
       else if (_.isString(name)) {
         xtupled.restart(xtupled.getAccountProcesses(name));
@@ -127,21 +139,25 @@ var commands = {
       else {
         xtupled.restart(xtupled.getAllProcesses());
       }
+      log.info('Done.');
     }),
 
   status: program
-    .command('status [name] [version]')
-    .action(function (name, version) {
+    .command('status [name]')
+    .action(function (name) {
       list(function (list) {
+        var rows = _.filter(list, function (row) {
+          return !_.isString(name) || row.spawnWith.SUDO_USER === name;
+        });
         _.each(list, function (row) {
           table.push([
             '' + row.uid,
             '' + row.spawnWith.SUDO_USER,
             '' + row.spawnWith.NODE_VERSION,
             '' + row.spawnWith.PG_PORT,
-            '' + row.pid,
-            // TODO format with moment
-            '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
+            '' + row.running ? 'online'.green : 'offline'.red,
+            '' + moment(row.ctime).fromNow(true),
+            '' + row.pid
           ]);
         });
         console.log(table.toString());
@@ -164,10 +180,11 @@ if (require.main === module) {
       'user'.cyan,
       'node'.cyan,
       'pg port'.cyan,
-      'pid'.cyan,
-      'uptime'.cyan
+      'status'.cyan,
+      'uptime'.cyan,
+      'pid'.cyan
     ],
-    colWidths: [ 48, 16, 8, 16, 8, 16 ]
+    colWidths: [ 40, 20, 10, 10, 10, 16, 8 ]
   });
 
   program.parse(process.argv);

@@ -56,13 +56,13 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
   /** @override */
   afterInstall: function (options) {
     if (/^install/.test(options.planName)) {
-      xtupled.start(xtupled.getInstanceProcesses(options.xt.name, options.xt.version));
+      xtupled.start(xtupled.getInstanceProcesses(options.xt.name, options.xt.version, options.type));
     }
   },
 
   /** @override */
   uninstall: function (options) {
-    xtupled.stop(xtupled.getInstanceProcesses(options.xt.name, options.xt.version));
+    xtupled.stop(xtupled.getInstanceProcesses(options.xt.name, options.xt.version, options.type));
     if (fs.existsSync(options.xt.configdir)) {
       rimraf.sync(path.resolve(options.xt.configdir, 'processes'));
     }
@@ -77,7 +77,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
     }
     catch (e) {
       log.warn(e);
-      //log.verbose('sys-service', 'xtuple service h
     }
 
     cp.sync(path.resolve(__dirname, 'service.sh'), '/etc/init.d/xtuple');
