@@ -1,6 +1,6 @@
 {
   "name": "xtuple-server-commercial",
-  "version": "0.9.44",
+  "version": "0.9.46",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
     "cp": "^0.1.1",
@@ -42,6 +42,7 @@
     "xtuple-server-pg-snapshotmgr": "tasks/pg/snapshotmgr"
   },
   "globalDependencies": {
+    "ansi2html": "^0.0.1",
     "xtuple-server": "^0.9.0",
     "tasks/sys/service": ""
   },
