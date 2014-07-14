@@ -3,4 +3,4 @@
 
 ## See [Quickstart](https://github.com/xtuple/xtuple-server-commercial/wiki/0.-Quickstart) for Install Instructions
 
-- https://www.npmjs.org/package/xtuple-server-commercial
+https://www.npmjs.org/package/xtuple-server-commercial
