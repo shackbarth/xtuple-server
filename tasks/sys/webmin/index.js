@@ -53,7 +53,7 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.sys.webminXtuplePath = path.resolve(options.sys.etcWebmin, 'xtuple');
 
     try {
-      exec('killall /usr/bin/perl', { stdio: 'ignore' });
+      exec('killall /usr/bin/perl');
     }
     catch (e) {
       log.info('sys-webmin', 'No previous webmin servers running. This is ok/good.');
@@ -65,6 +65,8 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       rimraf.sync('/etc/webmin');
       rimraf.sync('/usr/share/webmin');
       rimraf.sync('/usr/local/webmin');
+      rimraf.sync('/etc/nginx/sites-available/webmin-site');
+      rimraf.sync('/etc/nginx/sites-enabled/webmin-site');
     }
     if (fs.existsSync('/etc/usermin')) {
       log.warn('sys-webmin', 'Usermin seems to already be installed. It is going to be replaced.');

@@ -147,7 +147,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
       // set xtremote shell to bash
       _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
         try {
-          exec(cmd);
+          exec(cmd, { stdio: 'pipe' });
         }
         catch (e) {
           log.silly('sys-policy', cmd);
