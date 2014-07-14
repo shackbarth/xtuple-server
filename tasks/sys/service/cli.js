@@ -7,6 +7,7 @@ var _ = require('lodash'),
   colors = require('colors'),
   Table = require('cli-table'),
   lib = require('xtuple-server-lib'),
+  child = require('child_process'),
   moment = require('moment'),
   path = require('path'),
   log = require('npmlog'),
@@ -62,6 +63,8 @@ var xtupled = module.exports = {
         log.info('restarted', descriptor.uid);
       });
     });
+    child.spawnSync('service', [ 'nginx', 'reload' ]);
+    log.info('nginx', 'reloaded');
   },
 
   getInstanceProcesses: function (name, version, type) {
@@ -109,7 +112,6 @@ var commands = {
       else {
         xtupled.start(xtupled.getAllProcesses());
       }
-      log.info('Done.');
     }),
 
   stop: program
@@ -124,7 +126,6 @@ var commands = {
       else {
         xtupled.stop(xtupled.getAllProcesses());
       }
-      log.info('Done.');
     }),
 
   restart: program
@@ -139,7 +140,20 @@ var commands = {
       else {
         xtupled.restart(xtupled.getAllProcesses());
       }
-      log.info('Done.');
+    }),
+
+  reload: program
+    .command('reload [name] [version] [type]')
+    .action(function (name, version, type) {
+      if (_.isString(name) && _.isString(version)) {
+        xtupled.restart(xtupled.getInstanceProcesses(name, version, type));
+      }
+      else if (_.isString(name)) {
+        xtupled.restart(xtupled.getAccountProcesses(name));
+      }
+      else {
+        xtupled.restart(xtupled.getAllProcesses());
+      }
     }),
 
   status: program
