@@ -33,13 +33,15 @@ var xtupled = module.exports = {
       // start new processes
       _.each(nascent, function (uid) {
         var descriptor = _.find(descriptors, { uid: uid });
+        if (!descriptor) return;
+
         forever.startDaemon(descriptor.script, descriptor);
       });
 
       // restart existing processes
-      xtupled.restart(_.map(extant, function (uid) {
+      xtupled.restart(_.compact(_.map(extant, function (uid) {
         return _.find(descriptors, { uid: uid });
-      }));
+      })));
     });
   },
 
@@ -130,18 +132,22 @@ var commands = {
     }),
 
   status: program
-    .command('status [name] [version]')
-    .action(function (name, version) {
+    .command('status [name]')
+    .action(function (name) {
       list(function (list) {
+        var rows = _.filter(list, function (row) {
+          return !_.isString(name) || row.spawnWith.SUDO_USER === name;
+        });
         _.each(list, function (row) {
           table.push([
             '' + row.uid,
             '' + row.spawnWith.SUDO_USER,
             '' + row.spawnWith.NODE_VERSION,
             '' + row.spawnWith.PG_PORT,
-            '' + row.pid,
+            '' + row.running ? 'online'.green : 'offline'.red,
             // TODO format with moment
-            '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's'
+            '' + Math.round((Date.now().valueOf() - row.ctime) / 1000) + 's',
+            '' + row.pid
           ]);
         });
         console.log(table.toString());
@@ -164,10 +170,11 @@ if (require.main === module) {
       'user'.cyan,
       'node'.cyan,
       'pg port'.cyan,
-      'pid'.cyan,
-      'uptime'.cyan
+      'status'.cyan,
+      'uptime'.cyan,
+      'pid'.cyan
     ],
-    colWidths: [ 48, 16, 8, 16, 8, 16 ]
+    colWidths: [ 40, 16, 10, 16, 16, 16, 8 ]
   });
 
   program.parse(process.argv);
