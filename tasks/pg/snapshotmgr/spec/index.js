@@ -18,6 +18,7 @@ exports.afterExecute = function (options) {
 
       console.log(content);
       assert(/sudo xtuple\-server backup\-database/.test(content));
+      assert(/^0 2 \* \* \*/.test(content));
     });
 
   });
