@@ -8,14 +8,14 @@
       /usr/bin/psql * -U {xt.name} *, \
       /usr/bin/createdb * -U {xt.name} *, \
       /usr/bin/dropdb * -U {xt.name} *, \
-      /usr/sbin/service xtuple * {xt.name} start, \
-      /usr/sbin/service xtuple * {xt.name} stop, \
-      /usr/sbin/service xtuple * {xt.name} restart, \
-      /usr/sbin/service xtuple * {xt.name} reload, \
-      /usr/sbin/service xtuple * {xt.name} status, \
+      /usr/sbin/service xtuple start {xt.name} *, \
+      /usr/sbin/service xtuple stop {xt.name} *, \
+      /usr/sbin/service xtuple restart {xt.name} *, \
+      /usr/sbin/service xtuple reload {xt.name} *, \
+      /usr/sbin/service xtuple status {xt.name}, \
       /usr/sbin/service xtuple help, \
-      /usr/local/bin/xtupled status {xt.name}*, \
-      /usr/local/bin/xtupled restart {xt.name}*, \
-      /usr/local/bin/xtupled reload {xt.name}*, \
-      /usr/local/bin/xtupled restart {xt.name}*, \
+      /usr/local/bin/xtupled status {xt.name} *, \
+      /usr/local/bin/xtupled restart {xt.name} *, \
+      /usr/local/bin/xtupled reload {xt.name} *, \
+      /usr/local/bin/xtupled restart {xt.name} *, \
       /usr/local/bin/xtuple-server * --xt-name {xt.name} *
