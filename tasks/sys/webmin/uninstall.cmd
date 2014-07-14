@@ -3,4 +3,4 @@ Destroy xTuple Instance (xtuple-server uninstall)
 root 1 0 0 0 1 3600 0 -
 xtName:0::1,1:xTuple User Account Name
 xtVersion:0:4.5.0:1,1:xTuple Version
-instanceType:9:/etc/webmin/xtuple/types.menu:1,1:Instance Type
+instanceType:9:/etc/webmin/xtuple/types.menu:0,1:Instance Type
