@@ -73,7 +73,7 @@ start() {
     service nginx start &> /dev/null
     service postgresql start &> /dev/null
   fi
-  xtupled start "$@"
+  xtupled "$@"
   echo -e "Done."
 }
 
@@ -83,7 +83,7 @@ stop() {
   if [[ -n "$VERSION" && -n "$ACCOUNT" ]]; then
     pg_ctlcluster $PG_VERSION $ACCOUNT-$VERSION stop -m fast &> /dev/null
   fi
-  xtupled stop "$@"
+  xtupled "$@"
   echo -e "Done."
 }
 
@@ -96,7 +96,7 @@ restart() {
   elif [[ -n "$VERSION" ]]; then
     pg_ctlcluster $PG_VERSION $ACCOUNT-$VERSION restart -m fast &> /dev/null
   fi
-  xtupled restart "$@"
+  xtupled "$@"
 
   echo -e "Done."
 }
@@ -106,7 +106,7 @@ reload() {
 }
 
 status() {
-  xtupled status "$@"
+  xtupled "$@"
 }
 
 case "$ACTION" in
