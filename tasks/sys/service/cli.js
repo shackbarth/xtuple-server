@@ -62,6 +62,10 @@ var xtupled = module.exports = {
       proc.on('restart', function (err) {
         log.info('restarted', descriptor.uid);
       });
+      proc.on('error', function (err) {
+        forever.startDaemon(descriptor.script, descriptor);
+        log.info('started', descriptor.uid);
+      });
     });
     child.spawnSync('service', [ 'nginx', 'reload' ]);
     log.info('nginx', 'reloaded');
