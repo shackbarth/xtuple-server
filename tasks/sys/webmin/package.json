@@ -30,9 +30,9 @@
     "tar": "^0.1.19",
     "usermin": "^1.6",
     "webmin": "^1.6",
-    "xtuple-server-lib": "^0.9.0",
-    "xtuple-server-nginx-site": "^0.9.0",
-    "xtuple-server-nginx-ssl": "^0.9.0"
+    "xtuple-server-lib": "^1.0.0",
+    "xtuple-server-nginx-site": "^1.0.0",
+    "xtuple-server-nginx-ssl": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",

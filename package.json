@@ -1,6 +1,6 @@
 {
   "name": "xtuple-server-commercial",
-  "version": "1.0.0-rc2",
+  "version": "1.0.0",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
     "cp": "^0.1.1",
@@ -11,7 +11,7 @@
     "npmlog": "^0.1.1",
     "requireindex": "^1.1.0",
     "rimraf": "^2.2.8",
-    "xtuple-server-lib": "^0.9.61"
+    "xtuple-server-lib": "^1.0.0"
   },
   "bundledDependencies": [
     "cp",
@@ -88,6 +88,7 @@
     "database",
     "api",
     "crm",
+    "sales",
     "inventory",
     "distribution",
     "manufacturing",
