@@ -20,7 +20,7 @@
     },
     {
       "name": "xt",
-      "tasks": [ "install", "test", "config", "database" ]
+      "tasks": [ "install", "config", "database" ]
     },
     {
       "name": "pg",
