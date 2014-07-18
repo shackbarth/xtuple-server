@@ -55,8 +55,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
   /** @override */
   afterInstall: function (options) {
+    exec('service nginx restart');
     if (/^install/.test(options.planName)) {
-      xtupled.start(xtupled.getInstanceProcesses(options.xt.name, options.xt.version, options.type));
+      xtupled.restart(xtupled.getInstanceProcesses(options.xt.name, options.xt.version, options.type));
     }
   },
 

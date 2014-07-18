@@ -108,12 +108,13 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
       log.warn('sys-webmin', e.message.trim());
     }
 
+    webmin.installService(options);
     webmin.installCustomCommands(options);
     webmin.writeConfiguration(options);
     webmin.installUsers(options);
     webmin.installNginxSite(options);
     webmin.removeUnusedModules(options);
-    webmin.installService(options);
+    webmin.installLogo(options);
   },
 
   /** @override */
@@ -230,6 +231,10 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     _.each(uninstall, function (mod) {
       rimraf.sync(path.resolve('/usr/share/webmin', mod));
     });
+  },
+
+  installLogo: function (options) {
+    cp.sync(path.resolve(__dirname, 'xtuplecloudlogo.png'), '/usr/share/webmin/images/webmin-blue.png');
   }
 
 });
