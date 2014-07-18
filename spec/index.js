@@ -80,7 +80,9 @@ describe('xTuple Server Commercial', function () {
           xt: {
             name: 'xtmochamfg',
             demo: true,
-            edition: 'manufacturing'
+            edition: 'manufacturing',
+            ghuser: process.env.GITHUB_USERNAME,
+            ghpass: process.env.GITHUB_PASSWORD
           }
         };
 
