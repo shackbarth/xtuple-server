@@ -112,7 +112,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       uid: 'web-server-' + options.pg.cluster.name,
 
       // invocation attributes
-      command: 'sudo -u '+ options.xt.name + ' ' + options.xt.nodeVersion,
+      command: 'sudo -u '+ options.xt.name + ' n use ' + options.xt.nodeVersion,
       script: 'node-datasource/main.js',
       options: [
         '-c', options.xt.configfile
