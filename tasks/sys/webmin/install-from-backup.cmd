@@ -7,7 +7,7 @@ instanceType:9:/etc/webmin/xtuple/types.menu:0,1:Instance Type
 xtEdition:9:/etc/webmin/xtuple/editions.menu:1,1:xTuple Edition
 xtGhuser:0::1,0:Github Account Username
 xtGhpass:8::1,0:Github Account Password
-xtMaindb:5::1,0:xTuple Database File
+xtMaindb:5::1,1:xTuple Database File
 xtAdminpw:8::1,0:xTuple "admin" Password
 xtAuthkey:0:xTuple:1,0:Enhanced Auth Key
 nginxDomain:0:localhost:1,0:Domain Name
