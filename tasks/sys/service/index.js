@@ -5,7 +5,7 @@ var lib = require('xtuple-server-lib'),
   rimraf = require('rimraf'),
   cp = require('cp'),
   fs = require('fs'),
-  xtupled = require('./cli'),
+  xtupled = require('./lib/cli'),
   path = require('path');
 
 _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
