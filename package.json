@@ -21,15 +21,14 @@
     "npmlog",
     "npmlog-file",
     "requireindex",
-    "rimraf",
-    "semver"
+    "rimraf"
   ],
   "devDependencies": {
-    "mocha": "^1.20.1",
+    "mocha": "1.20.1",
     "n-api": "^1.2.20",
     "npmlog-file": "^0.1.1",
     "semver": "^2.3.1",
-    "xtuple-server": "git://github.com/xtuple/xtuple-server.git"
+    "xtuple-server": "^1.0.6"
   },
   "linkDependencies": {
     "xtuple-server-sys-cups": "tasks/sys/cups",
