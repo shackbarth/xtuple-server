@@ -4,6 +4,7 @@ source_key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBdHc
 
 env:
   global:
+    - NODE_PATH=/usr/local/lib/node_modules
     - secure: "dsvZV4wAeNXOnTBpHq/lexiJmHnC86L+O1edbQRX9MTYlaMySEwJPIwhfq4r/24waigsnXEV+qAlIAZGB0gwwJTD1K87C4aj+KMUYBVO/qXJBeQYDgSY23ulHjsBtvqMFi2eb1vcycObTRHk0z9GQUs3BKriW2qJCMYXTubIPAs="
     - secure: "LB8m5SfRNyytZGp2VkcOQD4u37p1Hwjmn9Yn576PtSiqg8Y3LEAFtPnW98y92d+Av49o9OeD2NuB0C744JI7FZJplEjhZceW01HUAmmz9SVs1WcOfcJaSyoNusPu5fIAoe5WVKhZGQUYyvl1zzU+/BzTXuYWNiLQLRGoqn2Dhzw="
 
