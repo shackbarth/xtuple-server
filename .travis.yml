@@ -12,7 +12,7 @@ before_install:
   - wget git.io/hikK5g -qO- | sudo bash
 
 install:
-  - npm install -g
+  - npm install
 
 script: 
   - sudo xtuple-server setup
