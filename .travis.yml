@@ -27,3 +27,4 @@ after_failure:
   - ls /usr/local/lib/node_modules/xtuple-server-commercial -l
   - ls /usr/local/lib/node_modules/xtuple-server-commercial/node_modules -l
   - ls /usr/local/lib/node_modules/xtuple-server-commercial/node_modules -l
+  - npm ls -g
