@@ -1,4 +1,5 @@
-#! /usr/bin/env node
+process.env.HOME = '/usr/local/xtuple';
+process.chdir(process.env.HOME);
 
 var _ = require('lodash'),
   program = require('commander'),
@@ -14,8 +15,6 @@ var _ = require('lodash'),
   fs = require('fs'),
   config,
   table;
-
-log.heading = 'xtupled';
 
 function list (cb) {
   forever.list(false, function (err, data) {
@@ -188,27 +187,24 @@ var commands = {
     })
 };
 
-if (require.main === module) {
-  var home = '/usr/local/xtuple';
-  process.env.HOME = home;
-  process.chdir(process.env.HOME);
-  forever.load({
-    root: path.resolve(home, '.forever'),
-    pidPath: path.resolve(home, '.forever', 'pids')
-  });
-  config = require(path.resolve(process.env.HOME, '.forever/config'));
-  table = new Table({
-    head: [
-      'process'.cyan,
-      'user'.cyan,
-      'node'.cyan,
-      'pg port'.cyan,
-      'status'.cyan,
-      'uptime'.cyan,
-      'pid'.cyan
-    ],
-    colWidths: [ 40, 20, 10, 10, 10, 16, 8 ]
-  });
+log.heading = 'xtupled';
 
-  program.parse(process.argv);
-}
+forever.load({
+  root: path.resolve(process.cwd(), '.forever'),
+  pidPath: path.resolve(process.cwd(), '.forever', 'pids')
+});
+config = require(path.resolve(process.env.HOME, '.forever/config'));
+table = new Table({
+  head: [
+    'process'.cyan,
+    'user'.cyan,
+    'node'.cyan,
+    'pg port'.cyan,
+    'status'.cyan,
+    'uptime'.cyan,
+    'pid'.cyan
+  ],
+  colWidths: [ 40, 20, 10, 10, 10, 16, 8 ]
+});
+
+program.parse(process.argv);

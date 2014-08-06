@@ -49,6 +49,7 @@ describe('xTuple Server Commercial', function () {
   });
 
   describe('@cli', function () {
+    this.timeout(600 * 10000); // 10 minutes
 
     afterEach(function () { log.silly(this.child); });
 
