@@ -33,4 +33,6 @@ after_failure:
   - ls /usr/local/lib/node_modules/xtuple-server/node_modules/xtuple-server-sys-service -l
   - ls /usr/local/lib/node_modules/xtuple-server-commercial -l
   - ls /usr/local/lib/node_modules/xtuple-server-commercial/node_modules -l
+  - which xtuple-server
+  - ls $(which xtuple-server) -l
   - npm ls -g
