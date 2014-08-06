@@ -42,8 +42,7 @@
   },
   "globalDependencies": {
     "ansi2html": "^0.0.1",
-    "xtuple-server": "^1.0.0",
-    "tasks/sys/service": ""
+    "xtuple-server": "^1.0.0"
   },
   "symlinks": {
     "plans/setup.json": "/usr/local/lib/node_modules/xtuple-server/plans/setup.json",
