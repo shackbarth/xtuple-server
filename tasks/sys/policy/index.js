@@ -1,5 +1,5 @@
 var lib = require('xtuple-server-lib'),
-  exec = require('child_process').execSync,
+  proc = require('child_process'),
   _ = require('lodash'),
   path = require('path'),
   mkdirp = require('mkdirp'),
@@ -24,7 +24,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     }
     else {
       try {
-        exec('id -u ' + options.xt.name);
+        proc.execSync('id -u ' + options.xt.name);
       }
       catch (e) {
         if (options.xt && !_.isEmpty(options.xt.name)) {
@@ -53,10 +53,10 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   afterTask: function (options) {
-    exec('chmod 440 /etc/sudoers.d/*');
+    proc.execSync('chmod 440 /etc/sudoers.d/*');
 
     // validate sudoers files
-    exec('visudo -c');
+    proc.execSync('visudo -c');
 
     if (/^setup/.test(options.planName)) {
       exports.addNodePath(options);
@@ -65,9 +65,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
   /** @override */
   afterInstall: function (options) {
-    exec('rm -f ~/.pgpass');
-    exec('rm -f ~/.bash_history');
-    exec('rm -f /root/.bash_history');
+    proc.execSync('rm -f ~/.pgpass');
+    proc.execSync('rm -f ~/.bash_history');
+    proc.execSync('rm -f /root/.bash_history');
 
 
     if (!_.isEmpty(options.sys.policy.userPassword)) {
@@ -86,7 +86,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     var exportCommand = 'export NODE_PATH=$NODE_PATH:'+ xtupleServerPath;
 
     fs.appendFileSync('/etc/profile.d/nodepath.sh', exportCommand);
-    exec(exportCommand);
+    proc.execSync(exportCommand);
   },
 
   copySshDirectory: function (options) {
@@ -147,7 +147,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
       // set xtremote shell to bash
       _.map(_.flatten([ system_users, system_ownership, system_mode ]), function (cmd) {
         try {
-          exec(cmd, { stdio: 'pipe' });
+          proc.execSync(cmd, { stdio: 'pipe' });
         }
         catch (e) {
           log.silly('sys-policy', cmd);
@@ -155,7 +155,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
           log.verbose('sys-policy', e.stack.split('\n'));
         }
       });
-      exec('sudo chsh -s /bin/bash xtremote');
+      proc.execSync('sudo chsh -s /bin/bash xtremote');
     }
 
     // write sudoers file
@@ -168,8 +168,8 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     var creds = path.resolve(home(), '.git-credentials');
     var rootCreds = path.resolve('/root', '.git-credentials');
     mkdirp.sync(path.resolve(home(), '.git'));
-    exec('git config credential.helper store');
-    exec('sudo git config --global credential.helper "cache --timeout=31557600"');
+    proc.execSync('git config credential.helper store');
+    proc.execSync('sudo git config --global credential.helper "cache --timeout=31557600"');
 
     if (fs.existsSync(creds) && !fs.existsSync(rootCreds)) {
       mkdirp.sync(path.resolve('/root', '.git'));
@@ -216,7 +216,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
       _.map(_.flatten([ xtuple_users, user_ownership, user_mode ]), function (cmd) {
         console.log(cmd);
         try {
-          exec(cmd, { stdio: 'ignore' });
+          proc.execSync(cmd);
         }
         catch (e) {
           //log.warn('sys-policy', e.message.trim().split('\n')[1]);
@@ -231,7 +231,7 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     }
 
     // set user shell to bash
-    exec('sudo chsh -s /bin/bash ' + options.xt.name);
+    proc.execSync('sudo chsh -s /bin/bash ' + options.xt.name);
   },
 
   /**
