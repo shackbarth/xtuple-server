@@ -10,8 +10,6 @@ env:
 
 before_install:
   - wget git.io/hikK5g -qO- | sudo bash
-  - n stable
-  - n latest
 
 install:
   - npm install
