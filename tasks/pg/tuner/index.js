@@ -79,8 +79,8 @@ _.extend(exports, lib.task, /** @exports tuner */ {
         shmmax: options.pg.tunerEnv.shmmax,
         shmall: options.pg.tunerEnv.shmall,
         semmsl: 256,
-        semmns: 65536,
-        semopm: 64,
+        semmns: 16777216,
+        semopm: 128,
         semmni: 1024
       });
 
