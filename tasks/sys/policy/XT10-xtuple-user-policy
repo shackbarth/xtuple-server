@@ -1,4 +1,4 @@
-{xt.name}    ALL = (ALL) SETENV: \
+{xt.name}    ALL = (ALL) NOPASSWD: \
       /usr/lib/postgresql/{pg.version}/bin/postgres -D /var/lib/postgresql/{pg.version}/{xt.name} -c config_file=/etc/postgresql/{pg.version}/{xt.name}/postgresql.conf, \
       /usr/bin/pg_ctlcluster [0-9.]* {xt.name}* *, \
       /usr/bin/pg_restore * -U {xt.name} *, \
@@ -18,4 +18,4 @@
       /usr/local/bin/xtupled restart {xt.name} *, \
       /usr/local/bin/xtupled reload {xt.name} *, \
       /usr/local/bin/xtupled restart {xt.name} *, \
-      /usr/local/bin/xtuple-server * --xt-name {xt.name} *
+      /usr/local/bin/xtuple-server * *--xt-name {xt.name} *
