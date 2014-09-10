@@ -1,6 +1,6 @@
 echo "<pre style='color: #ccc; background-color: black'>" && xtuple-server install-$instanceType --xt-name $xtName --xt-version $xtVersion --xt-edition $xtEdition --xt-ghuser $xtGhuser --xt-ghpass $xtGhpass --xt-maindb $xtMaindb --xt-authkey $xtAuthkey --xt-adminpw $xtAdminpw --nginx-domain $nginxDomain --nginx-inkey $nginxInkey --nginx-incrt $nginxIncrt --pg-slots $pgSlots --pg-capacity $pgCapacity $pgEnableSnapshots $pgWorldLogin --pg-snapschedule $pgSnapSchedule --pg-snapcount $pgSnapCount --pg-version $pgVersion 2>&1 | ansi2html && echo "</pre>"
 New xTuple Instance from Postgres Backup
-root 1 0 0 0 1 3600 0 -
+root 1 1 0 0 1 3600 0 -
 xtName:0::1,1:Account Name
 xtVersion:0:4.5.0:1,1:xTuple App Version
 instanceType:9:/etc/webmin/xtuple/types.menu:0,1:Instance Type
