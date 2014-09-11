@@ -29,8 +29,14 @@ var xtupled = module.exports = {
         var descriptor = _.find(descriptors, { uid: uid });
         if (!descriptor) return;
 
-        forever.startDaemon(descriptor.script, descriptor);
-        log.info('started', descriptor.uid);
+        var proc = forever.start(descriptor.script, descriptor);
+        proc.on('error', function (err) {
+          log.error(err);
+          process.exit(1);
+        });
+        proc.on('start', function () {
+          log.info('started', descriptor.uid);
+        });
       });
 
       // restart existing processes
@@ -61,8 +67,7 @@ var xtupled = module.exports = {
         log.info('restarted', descriptor.uid);
       });
       proc.on('error', function (err) {
-        forever.startDaemon(descriptor.script, descriptor);
-        log.info('started', descriptor.uid);
+        xtupled.start([ descriptor ]);
       });
     });
     child.spawnSync('service', [ 'nginx', 'reload' ]);
@@ -99,5 +104,3 @@ var xtupled = module.exports = {
     });
   }
 };
-
-
