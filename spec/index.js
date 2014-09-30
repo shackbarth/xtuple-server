@@ -33,9 +33,9 @@ describe('xTuple Server Commercial', function () {
     githubLatest('xtuple', 'xtuple', function (e, tag) {
       if (e) assert.fail('could not determine xtuple version');
 
-      log.info('xtuple', 'using version', tag);
       //xtupleVersion = tag.replace(/^v/, '');
-      xtupleVersion = '4.6.0-beta';
+      xtupleVersion = '4.6.0-1';
+      log.info('xtuple', 'using version', xtupleVersion);
       done();
     });
   });
