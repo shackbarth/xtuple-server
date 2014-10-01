@@ -29,7 +29,7 @@ var xtupled = module.exports = {
         var descriptor = _.find(descriptors, { uid: uid });
         if (!descriptor) return;
 
-        var proc = forever.start(descriptor.script, descriptor);
+        var proc = forever.startDaemon(descriptor.script, descriptor);
         proc.on('error', function (err) {
           log.error(err);
           process.exit(1);
