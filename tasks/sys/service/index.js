@@ -138,6 +138,9 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
       spinSleepTime: 10000,
       killTree: true,
       max: 30,  // try for 5 minutes
+      watch: true,
+      watchIgnoreDotFiles: true,
+      watchDirectory: options.xt.configdir,
 
       // log files
       logFile: path.resolve(options.xt.logdir, 'web-server-forever.log'),
