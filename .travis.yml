@@ -9,7 +9,7 @@ env:
     - secure: "LB8m5SfRNyytZGp2VkcOQD4u37p1Hwjmn9Yn576PtSiqg8Y3LEAFtPnW98y92d+Av49o9OeD2NuB0C744JI7FZJplEjhZceW01HUAmmz9SVs1WcOfcJaSyoNusPu5fIAoe5WVKhZGQUYyvl1zzU+/BzTXuYWNiLQLRGoqn2Dhzw="
 
 before_install:
-  - wget git.io/hikK5g -qO- | sudo bash
+  - wget https://raw.githubusercontent.com/xtuple/xtuple-server-core/master/bootstrap.sh -qO- | sudo bash
 
 install:
   - npm install
