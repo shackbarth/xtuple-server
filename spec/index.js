@@ -6,7 +6,7 @@ var assert = require('assert');
 var githubLatest = require('github-latest');
 var lib = require('xtuple-server-lib');
 var plans = require('../plans');
-var planner = require('xtuple-server');
+var planner = require('xtuple-server-core');
 var specPlanner = require('xtuple-server/spec/planner');
 var semver = require('semver');
 var pkg = require('../package');
@@ -46,7 +46,7 @@ describe('xTuple Server Commercial', function () {
   });
 
   it('node version range must equal that of xtuple-server core edition', function () {
-    assert.equal(require('xtuple-server/package').engines.node, pkg.engines.node);
+    assert.equal(require('xtuple-server-core/package').engines.node, pkg.engines.node);
   });
 
   describe('@cli', function () {
