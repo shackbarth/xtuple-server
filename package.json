@@ -78,6 +78,7 @@
   "files": [
     "index.js",
     "plans/",
+    "tasks/",
     "spec/"
   ],
   "keywords": [
