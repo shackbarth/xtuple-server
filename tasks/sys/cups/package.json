@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "xtuple-server-sys-cups",
   "version": "0.9.0",
   "description": "xTuple Server Task [sys.cups]: printing support",

@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "xtuple-server-pg-snapshotmgr",
   "version": "0.9.0",
   "description": "xTuple Server Task [pg.snapshotmgr]: manages scheduled database backups",

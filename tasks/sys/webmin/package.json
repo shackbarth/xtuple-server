@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "xtuple-server-sys-webmin",
   "version": "0.9.0",
   "description": "xTuple Server Task [sys.webmin]: set up webmin and integrate it with the xTuple Server",

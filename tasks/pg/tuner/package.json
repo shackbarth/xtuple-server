@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "xtuple-server-pg-tuner",
   "version": "0.9.1",
   "description": "xTuple Server Task [pg.tuner]: optimizes and tunes postgres config values",

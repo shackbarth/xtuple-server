@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "xtuple-server-sys-policy",
   "version": "0.9.0",
   "description": "xTuple Server Task [sys.policy]: setup system policy",
