@@ -49,29 +49,33 @@ var xtupled = module.exports = {
 
   stop: function (_descriptors) {
     xtupled.list(function (list) {
-      var descriptors = _.map(_descriptors, function (descriptor) {
-        return _.extend({ }, descriptor, _.find(list, { uid: descriptor.uid }));
-      });
+      var descriptors = _.compact(_.map(_descriptors, function (descriptor) {
+	var item = _.find(list, { uid: descriptor.uid });
+        return item && _.extend({ }, descriptor, item);
+      }));
       _.each(descriptors, function (descriptor) {
-        var pkill = pgrep.exec({ parent: descriptor.pid }).then(function (pids) {
-          log.info('stopping pids', pids);
-          var proc = forever.stop(descriptor.uid);
-          proc.on('stop', function (err) {
-            if (err) return log.error(err);
-
+        var pkill = pgrep.exec({ full: true, name: descriptor.cwd })
+	  .then(function (pids) {
+            
+            var proc = forever.stop(descriptor.uid);
+            proc.on('stop', function () {
+              log.info('stopped', descriptor.uid, '; pids:', pids);
+            });
+            proc.on('error', function (err) {
+              log.info('already stopped', descriptor.uid);
+            });
             _.each(pids, function (pid) {
-              child.execSync('kill -9 '+ pid);
-              log.info('stopped', descriptor.uid);
+              child.exec('sudo kill -9 '+ pid);
             });
           });
-          proc.on('error', function (err) {
-            //log.error(err);
-            log.info('already stopped', descriptor.uid);
-          });
-        });
       });
       child.spawnSync('service', [ 'nginx', 'reload' ]);
-      log.info('nginx', 'reloaded');
+      if (descriptors.length) {
+        log.info('nginx', 'reloaded');
+      }
+      else {
+        log.info('already stopped');
+      }
     });
   },
 
