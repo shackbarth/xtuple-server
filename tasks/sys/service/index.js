@@ -6,7 +6,8 @@ var lib = require('xtuple-server-lib'),
   cp = require('cp'),
   fs = require('fs'),
   xtupled = require('./lib/xtupled'),
-  path = require('path');
+  path = require('path'),
+  n = require('n-api');
 
 _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
 
@@ -108,11 +109,12 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-service */ {
    * Install a particular account into the service manager
    */
   installService: function (options) {
+    var nodeBin = n.bin(options.xt.nodeVersion);
     fs.writeFileSync(path.resolve(options.xt.processdir, 'web-server.json'), JSON.stringify({
       uid: 'web-server-' + options.pg.cluster.name,
 
       // invocation attributes
-      command: 'sudo -u '+ options.xt.name + ' n use ' + options.xt.nodeVersion,
+      command: 'sudo -u '+ options.xt.name + ' ' + nodeBin,
       script: 'node-datasource/main.js',
       options: [
         '-c', options.xt.configfile
