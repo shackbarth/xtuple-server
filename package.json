@@ -1,6 +1,6 @@
 {
   "name": "xtuple-server",
-  "version": "1.1.8",
+  "version": "1.1.10",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
     "cp": "^0.1.1",
@@ -9,6 +9,7 @@
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0",
     "npmlog": "^0.1.1",
+    "pgrep": "0.0.5",
     "requireindex": "^1.1.0",
     "rimraf": "^2.2.8",
     "xtuple-server-lib": "^1.0.0"

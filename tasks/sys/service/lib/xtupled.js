@@ -9,6 +9,7 @@ var _ = require('lodash'),
   moment = require('moment'),
   path = require('path'),
   log = require('npmlog'),
+  pgrep = require('pgrep'),
   fs = require('fs');
 
 var xtupled = module.exports = {
@@ -46,18 +47,36 @@ var xtupled = module.exports = {
     });
   },
 
-  stop: function (descriptors) {
-    _.each(descriptors, function (descriptor) {
-      var proc = forever.stop(descriptor.uid);
-      proc.on('stop', function (err) {
-        log.info('stopped', descriptor.uid);
+  stop: function (_descriptors) {
+    xtupled.list(function (list) {
+      var descriptors = _.compact(_.map(_descriptors, function (descriptor) {
+	var item = _.find(list, { uid: descriptor.uid });
+        return item && _.extend({ }, descriptor, item);
+      }));
+      _.each(descriptors, function (descriptor) {
+        var pkill = pgrep.exec({ full: true, name: descriptor.cwd })
+	  .then(function (pids) {
+            
+            var proc = forever.stop(descriptor.uid);
+            proc.on('stop', function () {
+              log.info('stopped', descriptor.uid, '; pids:', pids);
+            });
+            proc.on('error', function (err) {
+              log.info('already stopped', descriptor.uid);
+            });
+            _.each(pids, function (pid) {
+              child.exec('sudo kill -9 '+ pid);
+            });
+          });
       });
-      proc.on('error', function (err) {
-        log.info('already stopped', descriptor.uid);
-      });
+      child.spawnSync('service', [ 'nginx', 'reload' ]);
+      if (descriptors.length) {
+        log.info('nginx', 'reloaded');
+      }
+      else {
+        log.info('already stopped');
+      }
     });
-    child.spawnSync('service', [ 'nginx', 'reload' ]);
-    log.info('nginx', 'reloaded');
   },
 
   restart: function (descriptors) {

@@ -34,7 +34,7 @@ describe('xTuple Server Commercial', function () {
       if (e) assert.fail('could not determine xtuple version');
 
       //xtupleVersion = tag.replace(/^v/, '');
-      xtupleVersion = '4.6.0-1';
+      xtupleVersion = '4.7.0';
       log.info('xtuple', 'using version', xtupleVersion);
       done();
     });

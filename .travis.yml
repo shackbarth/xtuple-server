@@ -19,6 +19,7 @@ script:
   - sudo npm test
 
 after_failure:
+  - sudo -u xtmochadistribution psql -p 5433 -f /usr/local/xtmochadistribution/.xtuple/dist/4.7.0/xtuple/scripts/output/build_demo_live.sql
   - cat xtuple-server.log
   - node -v
   - npm -v
