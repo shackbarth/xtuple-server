@@ -105,7 +105,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
 
   /** @private */
   createSystemPolicy: function (options) {
-    exports.copyGitCredentials(options);
     exports.copySshDirectory(options);
 
     mkdirp.sync('/etc/xtuple');
@@ -161,21 +160,6 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
     // write sudoers file
     if (!fs.existsSync(global_policy_target)) {
       fs.writeFileSync(global_policy_target, global_policy_src);
-    }
-  },
-
-  copyGitCredentials: function (options) {
-    var creds = path.resolve(home(), '.git-credentials');
-    var rootCreds = path.resolve('/root', '.git-credentials');
-    mkdirp.sync(path.resolve(home(), '.git'));
-    proc.execSync('git config credential.helper store');
-    proc.execSync('sudo git config --global credential.helper "cache --timeout=31557600"');
-
-    if (fs.existsSync(creds) && !fs.existsSync(rootCreds)) {
-      mkdirp.sync(path.resolve('/root', '.git'));
-      cp.sync(creds, rootCreds);
-      fs.chownSync(rootCreds, 0, 0);
-      cp.sync(path.resolve(home(), '.gitconfig'), '/root/.gitconfig');
     }
   },
 
