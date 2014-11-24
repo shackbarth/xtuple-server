@@ -35,14 +35,16 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
 
   /** @override */
   beforeInstall: function (options) {
-    mkdirp.sync('/srv/ssl');
+    mkdirp.sync('/etc/ssl/certs');
 
     options.nginx || (options.nginx = { });
 
     options.nginx.inkey = options.sys.webminkey;
     options.nginx.incrt = options.sys.webmincrt;
-    options.nginx.outkey = path.resolve('/srv/ssl/webmin.key');
-    options.nginx.outcrt = path.resolve('/srv/ssl/webmin.crt');
+    options.nginx.outkey = path.resolve('/etc/ssl/certs/webmin.key');
+    options.nginx.outcrt = path.resolve('/etc/ssl/certs/webmin.crt');
+    exec('chmod 600 /etc/ssl/certs/webmin.key');
+    exec('chmod 600 /etc/ssl/certs/webmin.crt');
     options.nginx.domain = options.sys.webmindomain;
 
     options.sys.etcWebmin = '/etc/webmin';
