@@ -43,8 +43,6 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.nginx.incrt = options.sys.webmincrt;
     options.nginx.outkey = path.resolve('/etc/ssl/certs/webmin.key');
     options.nginx.outcrt = path.resolve('/etc/ssl/certs/webmin.crt');
-    exec('chmod 600 /etc/ssl/certs/webmin.key');
-    exec('chmod 600 /etc/ssl/certs/webmin.crt');
     options.nginx.domain = options.sys.webmindomain;
 
     options.sys.etcWebmin = '/etc/webmin';
@@ -219,6 +217,8 @@ _.extend(webmin, lib.task, /** @exports xtuple-server-sys-webmin */ {
     options.nginx.enabledSite = path.resolve('/etc/nginx/sites-enabled/webmin-site');
     options.nginx.siteTemplateFile = path.resolve(__dirname, 'webmin-site');
     site.writeSiteConfig(options);
+    exec('chmod 600 /etc/ssl/certs/webmin.key');
+    exec('chmod 600 /etc/ssl/certs/webmin.crt');
   },
 
   removeUnusedModules: function (options) {
