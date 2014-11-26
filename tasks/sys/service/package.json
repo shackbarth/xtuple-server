@@ -1,6 +1,6 @@
 {
   "name": "xtuple-server-sys-service",
-  "version": "0.9.2",
+  "version": "0.9.4",
   "description": "xTuple Server Task [sys.service]: set up services",
   "main": "index.js",
   "scripts": {
@@ -44,6 +44,7 @@
     "moment": "^2.7.0",
     "n-api": "^1.2.39",
     "npmlog": "^0.1.1",
+    "pgrep": "0.0.5",
     "rimraf": "^2.2.8",
     "string-format": "^0.2.1",
     "xtuple-server-lib": "^1.0.0"
