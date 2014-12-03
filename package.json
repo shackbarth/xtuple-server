@@ -1,6 +1,6 @@
 {
   "name": "xtuple-server",
-  "version": "1.1.11",
+  "version": "1.2.0",
   "description": "xTuple Server Commercial Package",
   "dependencies": {
     "cp": "^0.1.1",
@@ -38,6 +38,7 @@
     "xtuple-server-sys-service": "tasks/sys/service",
     "xtuple-server-sys-ssh": "tasks/sys/ssh",
     "xtuple-server-sys-webmin": "tasks/sys/webmin",
+    "xtuple-server-sys-xvfb": "tasks/sys/xvfb",
     "xtuple-server-pg-tuner": "tasks/pg/tuner",
     "xtuple-server-pg-snapshotmgr": "tasks/pg/snapshotmgr"
   },
@@ -67,6 +68,7 @@
     "node_modules/xtuple-server-sys-service": "/usr/local/lib/node_modules/xtuple-server-core/node_modules/xtuple-server-sys-service",
     "node_modules/xtuple-server-sys-ssh": "/usr/local/lib/node_modules/xtuple-server-core/node_modules/xtuple-server-sys-ssh",
     "node_modules/xtuple-server-sys-webmin": "/usr/local/lib/node_modules/xtuple-server-core/node_modules/xtuple-server-sys-webmin",
+    "node_modules/xtuple-server-sys-xvfb": "/usr/local/lib/node_modules/xtuple-server-core/node_modules/xtuple-server-sys-xvfb",
     "node_modules/xtuple-server-pg-snapshotmgr": "/usr/local/lib/node_modules/xtuple-server-core/node_modules/xtuple-server-pg-snapshotmgr",
     "node_modules/xtuple-server-pg-tuner": "/usr/local/lib/node_modules/xtuple-server-core/node_modules/xtuple-server-pg-tuner"
   },
