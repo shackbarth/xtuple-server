@@ -5,11 +5,8 @@ var assert = require('assert'),
 
 exports.afterTask = function (options) {
   it('should configure and start Xvfb', function () {
-    var procs;
-
     assert(fs.existsSync(options.xvfb.serviceFile));
     pgrep.exec({full: false, name: options.xvfb.processName})
-         .then(function (pids) { procs = pids; });
-    assert(procs.length && procs.length >= 1);
+         .then(function (pids) { assert(pids && pids.length >= 1); });
   });
 };

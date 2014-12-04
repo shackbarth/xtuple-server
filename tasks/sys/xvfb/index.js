@@ -14,7 +14,7 @@ _.extend(exports, lib.task,
     if (! options.xvfb ) {
       options.xvfb = {};
     }
-    options.xvfb.serviceFile = '/etc/init.d/' + exports.service;
+    options.xvfb.serviceFile = path.resolve('/etc/init.d', exports.service);
     options.xvfb.processName = 'Xvfb';
     options.xvfb.serviceName = exports.service;
     options.xvfb.display     = ':17'; // TODO: cmd line arg to pass DISPLAY?
@@ -48,9 +48,11 @@ _.extend(exports, lib.task,
   },
 
   /** @override */
+  /* this should be part of unsetup, not uninstall
   uninstall: function (options) {
     exec('service '     + exports.service + ' stop');
     exec('update-rc.d ' + exports.service + ' remove');
   },
+  */
 
 });
