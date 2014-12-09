@@ -1,0 +1,40 @@
+{
+  "name":        "xtuple-server-xvfb-setup",
+  "version":     "0.0.1",
+  "description": "xTuple Server Task [xvfb.setup]: run Xvfb for use by OpenRPT",
+  "main":        "index.js",
+  "scripts": {
+    "test":      "./node_modules/.bin/mocha spec/ -R spec"
+  },
+  "repository": {
+    "type":      "git",
+    "url":       "https://github.com/xtuple/xtuple-server-core"
+  },
+  "keywords": [
+    "xtuple",
+    "server",
+    "erp",
+    "business",
+    "software",
+    "xvfb",
+    "setup",
+    "config",
+    "openrpt",
+    "report",
+    "tuple"
+  ],
+  "author":      "xTuple",
+  "license":     "CPAL-1.0",
+  "bugs": {
+    "url":       "https://github.com/xtuple/xtuple-server/issues"
+  },
+  "homepage":    "https://github.com/xtuple/xtuple-server",
+  "dependencies": {
+    "lodash":            "^2.4.1",
+    "xtuple-server-lib": "^1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^1.20.0",
+    "pgrep": "^0.0.5"
+  }
+}

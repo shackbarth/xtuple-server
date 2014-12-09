@@ -28,7 +28,7 @@
     },
     {
       "name": "sys",
-      "tasks": [ "cups", "ssh", "service", "report" ]
+      "tasks": [ "cups", "xvfb", "ssh", "service", "report" ]
     }
   ]
 }

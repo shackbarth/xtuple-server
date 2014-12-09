@@ -13,7 +13,7 @@
     },
     {
       "name": "sys",
-      "tasks": [ "service", "cups", "webmin", "report" ]
+      "tasks": [ "cups", "xvfb", "service", "webmin", "report" ]
     }
   ]
 }
