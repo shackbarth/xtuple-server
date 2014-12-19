@@ -19,8 +19,8 @@ DESC="Xvfb for use by OpenRPT"
 NAME=Xvfb
 DAEMON=/usr/bin/$NAME
 DAEMON_ARGS=""
-PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
+PIDFILE=/var/run/$NAME.pid
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
