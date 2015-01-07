@@ -18,7 +18,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Xvfb for use by OpenRPT"
 NAME=Xvfb
 DAEMON=/usr/bin/$NAME
-DAEMON_ARGS=""
+DAEMON_ARGS=":17"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
