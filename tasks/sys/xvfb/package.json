@@ -1,5 +1,5 @@
 {
-  "name":        "xtuple-server-xvfb-setup",
+  "name":        "xtuple-server-sys-xvfb",
   "version":     "0.0.1",
   "description": "xTuple Server Task [xvfb.setup]: run Xvfb for use by OpenRPT",
   "main":        "index.js",
