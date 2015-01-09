@@ -82,7 +82,14 @@ _.extend(exports, lib.task, /** @exports xtuple-server-sys-policy */ {
    * Add to NODE_PATH the path of the xtuple-server dependencies
    */
   addNodePath: function (options) {
-    var xtupleServerPath = path.resolve(path.dirname(require.resolve('xtuple-server'), 'node_modules'));
+    var resolvedServerPath;
+    try {
+      resolvedServerPath = path.dirname(require.resolve('xtuple-server'));
+    } catch (err) {
+      console.log("Using fallback xtuple-server path");
+      resolvedServerPath = path.resolve(__dirname, "../../..");
+    }
+    var xtupleServerPath = path.resolve(resolvedServerPath, 'node_modules');
     var exportCommand = 'export NODE_PATH=$NODE_PATH:'+ xtupleServerPath;
 
     fs.appendFileSync('/etc/profile.d/nodepath.sh', exportCommand);
