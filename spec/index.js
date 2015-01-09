@@ -103,7 +103,7 @@ describe('xTuple Server Commercial', function () {
           xt: {
             name: 'xtmochapostbooks',
             demo: true,
-            edition: 'postbooks'
+            edition: 'core'
           }
         };
 
