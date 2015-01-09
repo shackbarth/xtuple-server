@@ -73,6 +73,9 @@ describe('xTuple Server Commercial', function () {
   describe('plans', function () {
 
     describe('@install-live', function () {
+      // skipping because this test is failing in a way that suggests
+      // our auth with github in the secure yml variable isn't working
+      // TODO: get it to work and unskip this test
       describe.skip('@manufacturing edition', function () {
         var planObject = require('../plans')['install-live'];
         var options = {
